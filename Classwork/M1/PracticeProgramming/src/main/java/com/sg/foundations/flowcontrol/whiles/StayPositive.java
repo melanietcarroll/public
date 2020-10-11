@@ -15,21 +15,27 @@ public class StayPositive {
         Scanner myScanner = new Scanner(System.in);
         System.out.println("Enter a starting value.");
         int start = Integer.parseInt(myScanner.nextLine());
-        int newLineCount = 0;
+
         
         System.out.println("Counting down...");
         
-        while ( start >= 0 && start <= start){
-            System.out.println(start);
-            start--;
-            if (newLineCount == 10){
-                start += '\n';
-                newLineCount = 0;
-            }
-        newLineCount ++;
-        }
         if (start < 0){
         System.out.println("You must enter a positive number.");
         }
+        
+        
+        while ( start >= 0 && start <= start){
+            
+            
+                System.out.print(" " + start);
+//                if(start % 10 == 0){
+//                 System.out.print("\n");
+//}         
+            
+               start--;
+        }
+        
     }
 }
+
+

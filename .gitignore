@@ -441,3 +441,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+/Classwork/M1/PracticeProgramming/target/
