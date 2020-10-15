@@ -23,7 +23,7 @@ public class Factorizer {
                    if (number % i == 0){
                        sum = sum + i;
                        factors++;
-                       System.out.print(i);
+                       System.out.print(i + " ");
                       
                    }
        }
