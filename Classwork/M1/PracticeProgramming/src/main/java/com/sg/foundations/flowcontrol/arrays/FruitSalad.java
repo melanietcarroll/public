@@ -20,58 +20,58 @@ public class FruitSalad {
         
         
         totalFruit = orange + apple + otherFruit;
-        String[] fruitSalad = new String[totalFruit];  
+        String[] fruitSalad = {"Gala Apple", "Granny Smith Apple", "Braeburn Apple", "Blood Orange", "Navel Orange", "Kiwi Fruit", "Gooseberry", "Strawberry", "Blueberry", "Raspberry", "Blackberry", "Snozzberry"};
 
         // Code Recipe for fruit salad should go here!
         for (int i = 0; i < fruit.length; i++){
             if (fruit[i] == "Gala Apple"){
                 apple++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Granny Smith Apple"){
                 apple++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Braeburn Apple"){
                 apple++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Blood Orange"){
                 orange++;
-                fruitSalad[i] = fruit[i];
+               
             }else if (fruit[i] == "Navel Orange"){
                 orange++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Kiwi Fruit"){
                 otherFruit++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Gooseberry"){
                 otherFruit++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Blueberry"){
                 otherFruit++;
-                fruitSalad[i] = fruit[i];
+             
             }else if (fruit[i] == "Strawberry"){
                 otherFruit++;
-                fruitSalad[i] = fruit[i];
+               
             }else if (fruit[i] == "Raspberry"){
                 otherFruit++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Blackberry"){
                 otherFruit++;
-                fruitSalad[i] = fruit[i];
+                
             }else if (fruit[i] == "Snozzberry"){
                 otherFruit++;
-                fruitSalad[i] = fruit[i];
+               
             }
             
         }
         
         
         System.out.println(otherFruit);
-            System.out.println(orange);
-            System.out.println(apple);
-            System.out.println(apple + orange + otherFruit);
+            System.out.println("Orange: " + orange);
+            System.out.println("Apple: " + apple);
+            System.out.println("Other Fruit: " + otherFruit);
+            System.out.println("Total fruit: " + (apple + orange + otherFruit));
             
-            for(int i=0;i < fruitSalad.length;i++){
-        System.out.print(fruitSalad[i]+" ");
+          
+            
     }
-}
 }
