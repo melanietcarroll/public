@@ -11,7 +11,9 @@ import java.util.Random;
  * @author Shawn
  */
 public class LuckySevens {
-    public static void main(String[] args) {
+  
+        
+        public void playLuckySevens() {
         Scanner myScanner = new Scanner(System.in);
         int startingBet;
         int gameMoney;

@@ -9,7 +9,9 @@ import java.util.Scanner;
  * @author Shawn
  */
 public class Factorizer {
-    public static void main(String[] args) {
+   
+        
+        public void factorizer(){
         Scanner myScanner = new Scanner(System.in);
         int factors = 0;
         int sum = 0;
