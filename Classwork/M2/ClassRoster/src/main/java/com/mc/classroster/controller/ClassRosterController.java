@@ -6,6 +6,7 @@
 package com.mc.classroster.controller;
 
 import com.mc.classroster.dao.ClassRosterDao;
+import com.mc.classroster.dao.ClassRosterDaoException;
 import com.mc.classroster.dao.ClassRosterDaoFileImpl;
 import com.mc.classroster.dto.Student;
 import com.mc.classroster.ui.ClassRosterView;
