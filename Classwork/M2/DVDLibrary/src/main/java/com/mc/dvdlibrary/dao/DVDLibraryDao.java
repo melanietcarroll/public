@@ -72,12 +72,6 @@ public interface DVDLibraryDao {
     
     DVD editDVD(String title, DVD dvd)
             throws DVDLibraryDaoException;
-    /**
-     * Allows user to view info for a DVD in the library.
-     *
-     * @return info for DVD in the library or null if there is no DVD
-     * associated with the given title
-     * @throws DVDLibraryDaoException
-     */
+    
     
 }

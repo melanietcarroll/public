@@ -8,8 +8,8 @@ package com.mc.dvdlibrary.ui;
 import java.util.Scanner;
 
 /**
- *
- * @author Shawn
+ * created 10/25/20
+ * @author Melanie Carroll
  */
 public class UserIODVDConsoleImpl implements UserIO{
      Scanner myScanner = new Scanner(System.in);
