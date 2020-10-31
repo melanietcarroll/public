@@ -58,7 +58,7 @@ public class AddressBookDaoFileImpl implements AddressBookDao {
     }
 
     @Override
-    public int countAddress(HashMap addresses) throws AddressBookDaoException {
+    public int countAddress(List<Address> addresses) throws AddressBookDaoException {
         loadAddressBook();
         return addresses.size();
     }

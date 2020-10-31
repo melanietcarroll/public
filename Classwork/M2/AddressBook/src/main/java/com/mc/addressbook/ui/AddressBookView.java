@@ -79,8 +79,8 @@ public class AddressBookView {
     public void displayAddressCountBanner(){
     io.print("List Address Count Menu:");
     }
-    public void displayAddressCount() {
-        io.print("There are ");
+    public void displayAddressCount(int sum) {
+        io.print("There are " + sum);
     }
     public void displayFindAddressBanner() {
         io.print("Find Address Menu:");

@@ -91,8 +91,8 @@ private void removeAddress() throws AddressBookDaoException {
 private void countAddress() throws AddressBookDaoException {
     view.displayAddressCountBanner();
     List<Address> addressList = dao.getAllAddresses();
-    int total = addressList.size();
-    view.displayAddressCount();
+    view.displayAddressCount(addressList.size());
+    
 }
 
 private void unknownCommand() {

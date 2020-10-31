@@ -60,7 +60,11 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
 
     @Override
     public DVD editDVD(String title, DVD dvd) throws DVDLibraryDaoException {
-        return dvds.put(title, dvd);
+        loadDVDLibrary();
+        DVD editedDVD = dvds.put(title, dvd);
+        writeDVDLibrary(); 
+        return editedDVD;
+
     }
 
     private DVD unmarshallDVDLibrary(String dvdAsText) {

@@ -1,3 +1,3 @@
-Cars::2010::PG::unk::Pixar::5 stars
+Cars::2011::G::Pixar::Pixar::3
 Monsters Inc::2011::PG::unk::Pixar::5 stars
-Labyrinth::1980::PG::unk::5 stars::5 stars
+Labyrinth::1982::PG::unk unk::unk::5 stars

@@ -81,6 +81,9 @@ public void displayStudent(Student student) {
 public void displayRemoveStudentBanner () {
     io.print("=== Remove Student ===");
 }
+public void displayRemoveSuccessBanner () {
+    io.print("Student successfully removed.");
+}
 
 public void displayRemoveResult(Student studentRecord) {
     if(studentRecord != null){

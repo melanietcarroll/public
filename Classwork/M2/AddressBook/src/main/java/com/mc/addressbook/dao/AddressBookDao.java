@@ -71,7 +71,7 @@ public interface AddressBookDao {
      * @throws AddressBookDaoException
      */
     
-    int countAddress(HashMap <String, Address> addresses)
+    int countAddress(List<Address> addresses)
             throws AddressBookDaoException;
 }
         
