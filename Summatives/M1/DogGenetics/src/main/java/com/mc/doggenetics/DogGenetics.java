@@ -42,16 +42,18 @@ public class DogGenetics {
 //        System.out.println(dog5 + " " +num5);
 //                
 //        System.out.println(" ");
-//        System.out.println("WOW! That's quite the dog!");  
-       int [] nums = {1,2,3,4};
-       String numsToString = "";
-
-    for (int i = 0; i < nums.length; i++) {
-        numsToString = numsToString + nums[i];
+//        System.out.println("WOW! That's quite the dog!");
+boolean isFriend = false;
+        String visitorName = "Goofus";
+       if (isFriend != false){
+            String friendGreeting = ("Hello, " + visitorName + " !");
+            System.out.println(friendGreeting);
+        }else{
+        String friendGreeting = "hi";
+       
+       System.out.println(friendGreeting);
     }
-
-    
-        System.out.println(numsToString);
+        
     }
        
 }
