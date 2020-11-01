@@ -18,29 +18,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-
 /**
  * created 10/25/20
+ *
  * @author Melanie Carroll
  */
-public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
-    
-    public static final String LIBRARY_FILE = "library.txt";
+public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
+
+    public final String LIBRARY_FILE;
     public static final String DELIMITER = "::";
-    
-     private Map<String, DVD> dvds = new HashMap<>();
+
+    public DVDLibraryDaoFileImpl() {
+        LIBRARY_FILE = "library.txt";
+    }
+
+    public DVDLibraryDaoFileImpl(String libraryTextFile) {
+        LIBRARY_FILE = libraryTextFile;
+    }
+
+    private Map<String, DVD> dvds = new HashMap<>();
 
     @Override
     public DVD addDVD(String title, DVD dvd) throws DVDLibraryDaoException {
         loadDVDLibrary();
         DVD newDVD = dvds.put(title, dvd);
-        writeDVDLibrary(); 
+        writeDVDLibrary();
         return newDVD;
     }
 
     @Override
     public List<DVD> getAllDVDs() throws DVDLibraryDaoException {
-         loadDVDLibrary();
+        loadDVDLibrary();
         return new ArrayList(dvds.values());
     }
 
@@ -54,7 +62,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
     public DVD removeDVD(String title) throws DVDLibraryDaoException {
         loadDVDLibrary();
         DVD removedDVD = dvds.remove(title);
-        writeDVDLibrary(); 
+        writeDVDLibrary();
         return removedDVD;
     }
 
@@ -62,7 +70,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
     public DVD editDVD(String title, DVD dvd) throws DVDLibraryDaoException {
         loadDVDLibrary();
         DVD editedDVD = dvds.put(title, dvd);
-        writeDVDLibrary(); 
+        writeDVDLibrary();
         return editedDVD;
 
     }
@@ -160,11 +168,11 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
         dvdAsText += aDVD.getMpaaRating() + DELIMITER;
 
         // Director
-        dvdAsText += aDVD.getDirectorName()+ DELIMITER;
-        
+        dvdAsText += aDVD.getDirectorName() + DELIMITER;
+
         // Studio
-        dvdAsText += aDVD.getStudio()+ DELIMITER;
-        
+        dvdAsText += aDVD.getStudio() + DELIMITER;
+
         // User Rating
         dvdAsText += aDVD.getUserRating();
 
@@ -178,7 +186,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
      *
      * @throws DVDLibraryDaoException if an error occurs writing to the file
      */
-    private void writeDVDLibrary() throws DVDLibraryDaoException{
+    private void writeDVDLibrary() throws DVDLibraryDaoException {
         // NOTE FOR APPRENTICES: We are not handling the IOException - but
         // we are translating it to an application specific exception and 
         // then simple throwing it (i.e. 'reporting' it) to the code that
@@ -190,7 +198,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao{
         } catch (IOException e) {
             throw new DVDLibraryDaoException(
                     "Could not save DVD data.", e);
-        
+
         }
         // Write out the DVD objects to the library file.
         // NOTE TO THE APPRENTICES: We could just grab the dvd map,

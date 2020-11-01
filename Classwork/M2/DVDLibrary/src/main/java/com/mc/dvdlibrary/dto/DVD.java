@@ -5,12 +5,49 @@
  */
 package com.mc.dvdlibrary.dto;
 
+import java.util.Objects;
+
 /**
  * created 10/25/20
  *
  * @author Melanie Carroll
  */
 public class DVD {
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.title);
+        hash = 29 * hash + Objects.hashCode(this.releaseDate);
+        hash = 29 * hash + Objects.hashCode(this.mpaaRating);
+        hash = 29 * hash + Objects.hashCode(this.directorName);
+        hash = 29 * hash + Objects.hashCode(this.studio);
+        hash = 29 * hash + Objects.hashCode(this.userRating);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final DVD other = (DVD) obj;
+        if (!Objects.equals(this.title, other.title)) {
+        return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "DVD{" + "title=" + title + ", releaseDate=" + releaseDate + ", mpaaRating=" + mpaaRating + ", directorName=" + directorName + ", studio=" + studio + ", userRating=" + userRating + '}';
+    }
 
     private String title;
     private String releaseDate;
