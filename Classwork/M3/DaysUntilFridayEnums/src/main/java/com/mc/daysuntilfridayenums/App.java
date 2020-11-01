@@ -42,7 +42,7 @@ public class App {
             case SUNDAY:
                 return daysUntilFri + 5;
             default:
-                throw new UnsupportedOperationException();
+                throw new IllegalArgumentException();
         }
     }
 }
