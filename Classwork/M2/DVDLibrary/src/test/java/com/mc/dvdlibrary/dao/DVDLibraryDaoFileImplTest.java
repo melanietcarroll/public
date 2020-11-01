@@ -166,12 +166,13 @@ public class DVDLibraryDaoFileImplTest {
         DVD retrievedDVD = testDao.searchDVDByTitle(title);
 
         //Edit the DVD
-        dvd.setReleaseDate("1982");
-        dvd.setStudio("WB");
-        dvd.setUserRating("7 stars");
+        retrievedDVD.setTitle("Labyrinth");
+        retrievedDVD.setReleaseDate("1982");
+        retrievedDVD.setStudio("WB");
+        retrievedDVD.setUserRating("7 stars");
         
         //  Add the DVD to the DAO
-        testDao.addDVD(title, dvd);
+        testDao.addDVD(title, retrievedDVD);
         // Get the DVD from the DAO
         DVD retrievedEditedDVD = testDao.searchDVDByTitle(title);
         
