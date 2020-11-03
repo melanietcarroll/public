@@ -8,6 +8,8 @@ package com.mc.dvdlibrary.dao;
 import com.mc.dvdlibrary.dao.DVDLibraryDaoFileImpl;
 import com.mc.dvdlibrary.dto.DVD;
 import java.io.FileWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -40,7 +42,7 @@ public class DVDLibraryDaoFileImplTest {
         // Create our method test inputs
         String title = "Cars";
         DVD dvd = new DVD(title);
-        dvd.setReleaseDate("2009");
+        dvd.setReleaseDate(LocalDate.parse("2005", DateTimeFormatter.ofPattern ("yyyy")));
         dvd.setStudio("Pixar");
         dvd.setUserRating("5 stars");
 
@@ -68,13 +70,13 @@ public class DVDLibraryDaoFileImplTest {
     public void testAddGetAllDVDs() throws Exception {
         // Create our first DVD
         DVD firstDVD = new DVD("Cars 2");
-        firstDVD.setReleaseDate("2012");
+        firstDVD.setReleaseDate(LocalDate.parse("2010", DateTimeFormatter.ofPattern ("yyyy")));
         firstDVD.setStudio("Pixar");
         firstDVD.setUserRating("4 stars");
 
         // Create our second DVD
         DVD secondDVD = new DVD("Cars 3");
-        secondDVD.setReleaseDate("2015");
+        secondDVD.setReleaseDate(LocalDate.parse("2000", DateTimeFormatter.ofPattern ("yyyy")));
         secondDVD.setStudio("Pixar");
         secondDVD.setUserRating("3 stars");
 
@@ -101,13 +103,13 @@ public class DVDLibraryDaoFileImplTest {
     public void testRemoveDVD() throws Exception {
         // Create two new DVDs
         DVD firstDVD = new DVD("Monsters Inc");
-        firstDVD.setReleaseDate("2012");
+        firstDVD.setReleaseDate(LocalDate.parse("2010", DateTimeFormatter.ofPattern ("yyyy")));
         firstDVD.setStudio("Pixar");
         firstDVD.setUserRating("4 stars");
 
         // Create our second DVD
         DVD secondDVD = new DVD("Finding Nemo");
-        secondDVD.setReleaseDate("2015");
+        secondDVD.setReleaseDate(LocalDate.parse("2006", DateTimeFormatter.ofPattern ("yyyy")));
         secondDVD.setStudio("Pixar");
         secondDVD.setUserRating("5 stars");
 
@@ -156,7 +158,7 @@ public class DVDLibraryDaoFileImplTest {
         // Create our method test inputs
         String title = "Labyrinth";
         DVD dvd = new DVD(title);
-        dvd.setReleaseDate("1980");
+        dvd.setReleaseDate(LocalDate.parse("1982", DateTimeFormatter.ofPattern ("yyyy")));
         dvd.setStudio("WB");
         dvd.setUserRating("5 stars");
 
@@ -167,7 +169,7 @@ public class DVDLibraryDaoFileImplTest {
 
         //Edit the DVD
         retrievedDVD.setTitle("Labyrinth");
-        retrievedDVD.setReleaseDate("1982");
+        retrievedDVD.setReleaseDate(LocalDate.parse("1980", DateTimeFormatter.ofPattern ("yyyy")));
         retrievedDVD.setStudio("WB");
         retrievedDVD.setUserRating("7 stars");
         

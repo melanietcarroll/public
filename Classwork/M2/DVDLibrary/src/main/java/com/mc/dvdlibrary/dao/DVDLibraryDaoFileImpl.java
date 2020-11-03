@@ -12,6 +12,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +103,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
         // However, there are 5 remaining tokens that need to be set into the
         // new dvd object. Do this manually by using the appropriate setters.
         // Index 1 - ReleaseDate
-        dvdFromFile.setReleaseDate(dvdTokens[1]);
+        dvdFromFile.setReleaseDate(LocalDate.parse(dvdTokens[1], DateTimeFormatter.ofPattern ("yyyy")));
 
         // Index 2 - MpaaRating
         dvdFromFile.setMpaaRating(dvdTokens[2]);
