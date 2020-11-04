@@ -47,40 +47,57 @@ public class CarLotServiceLayerImpl implements CarLotService {
         List<Car> listCars = dao.getCars();
         List<Car> listCarsInBudget = new ArrayList<>(listCars);
         for (Car car : listCars) {
-            if (car.getPrice().compareTo(maxPrice <=)  {
+            if (car.getPrice().compareTo(maxPrice <=)   {
                 listCarsInBudget.add(car);
             }
-            return listCarsInBudget;
-
         }
-
+        return listCarsInBudget;
+    }
     @Override
     public List<Car> getCarByMakeAndModel(String make, String model){
                  
-        List<Car> listCars = dao.getCars().stream().filter((x) -> x.getMake() == make)
+        List<Car> listCarsMakeModel = dao.getCars().stream().filter((x) -> x.getMake() == make)
                     .filter((y) -> y.getModel() == model).collect(Collectors.toList());
-            return listCars;
+            return listCarsMakeModel;
 
         }
+    
+
+    @Override
+    public BigDecimal discountCar(String VIN, BigDecimal percentDiscount) throws CarLotNoSuchCarException {
+        Car carSelected = dao.getCar(VIN);
+        if (carSelected == null) {
+            throw new CarLotNoSuchCarException(
+                    "No such car found.");
+        }
+        BigDecimal carPrice = carSelected.getPrice();
+        BigDecimal discount = carPrice.multiply(percentDiscount);
+        BigDecimal newPrice = carPrice.subtract(discount);
+        
+        carSelected.setPrice(newPrice);
+        return newPrice;
     }
 
     @Override
-    public BigDecimal discountCar(String VIN, BigDecimal percentDiscount)
-            throws NoSuchCarException {
-        try {
+    public CarKey sellCar(String VIN, BigDecimal cashPaid) throws CarLotNoSuchCarException,
+            CarLotOverpaidPriceException, CarLotUnderpaidPriceException {
+         Car carToBuy = dao.getCar(VIN);
+         CarKey keyToCar = carToBuy.getKey();
 
-        } catch  
+        if (carToBuy == null){
+	throw new CarLotNoSuchCarException("No such car found.");
+}
+	if (carToBuy.getPrice() == cashPaid){
+//remove the car 
+        dao.removeCar(VIN);
         }
-        @Override
-        public CarKey sellCar
-        (String VIN, BigDecimal cashPaid)
-        throws NoSuchCarException,
-        OverpaidPriceException,
-        UnderpaidPriceException
-        {
-            try {
-
-            } catch  
-            }
-
+	if (carToBuy.getPrice().compareTo(cashPaid)> 0){
+            throw new CarLotUnderpaidPriceException(
+            "You do not have enough money to buy the vehicle.");
         }
+        if (carToBuy.getPrice().compareTo(cashPaid) < 0){
+            throw new CarLotOverpaidPriceException("You overpaid for the vehicle.");
+        }
+        return keyToCar;
+        }
+    }
