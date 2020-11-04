@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mc.classroster.ui;
+package com.mc.carlot.ui;
 
 /**
  *
  * @author Shawn
  */
 public interface UserIO {
-
-    void print(String message);
+    
+     void print(String message);
 
     String readString(String prompt);
 
@@ -31,4 +31,5 @@ public interface UserIO {
 
     long readLong(String prompt, long min, long max);
 
+    
 }
