@@ -47,7 +47,7 @@ public class CarLotServiceLayerImpl implements CarLotService {
         List<Car> listCars = dao.getCars();
         List<Car> listCarsInBudget = new ArrayList<>(listCars);
         for (Car car : listCars) {
-            if (car.getPrice().compareTo(maxPrice <=)   {
+            if (car.getPrice().compareTo(maxPrice) <= 0)   {
                 listCarsInBudget.add(car);
             }
         }

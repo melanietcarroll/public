@@ -8,8 +8,11 @@ package com.mc.carlot;
 import com.mc.carlot.controller.CarLotController;
 import com.mc.carlot.dao.CarLotDAO;
 import com.mc.carlot.dao.CarLotDAOFileImpl;
+import com.mc.carlot.service.CarLotNoSuchCarException;
+import com.mc.carlot.service.CarLotOverpaidPriceException;
 import com.mc.carlot.service.CarLotService;
 import com.mc.carlot.service.CarLotServiceLayerImpl;
+import com.mc.carlot.service.CarLotUnderpaidPriceException;
 import com.mc.carlot.ui.CarLotView;
 import com.mc.carlot.ui.UserIO;
 import com.mc.carlot.ui.UserIOConsoleImpl;
@@ -19,7 +22,7 @@ import com.mc.carlot.ui.UserIOConsoleImpl;
  * @author Shawn
  */
 public class App {
-    public static void main(String[] args){
+    public static void main(String[] args) throws CarLotNoSuchCarException, CarLotOverpaidPriceException, CarLotUnderpaidPriceException{
 UserIO myIo = new UserIOConsoleImpl();
 CarLotView myView = new CarLotView(myIo);
 CarLotDAO myDao = new CarLotDAOFileImpl();
