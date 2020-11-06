@@ -6,8 +6,10 @@
 package com.mc.dvdlibrary.dao;
 
 import com.mc.dvdlibrary.dto.DVD;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * created 10/25/20
@@ -73,5 +75,28 @@ public interface DVDLibraryDao {
     DVD editDVD(String title, DVD dvd)
             throws DVDLibraryDaoException;
     
-    
+    //Find all movies released in the last N years
+public List<DVD> sortByRelease(Year date)throws DVDLibraryDaoException;
+
+//Find all the movies with a given MPAA rating
+public List<DVD> sortByMPAARating(String mpaaRating)throws DVDLibraryDaoException ;
+
+//Find all the movies by a given director
+//When searching by director, the movies should be sorted into separate data structures by MPAA rating.
+public Map<String, List<DVD>> sortByDirector(String director)throws DVDLibraryDaoException ;
+
+//Find all the movies released by a particular studio
+public List<DVD> sortByStudio(String studio)throws DVDLibraryDaoException ;
+
+//Find the average age of the movies in the collection
+public int findAverageMovieAge()throws DVDLibraryDaoException ;
+
+//Find the newest movie in your collection
+public DVD findNewestDVD()throws DVDLibraryDaoException ;
+
+//Find the oldest movie in your collection
+public DVD findOldestDVD()throws DVDLibraryDaoException ;
+
+//Find the average number of notes associated with movies in your collection
+public int findAvgNotes()throws DVDLibraryDaoException ;
 }

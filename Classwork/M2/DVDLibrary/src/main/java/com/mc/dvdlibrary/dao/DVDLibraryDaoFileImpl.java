@@ -13,12 +13,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * created 10/25/20
@@ -103,7 +105,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
         // However, there are 5 remaining tokens that need to be set into the
         // new dvd object. Do this manually by using the appropriate setters.
         // Index 1 - ReleaseDate
-        dvdFromFile.setReleaseDate(LocalDate.parse(dvdTokens[1], DateTimeFormatter.ofPattern ("yyyy")));
+        dvdFromFile.setReleaseDate(Year.parse(dvdTokens[1]));
 
         // Index 2 - MpaaRating
         dvdFromFile.setMpaaRating(dvdTokens[2]);
@@ -220,4 +222,69 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
         // Clean up
         out.close();
     }
+
+    @Override
+    public List<DVD> sortByRelease(Year date) throws DVDLibraryDaoException{
+        loadDVDLibrary();
+        List<DVD> dvdList = new ArrayList(dvds.values());
+        List<DVD> sortedByDate = dvdList.stream()
+    	.filter((d) -> d.getReleaseDate().equals(date))
+    	.collect(Collectors.toList());
+        return sortedByDate;
+    }
+
+    @Override
+    public List<DVD> sortByMPAARating(String mpaaRating) throws DVDLibraryDaoException {
+        loadDVDLibrary();
+        List<DVD> dvdList = new ArrayList(dvds.values());
+        List<DVD> sortedByMPAA = dvdList.stream()
+    	.filter((d) -> d.getMpaaRating().equals(mpaaRating))
+    	.collect(Collectors.toList());
+        return sortedByMPAA;
+    }
+
+    @Override
+    public Map<String, List<DVD>> sortByDirector(String director)throws DVDLibraryDaoException  {
+        loadDVDLibrary();
+        List<DVD> dvdList = new ArrayList(dvds.values());
+        List<DVD> sortedByDirector = dvdList.stream()
+    	.filter((d) -> d.getDirectorName().equals(director))
+    	.collect(Collectors.toList());
+        
+        Map<String, List<DVD>> map = sortedByDirector.stream()
+        .collect(Collectors.groupingBy((p) -> p.getMpaaRating()));
+                
+        return map;
+    }
+
+    @Override
+    public List<DVD> sortByStudio(String studio) throws DVDLibraryDaoException {
+       loadDVDLibrary();
+        List<DVD> dvdList = new ArrayList(dvds.values());
+        List<DVD> sortedByStudio = dvdList.stream()
+    	.filter((d) -> d.getStudio().equals(studio))
+    	.collect(Collectors.toList());
+        return sortedByStudio;
+    }
+
+    @Override
+    public int findAverageMovieAge() throws DVDLibraryDaoException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DVD findNewestDVD() throws DVDLibraryDaoException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public DVD findOldestDVD()throws DVDLibraryDaoException  {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int findAvgNotes() throws DVDLibraryDaoException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }

@@ -9,7 +9,9 @@ import com.mc.dvdlibrary.dao.DVDLibraryDao;
 import com.mc.dvdlibrary.dao.DVDLibraryDaoException;
 import com.mc.dvdlibrary.dto.DVD;
 import com.mc.dvdlibrary.ui.DVDLibraryView;
+import java.time.Year;
 import java.util.List;
+import java.util.Map;
 
 /**
  * created 10/25/20
@@ -50,6 +52,14 @@ public class DVDLibraryController {
                         getAllDVDs();
                         break;
                     case 6:
+                        sortByReleaseDate();
+                    case 7:
+                        sortByMPAARating();
+                    case 8:
+                        sortByStudio();
+                    case 9:
+                        sortedMapByDirectorMPAA();
+                    case 10:
                         keepGoing = false;
                         break;
                     default:
@@ -107,5 +117,29 @@ public class DVDLibraryController {
 
     private void exitMessage() {
         view.displayExitBanner();
+    }
+
+    private void sortByReleaseDate() throws DVDLibraryDaoException {
+        Year y = view.getYearChoice();
+        List<DVD> dvdList = dao.sortByRelease(y);
+        view.displayDVDList(dvdList);
+    }
+
+    private void sortByMPAARating() throws DVDLibraryDaoException {
+       String mpaa = view.getMPAARatingChoice();
+       List<DVD> dvdList = dao.sortByMPAARating(mpaa);
+       view.displayDVDList(dvdList);
+    }
+
+    private void sortByStudio()throws DVDLibraryDaoException {
+       String studio = view.getStudioChoice();
+       List<DVD> dvdList = dao.sortByStudio(studio);
+       view.displayDVDList(dvdList);
+    }
+
+    private void sortedMapByDirectorMPAA() throws DVDLibraryDaoException {
+        String director = view.getDirectorChoice();
+        Map<String, List<DVD>> map = dao.sortByDirector(director);
+        view.displayDVDs(map);
     }
 }

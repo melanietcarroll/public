@@ -7,8 +7,10 @@ package com.mc.dvdlibrary.ui;
 
 import com.mc.dvdlibrary.dto.DVD;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * created 10/25/20
@@ -29,9 +31,13 @@ public class DVDLibraryView {
         io.print("3. Find DVD");
         io.print("4. Edit DVD");
         io.print("5. List All DVDs");
-        io.print("6. Exit");
+        io.print("6. List DVDs by Year");
+        io.print("7. List DVDs by MPAA rating");
+        io.print("8. List DVDs by Studio");
+        io.print("9. List DVDs by Director");
+        io.print("10. Exit");
 
-        return io.readInt("Please select the operation you wish to perform:", 1, 6);
+        return io.readInt("Please select the operation you wish to perform:", 1, 10);
     }
 
     public DVD getDVDInfo() {
@@ -42,7 +48,9 @@ public class DVDLibraryView {
         String studio = io.readString("Please Enter Studio Name:");
         String userRating = io.readString("Please Enter User Rating or note:");
         DVD currentDVD = new DVD(title);
-        currentDVD.setReleaseDate(LocalDate.parse(releaseDate, DateTimeFormatter.ofPattern ("yyyy")));
+        
+        Year date = Year.parse(releaseDate);
+        currentDVD.setReleaseDate(date);
         currentDVD.setMpaaRating(mpaaRating);
         currentDVD.setDirectorName(directorName);
         currentDVD.setStudio(studio);
@@ -120,4 +128,26 @@ public void displayExitBanner() {
 public void displayEditDVDBanner(){
     io.print("--- Edit DVD ---");
 }
+
+    public Year getYearChoice() {
+        String releaseDate = io.readString("Please Enter A Release Date in the format of (yyyy):");
+        Year year = Year.parse(releaseDate);
+        return year;
+    }
+   public String getMPAARatingChoice() {
+        return io.readString("Please enter the MPAA Rating you wish to sort by.");
+    } 
+public String getStudioChoice() {
+        return io.readString("Please enter the Studio to list by.");
+    }
+
+public String getDirectorChoice() {
+        return io.readString("Please enter the Director to list by.");
+    }
+
+    public void displayDVDs (Map<String, List<DVD>> map){
+//        System.out.println(dvdList.toString());
+//               
+    map.entrySet().forEach(System.out::println);
+    }
 }

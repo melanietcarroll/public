@@ -6,6 +6,7 @@
 package com.mc.dvdlibrary.dto;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
@@ -57,7 +58,7 @@ public class DVD {
     private String directorName;
     private String studio;
     private String userRating;
-    LocalDate releaseDate;
+    private Year releaseDate;
 
     public DVD(String title) {
         this.title = title;
@@ -67,7 +68,7 @@ public class DVD {
         return title;
     }
 
-    public LocalDate getReleaseDate() {
+    public Year getReleaseDate() {
         return releaseDate;
     }
 
@@ -91,7 +92,7 @@ public class DVD {
         this.title = title;
     }
 
-    public void setReleaseDate(LocalDate releaseDate) {
+    public void setReleaseDate(Year releaseDate) {
         this.releaseDate = releaseDate;
     }
 

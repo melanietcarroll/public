@@ -53,7 +53,7 @@ public class CarLotView {
         String model = io.readString("Please enter vehicle's model");
         String color = io.readString("Please enter vehicle's color");
         String price = io.readString("Please enter vehicle's price");
-//        String odometer = io.readString("Please enter vehicle's odometer reading in Miles");
+        String odometer = io.readString("Please enter vehicle's odometer reading in Miles");
 
         BigDecimal p = new BigDecimal(price);
         Car currentCar = new Car(carVIN);
@@ -66,7 +66,7 @@ public class CarLotView {
         currentCar.setModel(model);
         currentCar.setColor(color);
         currentCar.setPrice(p);
-//        currentCar.setOdometerMiles(Long.parseLong(odometer));
+        currentCar.setOdometerMiles(Long.parseLong(odometer));
         
         return currentCar;
     }

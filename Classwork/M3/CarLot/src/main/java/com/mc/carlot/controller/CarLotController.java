@@ -159,5 +159,4 @@ public class CarLotController {
     private void exitMessage() {
         view.displayExitBanner();
     }
-
 }
