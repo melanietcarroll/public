@@ -73,14 +73,14 @@ public class CarLotView {
 
     public void displayCarsList(List<Car> carList) {
         for (Car currentCar : carList) {
-            String carInfo = String.format("#%s : %s, %s, %s, %s, %s, %s",
+            String carInfo = String.format("Vin# %s, Make: %s, Model: %s, Color: %s, Price: %s, Odometer Reading: %s, %s",
                     currentCar.getVIN(),
                     currentCar.getMake(),
                     currentCar.getModel(),
                     currentCar.getColor(),
                     currentCar.getPrice(),
                     currentCar.getOdometerMiles(),
-                    currentCar.getKey());
+                    currentCar.getKey().getVIN());
             io.print(carInfo);
         }
         io.readString("Please hit enter to continue.");
@@ -122,20 +122,7 @@ public void displayGetCarsByColorBanner(){
 public String getColor(){
     return io.readString("Please enter the color of vehicle you want to sort by.");
 }
-public void displayColorList(List<Car> carColorList){
-    for (Car currentCar : carColorList) {
-            String carInfo = String.format("#%s : %s, %s, %s, %s, %s, %s",
-                    currentCar.getVIN(),
-                    currentCar.getMake(),
-                    currentCar.getModel(),
-                    currentCar.getColor(),
-                    currentCar.getPrice(),
-                    currentCar.getOdometerMiles(),
-                    currentCar.getKey());
-            io.print(carInfo);
-        }
-        io.readString("Please hit enter to continue.");
-    }
+
   public void displayCarsByMaxPriceBanner() {
       io.print("--- List of Cars by Max Budget ---");
   }
@@ -144,20 +131,7 @@ public void displayColorList(List<Car> carColorList){
     BigDecimal budget = new BigDecimal(x);
     return budget;
 }
-  public void displayPriceList(List<Car> carPriceList){
-      for (Car currentCar : carPriceList) {
-            String carInfo = String.format("#%s : %s, %s, %s, %s, %s, %s",
-                    currentCar.getVIN(),
-                    currentCar.getMake(),
-                    currentCar.getModel(),
-                    currentCar.getColor(),
-                    currentCar.getPrice(),
-                    currentCar.getOdometerMiles(),
-                    currentCar.getKey());
-            io.print(carInfo);
-        }
-        io.readString("Please hit enter to continue.");
-    }
+
       public void displayCarByMakeModelBanner(){
          io.print("--- List of Cars by Make and Model ---"); 
       }
@@ -168,20 +142,7 @@ public void displayColorList(List<Car> carColorList){
     return io.readString("Please enter the vehicle's Model.");
 }
         
-    public void displayCarMakeModel (List<Car> listCarsByMakeModel){
-        for (Car currentCar : listCarsByMakeModel) {
-            String carInfo = String.format("#%s : %s, %s, %s, %s, %s, %s",
-                    currentCar.getVIN(),
-                    currentCar.getMake(),
-                    currentCar.getModel(),
-                    currentCar.getColor(),
-                    currentCar.getPrice(),
-                    currentCar.getOdometerMiles(),
-                    currentCar.getKey());
-            io.print(carInfo);
-        }
-        io.readString("Please hit enter to continue.");
-    }
+
     public void setDiscountBanner(){
       io.print("--- Set Car Discount ---");   
     }

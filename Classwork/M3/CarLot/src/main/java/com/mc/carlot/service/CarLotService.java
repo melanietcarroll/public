@@ -20,6 +20,8 @@ public interface CarLotService {
     public List<Car> getCarsByColor(String color);
     public List<Car> getCarsInBudget(BigDecimal maxPrice);
     public List<Car> getCarByMakeAndModel(String make, String model);
+    public Car addCar(String VIN, Car car); 
+    public Car editCar(String VIN, Car car);   
 
     public BigDecimal discountCar(String VIN, BigDecimal percentDiscount)
         throws CarLotNoSuchCarException;

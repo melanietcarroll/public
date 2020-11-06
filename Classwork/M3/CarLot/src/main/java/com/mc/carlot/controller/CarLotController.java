@@ -89,7 +89,7 @@ public class CarLotController {
     private void addCar() throws CarLotPersistenceException {
         view.displayCreateCarBanner();
         Car newCar = view.getCarInfo();
-        dao.addCar(newCar.getVIN(), newCar);
+        service.addCar(newCar.getVIN(), newCar);
         view.displayCreateSuccessBanner();
     }
 
@@ -109,7 +109,7 @@ public class CarLotController {
         view.displayEditCarBanner();
 //        String dvdId = view.getDVDChoice();
         Car editedCar = view.getCarInfo();
-        dao.editCar(editedCar.getVIN(), editedCar);
+        service.editCar(editedCar.getVIN(), editedCar);
         view.displayCreateSuccessBanner();
     }
 
@@ -117,14 +117,14 @@ public class CarLotController {
         view.displayGetCarsByColorBanner();
         String color = view.getColor();
         List<Car> carColorList = service.getCarsByColor(color);
-        view.displayColorList(carColorList);
+        view.displayCarsList(carColorList);
     }
 
     private void getCarMaxPrice() {
         view.displayCarsByMaxPriceBanner();
         BigDecimal maxPrice = view.getBudget();
         List<Car> carPriceList = service.getCarsInBudget(maxPrice);
-        view.displayPriceList(carPriceList);
+        view.displayCarsList(carPriceList);
 
     }
 
@@ -133,7 +133,7 @@ public class CarLotController {
         String make = view.getMake();
         String model = view.getModel();
         List<Car> listCarsByMakeModel = service.getCarByMakeAndModel(make, model);
-        view.displayCarMakeModel(listCarsByMakeModel);
+        view.displayCarsList(listCarsByMakeModel);
 
     }
 

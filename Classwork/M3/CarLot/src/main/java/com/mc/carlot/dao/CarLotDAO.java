@@ -18,7 +18,7 @@ public interface CarLotDAO {
     public Car getCar(String VIN);    
     public List<Car> getCars();
 
-    public void editCar(String VIN, Car car);    
+    public Car editCar(String VIN, Car car);    
 
     public Car removeCar(String VIN);  
 }

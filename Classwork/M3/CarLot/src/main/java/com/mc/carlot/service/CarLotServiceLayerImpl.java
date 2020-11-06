@@ -38,14 +38,14 @@ public class CarLotServiceLayerImpl implements CarLotService {
 
     @Override
     public List<Car> getCarsByColor(String color) {
-        List<Car> listCarsColors = dao.getCars().stream().filter((c) -> c.getColor() == color).collect(Collectors.toList());
+        List<Car> listCarsColors = dao.getCars().stream().filter((c) -> c.getColor().equals(color)).collect(Collectors.toList());
         return listCarsColors;
     }
 
     @Override
     public List<Car> getCarsInBudget(BigDecimal maxPrice) {
         List<Car> listCars = dao.getCars();
-        List<Car> listCarsInBudget = new ArrayList<>(listCars);
+        List<Car> listCarsInBudget = new ArrayList<>();
         for (Car car : listCars) {
             if (car.getPrice().compareTo(maxPrice) <= 0)   {
                 listCarsInBudget.add(car);
@@ -56,8 +56,8 @@ public class CarLotServiceLayerImpl implements CarLotService {
     @Override
     public List<Car> getCarByMakeAndModel(String make, String model){
                  
-        List<Car> listCarsMakeModel = dao.getCars().stream().filter((x) -> x.getMake() == make)
-                    .filter((y) -> y.getModel() == model).collect(Collectors.toList());
+        List<Car> listCarsMakeModel = dao.getCars().stream().filter((x) -> x.getMake().equals(make))
+                    .filter((y) -> y.getModel().equals(model)).collect(Collectors.toList());
             return listCarsMakeModel;
 
         }
@@ -87,17 +87,28 @@ public class CarLotServiceLayerImpl implements CarLotService {
         if (carToBuy == null){
 	throw new CarLotNoSuchCarException("No such car found.");
 }
-	if (carToBuy.getPrice() == cashPaid){
+	if (carToBuy.getPrice().equals(cashPaid)){
 //remove the car 
         dao.removeCar(VIN);
         }
 	if (carToBuy.getPrice().compareTo(cashPaid)> 0){
             throw new CarLotUnderpaidPriceException(
             "You do not have enough money to buy the vehicle.");
+            
         }
         if (carToBuy.getPrice().compareTo(cashPaid) < 0){
             throw new CarLotOverpaidPriceException("You overpaid for the vehicle.");
         }
         return keyToCar;
         }
+
+    @Override
+    public Car addCar(String VIN, Car car) {
+        return dao.addCar(VIN, car);
+    }
+
+    @Override
+    public Car editCar(String VIN, Car car) {
+        return dao.editCar(VIN, car);
+    }
     }

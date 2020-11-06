@@ -43,10 +43,10 @@ return removedCar;
 }
 
 @Override
-public void editCar(String VIN, Car car){
+public Car editCar(String VIN, Car car){
 
 Car editedCar = cars.put(VIN, car);
-
+return editedCar;
 
 }
 }
