@@ -92,11 +92,11 @@ public List<DVD> sortByStudio(String studio)throws DVDLibraryDaoException ;
 public int findAverageMovieAge()throws DVDLibraryDaoException ;
 
 //Find the newest movie in your collection
-public DVD findNewestDVD()throws DVDLibraryDaoException ;
+public List <DVD> findNewestDVD()throws DVDLibraryDaoException ;
 
 //Find the oldest movie in your collection
-public DVD findOldestDVD()throws DVDLibraryDaoException ;
+public List <DVD> findOldestDVD()throws DVDLibraryDaoException ;
 
 //Find the average number of notes associated with movies in your collection
-public int findAvgNotes()throws DVDLibraryDaoException ;
+public long findAvgNotes()throws DVDLibraryDaoException ;
 }

@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,18 +274,65 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
     }
 
     @Override
-    public DVD findNewestDVD() throws DVDLibraryDaoException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<DVD> findNewestDVD() throws DVDLibraryDaoException {
+        loadDVDLibrary();
+        List<DVD> dvdList = new ArrayList(dvds.values());
+        List<Year> year = dvdList.stream()
+    	.map((d) -> d.getReleaseDate())
+        
+    	.collect(Collectors.toList());
+        
+        // sort list in natural order 
+        Collections.sort(year); 
+  
+        // first element in the sorted list 
+        // would be minimum 
+        Year newest = year.get(year.size() - 1); 
+        
+        List<DVD> newestDVD = dvdList.stream()
+                .filter((d) -> d.getReleaseDate().equals(newest))
+                .collect(Collectors.toList());
+        return newestDVD;
+        
+        
     }
 
     @Override
-    public DVD findOldestDVD()throws DVDLibraryDaoException  {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List <DVD> findOldestDVD()throws DVDLibraryDaoException  {
+       loadDVDLibrary();
+        List<DVD> dvdList = new ArrayList(dvds.values());
+        List<Year> year = dvdList.stream()
+    	.map((d) -> d.getReleaseDate())
+        
+    	.collect(Collectors.toList());
+        
+        // sort list in natural order 
+        Collections.sort(year); 
+  
+        // first element in the sorted list 
+        // would be minimum 
+        Year oldest = year.get(0); 
+        
+        List<DVD> oldestDVD = dvdList.stream()
+                .filter((d) -> d.getReleaseDate().equals(oldest))
+                .collect(Collectors.toList());
+        return oldestDVD;
     }
 
     @Override
-    public int findAvgNotes() throws DVDLibraryDaoException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public long findAvgNotes() throws DVDLibraryDaoException {
+        loadDVDLibrary();
+        List<DVD> dvdList = new ArrayList(dvds.values());
+        long count = dvdList.stream()
+                .count();
+        List<String> notes = dvdList.stream()
+    	.map((d) -> d.getUserRating())
+        .collect(Collectors.toList());
+        
+        long notesAvg = notes.stream()
+                .count();
+        long findAvg = notesAvg / count * 100;
+        return findAvg;
     
+}
 }

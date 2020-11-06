@@ -60,6 +60,12 @@ public class DVDLibraryController {
                     case 9:
                         sortedMapByDirectorMPAA();
                     case 10:
+                        findLatestReleases();
+                    case 11:
+                        findOldestReleases();
+                    case 12:
+                        findAvgNotes();
+                    case 13:
                         keepGoing = false;
                         break;
                     default:
@@ -141,5 +147,21 @@ public class DVDLibraryController {
         String director = view.getDirectorChoice();
         Map<String, List<DVD>> map = dao.sortByDirector(director);
         view.displayDVDs(map);
+    }
+
+    private void findLatestReleases() throws DVDLibraryDaoException {
+        List<DVD> dvdList = dao.findNewestDVD();
+        view.displayDVDList(dvdList);
+    }
+
+    private void findOldestReleases() throws DVDLibraryDaoException {
+        List<DVD> dvdList = dao.findOldestDVD();
+        view.displayDVDList(dvdList);
+    }
+
+    private void findAvgNotes() throws DVDLibraryDaoException {
+        long avg = dao.findAvgNotes();
+        view.displayAvg(avg);
+//        view.displayAvg(avg);
     }
 }

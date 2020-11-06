@@ -35,9 +35,12 @@ public class DVDLibraryView {
         io.print("7. List DVDs by MPAA rating");
         io.print("8. List DVDs by Studio");
         io.print("9. List DVDs by Director");
-        io.print("10. Exit");
+        io.print("10. Find Latest Releases");
+        io.print("11. Find Oldest Releases");
+        io.print("12. Find Avg number of notes/ratings");
+        io.print("13. Exit");
 
-        return io.readInt("Please select the operation you wish to perform:", 1, 10);
+        return io.readInt("Please select the operation you wish to perform:", 1, 13);
     }
 
     public DVD getDVDInfo() {
@@ -147,7 +150,12 @@ public String getDirectorChoice() {
 
     public void displayDVDs (Map<String, List<DVD>> map){
 //        System.out.println(dvdList.toString());
-//               
+             
     map.entrySet().forEach(System.out::println);
+    }
+
+    public void displayAvg(long avg) {
+//        System.out.println(avg.toString());
+        System.out.println(avg + " % of movies contain ratings or notes.");
     }
 }
