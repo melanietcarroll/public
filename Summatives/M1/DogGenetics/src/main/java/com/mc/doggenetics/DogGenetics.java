@@ -58,11 +58,7 @@ public class DogGenetics {
 //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
 //        LocalDate date = LocalDate.parse(releaseDate, formatter);
 //        System.out.print(date);
-List<String> dvdList = new Arrays.asList("ab", "cd", "ef");
-        List<String> sortedByDate = dvdList.stream()
-    	.filter((d) -> d.getReleaseDate() == date)
-    	.collect(Collectors.toList());
-        return sortedByDate;
+
  
-       
+    }       
 }

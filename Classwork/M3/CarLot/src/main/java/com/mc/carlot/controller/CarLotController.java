@@ -25,7 +25,7 @@ public class CarLotController {
 
     private CarLotService service;  //declaration for the CarLotService layer
     private CarLotView view;
-    private CarLotDAO dao;
+    
 
     public CarLotController(CarLotService service, CarLotView view) {	//constructor
         this.service = service;

@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mc.carlot.ui;
+package com.mc.vendingmachine.ui;
 
 /**
- *  created 11/7/20
- * @author Melanie Carroll
+ *
+ * @author Shawn
  */
 public interface UserIO {
-    
-     void print(String message);
+    void print(String message);
 
     String readString(String prompt);
 
@@ -31,5 +30,4 @@ public interface UserIO {
 
     long readLong(String prompt, long min, long max);
 
-    
 }

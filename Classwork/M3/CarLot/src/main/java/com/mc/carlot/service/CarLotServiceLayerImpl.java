@@ -110,5 +110,6 @@ public class CarLotServiceLayerImpl implements CarLotService {
     @Override
     public Car editCar(String VIN, Car car) {
         return dao.editCar(VIN, car);
+                
     }
     }
