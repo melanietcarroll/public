@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 package com.mc.vendingmachine.service;
-
+import com.mc.vendingmachine.dto.CoinValues;
 import com.mc.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.util.List;
 import com.mc.vendingmachine.dao.VendingMachineDao;
 import com.mc.vendingmachine.dao.VendingMachinePersistenceException;
+import com.mc.vendingmachine.dto.Change;
+import static com.mc.vendingmachine.dto.CoinValues.QUARTER;
 import com.mc.vendingmachine.service.InsufficientFundsException;
 import com.mc.vendingmachine.service.NoItemInventoryException;
 import java.math.RoundingMode;
@@ -105,8 +107,48 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
 
     @Override
-    public BigDecimal giveChange() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Change giveChange(BigDecimal pennies) {
+        int changeDue = pennies.intValue();
+        Change myChange = new Change(changeDue);
+        if (changeDue >= CoinValues.QUARTER.value){
+            changeDue = changeDue / CoinValues.QUARTER.value;
+            myChange.setNumQuarters(changeDue);
+            int dimeChange = changeDue - (changeDue  * CoinValues.QUARTER.value);
+            dimeChange = dimeChange / CoinValues.DIME.value;
+            myChange.setNumDimes(dimeChange);
+            int nickelChange = dimeChange - (dimeChange * CoinValues.DIME.value);
+            nickelChange = nickelChange / CoinValues.NICKEL.value;
+            myChange.setNumNickels(nickelChange);
+            int pennyChange = nickelChange - (nickelChange * CoinValues.NICKEL.value);
+            pennyChange = pennyChange / CoinValues.PENNY.value;
+            myChange.setNumPennies(pennyChange);
+            return myChange;
+        }
+        if (changeDue >= CoinValues.DIME.value && changeDue < CoinValues.QUARTER.value){
+            changeDue = changeDue / CoinValues.DIME.value;
+            myChange.setNumDimes(changeDue);
+            int nickelChange = changeDue - (changeDue * CoinValues.DIME.value);
+            nickelChange = nickelChange / CoinValues.NICKEL.value;
+            myChange.setNumNickels(nickelChange);
+            int pennyChange = nickelChange - (nickelChange * CoinValues.NICKEL.value);
+            pennyChange = pennyChange / CoinValues.PENNY.value;
+            myChange.setNumPennies(pennyChange);
+            return myChange;
+        }
+        if (changeDue >= CoinValues.NICKEL.value && changeDue < CoinValues.DIME.value){
+            changeDue = changeDue / CoinValues.NICKEL.value;
+            myChange.setNumNickels(changeDue);
+            int pennyChange = changeDue - (changeDue * CoinValues.NICKEL.value);
+            pennyChange = pennyChange / CoinValues.PENNY.value;
+            myChange.setNumPennies(pennyChange);
+            return myChange;
+        }
+        if (changeDue < CoinValues.NICKEL.value){
+            changeDue = changeDue / CoinValues.PENNY.value;
+            myChange.setNumPennies(changeDue);
+            return myChange;
+        }   
+        return myChange;
     }
 
     @Override

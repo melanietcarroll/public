@@ -5,8 +5,10 @@
  */
 package com.mc.vendingmachine.service;
 
+import com.mc.vendingmachine.dto.CoinValues;
 import com.mc.vendingmachine.service.NoItemInventoryException;
 import com.mc.vendingmachine.dao.VendingMachinePersistenceException;
+import com.mc.vendingmachine.dto.Change;
 import com.mc.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,5 +31,5 @@ public interface VendingMachineService {
     
     public BigDecimal buyItem(String itemName, BigDecimal money)throws NoItemInventoryException, InsufficientFundsException;
     
-    public BigDecimal giveChange();
+    public Change giveChange(BigDecimal pennies);
 }

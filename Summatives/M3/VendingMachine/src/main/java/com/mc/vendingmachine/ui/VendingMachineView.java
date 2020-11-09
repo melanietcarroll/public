@@ -5,6 +5,7 @@
  */
 package com.mc.vendingmachine.ui;
 
+import com.mc.vendingmachine.dto.Change;
 import com.mc.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,11 +26,10 @@ public int printMenuAndGetSelection() {
         io.print("2. Edit items in the vending machine");
         io.print("3. Delete items in the vending machine");
         io.print("4. Get all items in the vending machine");
-        io.print("5. Add Money");
-        io.print("6. Select an item to buy");
-        io.print("7. Exit");
+        io.print("5. Select an item to buy");
+        io.print("6. Exit");
 
-        return io.readInt("Please select from the above choices.", 1, 7);
+        return io.readInt("Please select from the above choices.", 1, 6);
     }
 public Item getItemInfo() {
     String itemName = io.readString("Please enter the item name");
@@ -79,5 +79,13 @@ public void displayErrorMessage(String errorMsg) {
  public String getMoneyAmount() {
         String money = io.readString("Please add money. This machine does not accept more than $10 per transaction!");
          return money;
+    }
+
+    public void displayChange(Change myChange) {
+        System.out.println("Here is your change: ");
+        System.out.println("Quarters: " + myChange.getNumQuarters());
+        System.out.println("Dimes: " + myChange.getNumDimes());
+        System.out.println("Nickels: " + myChange.getNumNickels());
+        System.out.println("Pennies: " + myChange.getNumPennies());
     }
 }

@@ -6,6 +6,7 @@
 package com.mc.vendingmachine.controller;
 
 import com.mc.vendingmachine.dao.VendingMachinePersistenceException;
+import com.mc.vendingmachine.dto.Change;
 import com.mc.vendingmachine.dto.Item;
 import com.mc.vendingmachine.service.IncorrectMoneyException;
 import com.mc.vendingmachine.service.InsufficientFundsException;
@@ -45,13 +46,14 @@ public VendingMachineController(VendingMachineService service, VendingMachineVie
                     break;
                 case 3:
                     deleteItems();
+                    break;
                 case 4:
                     getAllItems();
-                case 5:    
-                    addMoney();
-                case 6:
+                    break;
+                case 5:
                     selectItemToBuy();
-                case 7:
+                    break;
+                case 6:
                     keepGoing = false;
                     break;
                 default:
@@ -89,11 +91,11 @@ public VendingMachineController(VendingMachineService service, VendingMachineVie
         view.displayItemList(itemList);
    }
    
-   public void addMoney() throws IncorrectMoneyException{
-      boolean hasErrors = false;
-      do{ 
-      String money = view.getMoneyAmount();
    
+   
+   
+   public void selectItemToBuy()throws IncorrectMoneyException, NoItemInventoryException, VendingMachinePersistenceException, InsufficientFundsException{
+       String money = view.getMoneyAmount();
        try{
        BigDecimal moneyAdded = new BigDecimal(money);
        int amntMoney = Integer.parseInt(money);
@@ -103,21 +105,18 @@ public VendingMachineController(VendingMachineService service, VendingMachineVie
        }
        service.addMoney(money);
    }catch (IncorrectMoneyException e){
-       hasErrors = true;
        view.displayErrorMessage(e.getMessage());
-   }
-      }while (hasErrors);
-   }
-   
-   
-   public void selectItemToBuy()throws IncorrectMoneyException, NoItemInventoryException, VendingMachinePersistenceException, InsufficientFundsException{
+       
+       
        String choice = view.getItemChoice().toUpperCase();
        Item item = service.getItem(choice);
        BigDecimal itemPrice = item.getPrice();
        BigDecimal balance = service.addMoney(view.getMoneyAmount());
        int inventory = service.updateItemToBuyInventory(choice, balance);
        BigDecimal change = service.buyItem(choice, balance);
-       
+       Change myChange = service.giveChange(change);
+       view.displayChange(myChange);
+   } 
    }
    
    private void unknownCommand() {
