@@ -21,7 +21,7 @@ public class VendingMachineView {
         this.io = io;
     }
 public int printMenuAndGetSelection() {
-        io.print("Vending Machine items:");
+        io.print("Vending Machine Menu:");
         io.print("1. Add items to the vending machine");
         io.print("2. Edit items in the vending machine");
         io.print("3. Delete items in the vending machine");
@@ -36,12 +36,20 @@ public Item getItemInfo() {
     String price = io.readString("Please enter the item's price");
     String numItems = io.readString("Please enter how many units of the item you currently have");
     
-    Item currentItem = new Item(itemName);
+    Item currentItem = new Item(itemName.toUpperCase());
+    boolean isNumeric = numItems.chars().allMatch(x -> Character.isDigit(x));
+    if (isNumeric == true){
     int amount = Integer.parseInt(numItems);
     currentItem.setInventoryOfItem(amount);
-    BigDecimal itemPrice = new BigDecimal(price);
+    }
+    while (price.isEmpty()== true){
+        price = io.readString("Please enter the item's price"); 
+    }
+    boolean isAChar = price.chars().allMatch(x -> Character.isLetter(x));
+    if (isAChar != true){
+    BigDecimal itemPrice = new BigDecimal(price.replaceAll(",", ""));
     currentItem.setPrice(itemPrice);
-      
+    } 
     return currentItem;
 }
 public void displayCreateItemBanner() {
@@ -82,10 +90,14 @@ public void displayErrorMessage(String errorMsg) {
     }
 
     public void displayChange(Change myChange) {
-        System.out.println("Here is your change: ");
-        System.out.println("Quarters: " + myChange.getNumQuarters());
-        System.out.println("Dimes: " + myChange.getNumDimes());
-        System.out.println("Nickels: " + myChange.getNumNickels());
-        System.out.println("Pennies: " + myChange.getNumPennies());
+        io.print("Here is your change, thank you!");
+        String itemInfo = String.format("Quarters: %s, Dimes: %s, Nickels: %s, Pennies %s.",
+              myChange.getNumQuarters(),
+              myChange.getNumDimes(),
+              myChange.getNumNickels(), 
+              myChange.getNumPennies());
+        io.print(itemInfo);
+        io.readString("Please hit enter to continue.");
     }
+       
 }

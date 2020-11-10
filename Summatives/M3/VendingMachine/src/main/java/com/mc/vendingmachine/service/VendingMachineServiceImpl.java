@@ -33,6 +33,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     @Override
     public Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException {
         validateItemData(item);
+       
         return dao.addItem(itemName, item);
     }
 
@@ -113,50 +114,6 @@ throw new NoItemInventoryException("ERROR: Zero inventory for selected item.");
     int totalPennies = Math.round((int)change/1);
     myChange.setNumPennies(totalPennies);
 
-
-//    System.out.println("Quarters: " + quarters);
-//    System.out.println("Dimes: " + dimes);
-//    System.out.println("Nickels: " + nickels);
-//    System.out.println("Pennies: " + pennies);
-//        if (changeDue >= CoinValues.QUARTER.value){
-//            changeDue = changeDue / CoinValues.QUARTER.value;
-//            myChange.setNumQuarters(changeDue);
-//            int remainingQuarterChange = (changeDue * CoinValues.QUARTER.value) - (changeDue  * CoinValues.QUARTER.value);
-//            int dimeChange = remainingQuarterChange / CoinValues.DIME.value;
-//            myChange.setNumDimes(dimeChange);
-//            int remainingDimeChange = (dimeChange * CoinValues.DIME.value) - (dimeChange * CoinValues.DIME.value);
-//            int nickelChange = remainingDimeChange / CoinValues.NICKEL.value;
-//            myChange.setNumNickels(nickelChange);
-//            int remainingNickelChange = (nickelChange * CoinValues.NICKEL.value) - (nickelChange * CoinValues.NICKEL.value);
-//            int pennyChange = remainingNickelChange / CoinValues.PENNY.value;
-//            myChange.setNumPennies(pennyChange);
-//            return myChange;
-//        }
-//        if (changeDue >= CoinValues.DIME.value && changeDue < CoinValues.QUARTER.value){
-//            changeDue = changeDue / CoinValues.DIME.value;
-//            myChange.setNumDimes(changeDue);
-//            int remainingDimeChange = (changeDue * CoinValues.DIME.value) - (changeDue * CoinValues.DIME.value);
-//          
-//            int nickelChange = remainingDimeChange / CoinValues.NICKEL.value;
-//            myChange.setNumNickels(nickelChange);
-//            int remainingNickelChange = (nickelChange * CoinValues.NICKEL.value) - (nickelChange * CoinValues.NICKEL.value);
-//            int pennyChange = remainingNickelChange / CoinValues.PENNY.value;
-//            myChange.setNumPennies(pennyChange);
-//            return myChange;
-//        }
-//        if (changeDue >= CoinValues.NICKEL.value && changeDue < CoinValues.DIME.value){
-//            changeDue = changeDue / CoinValues.NICKEL.value;
-//            myChange.setNumNickels(changeDue);
-//            int remainingNickelChange = (changeDue * CoinValues.NICKEL.value) - (changeDue * CoinValues.NICKEL.value);
-//            int pennyChange = remainingNickelChange / CoinValues.PENNY.value;
-//            myChange.setNumPennies(pennyChange);
-//            return myChange;
-//        }
-//        if (changeDue < CoinValues.NICKEL.value){
-//            changeDue = changeDue / CoinValues.PENNY.value;
-//            myChange.setNumPennies(changeDue);
-//            return myChange;
-//        }   
         return myChange;
     }
 
@@ -182,11 +139,20 @@ throw new NoItemInventoryException("ERROR: Zero inventory for selected item.");
         return dao.getAllItems();
     }
 public void validateItemData(Item item) throws VendingMachineDataValidationException{
+    
 String inventory = Integer.toString(item.getInventoryOfItem()); 
-if (item.getPrice() == null || item.getPrice().toString().trim().length() == 0 
-	||item.getItemName()== null || item.getItemName().trim().length() == 0
+if (item.getPrice() == null || 
+	item.getItemName()== null || item.getItemName().trim().length() == 0
 	||item.getInventoryOfItem() == 0 || inventory.trim().length() == 0){
 throw new VendingMachineDataValidationException("ERROR: All Fields are required.");
+}
+
+if (item.getPrice().compareTo(BigDecimal.valueOf(0)) < 0 
+     || item.getPrice().compareTo(BigDecimal.valueOf(10)) > 0 ) {
+throw new VendingMachineDataValidationException("ERROR: Dollar range must be greater than 0 and less than 10.");
+}
+if (item.getInventoryOfItem() < 0){
+    throw new VendingMachineDataValidationException("ERROR: Inventory cannot be less than zero.");
 }
 }
 public void validateNumericData(String string) throws VendingMachineDataValidationException{

@@ -36,7 +36,8 @@ public class VendingMachineController {
         int menuSelection = 0;
         try {
             while (keepGoing) {
-
+              
+//                view.displayItemList(service.getAllItemsInInventory());
                 menuSelection = getMenuSelection();
 
                 switch (menuSelection) {
@@ -73,11 +74,12 @@ public class VendingMachineController {
         return view.printMenuAndGetSelection();
     }
 
-    private void addItemsToBuy() throws VendingMachinePersistenceException, VendingMachineDataValidationException {
+    private void addItemsToBuy() throws VendingMachinePersistenceException {
         boolean hasErrors = false;
         do {
             Item currentItem = view.getItemInfo();
             try {
+               
                 service.addItem(currentItem.getItemName(), currentItem);
                 hasErrors = false;
             } catch (VendingMachineDataValidationException e) {
@@ -86,7 +88,7 @@ public class VendingMachineController {
             }
         } while (hasErrors);
     }
-
+    
     private void editItems() throws VendingMachinePersistenceException, VendingMachineDataValidationException {
         boolean hasErrors = false;
         do {
@@ -102,7 +104,7 @@ public class VendingMachineController {
     }
 
     private void deleteItems() throws VendingMachinePersistenceException {
-        String item = view.getItemChoice();
+        String item = view.getItemChoice().toUpperCase();
         service.deleteItem(item);
     }
 
