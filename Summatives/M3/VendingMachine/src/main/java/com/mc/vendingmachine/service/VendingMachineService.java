@@ -18,16 +18,16 @@ import java.util.List;
  * @author Melanie Carroll
  */
 public interface VendingMachineService {
-    Item addItem(String itemName, Item item) throws VendingMachinePersistenceException ;
+    Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException ;
     List<Item> getAllItems()throws VendingMachinePersistenceException, NoItemInventoryException;
     List<Item> getAllItemsInInventory() throws VendingMachinePersistenceException, NoItemInventoryException;
     Item getItem(String itemName)throws NoItemInventoryException,VendingMachinePersistenceException;
     Item deleteItem(String itemName)throws VendingMachinePersistenceException ;
-    Item editItem(String itemName, Item item)throws VendingMachinePersistenceException ;
+    Item editItem(String itemName, Item item)throws VendingMachinePersistenceException, VendingMachineDataValidationException ;
     
-    public BigDecimal addMoney(String money) throws IncorrectMoneyException;
+    public BigDecimal addMoney(String money) throws VendingMachineDataValidationException;
             
-    public int updateItemToBuyInventory(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException;
+    public void updateItemToBuyInventory(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException;
     
     public BigDecimal buyItem(String itemName, BigDecimal money)throws NoItemInventoryException, InsufficientFundsException;
     

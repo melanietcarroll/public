@@ -10,7 +10,7 @@ import com.mc.vendingmachine.dao.VendingMachineAuditDao;
 import com.mc.vendingmachine.dao.VendingMachineAuditDaoFileImpl;
 import com.mc.vendingmachine.dao.VendingMachineDao;
 import com.mc.vendingmachine.dao.VendingMachineDaoImpl;
-import com.mc.vendingmachine.service.IncorrectMoneyException;
+import com.mc.vendingmachine.service.VendingMachineDataValidationException;
 import com.mc.vendingmachine.service.InsufficientFundsException;
 import com.mc.vendingmachine.service.NoItemInventoryException;
 import com.mc.vendingmachine.service.VendingMachineService;
@@ -24,7 +24,7 @@ import com.mc.vendingmachine.ui.VendingMachineView;
  * @author Melanie Carroll
  */
 public class App {
-     public static void main(String[] args) throws IncorrectMoneyException, NoItemInventoryException, InsufficientFundsException {
+     public static void main(String[] args) throws VendingMachineDataValidationException, NoItemInventoryException, InsufficientFundsException {
     // Instantiate the UserIO implementation
     UserIO myIo = new UserIOFileImpl();
     // Instantiate the View and wire the UserIO implementation into it

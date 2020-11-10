@@ -9,12 +9,12 @@ package com.mc.vendingmachine.service;
  *
  * @author Shawn
  */
-public class IncorrectMoneyException extends Exception {
-    public IncorrectMoneyException(String message) {
+public class VendingMachineDataValidationException extends Exception {
+    public VendingMachineDataValidationException(String message) {
         super(message);
     }
 
-    public IncorrectMoneyException(String message,
+    public VendingMachineDataValidationException(String message,
             Throwable cause) {
         super(message, cause);
     }

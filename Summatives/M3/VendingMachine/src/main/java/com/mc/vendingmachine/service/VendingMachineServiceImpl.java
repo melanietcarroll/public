@@ -31,7 +31,8 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
 
     @Override
-    public Item addItem(String itemName, Item item) throws VendingMachinePersistenceException {
+    public Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException {
+        validateItemData(item);
         return dao.addItem(itemName, item);
     }
 
@@ -48,12 +49,12 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         return listItemsInventory;
     }
 
-    @Override
+     @Override
     public Item getItem(String itemName) throws NoItemInventoryException, VendingMachinePersistenceException {
         //if greater than zero inventory
         Item currentItem = dao.getItem(itemName);
-        if (currentItem.getInventoryOfItem() > 0) {
-            return currentItem;
+        if (currentItem.getInventoryOfItem() < 0) {
+throw new NoItemInventoryException("ERROR: Zero inventory for selected item.");
         }
         return currentItem;
     }
@@ -69,98 +70,20 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
 
     @Override
-    public BigDecimal addMoney(String amount) throws IncorrectMoneyException {
-        BigDecimal moneyAdded = new BigDecimal("0");
-       
-        try{
-        BigDecimal money = new BigDecimal(amount);
-        
-            if (money.intValue() > 0 && money.intValue() <= 10) {
-                return money;
-            }
-            if (money.intValue() < 0 || money.intValue() > 10 ) {
-                throw new IncorrectMoneyException("You must add between 0 and 10 dollars.");
-            }
-            return money;
-        }catch (IncorrectMoneyException e){
-            System.out.println("Incorrect value. Enter a valid number.");
-        }
+    public BigDecimal addMoney(String amount) throws VendingMachineDataValidationException {
+        validateNumericData(amount);
+        BigDecimal moneyAdded = new BigDecimal(amount);
         return moneyAdded;
     }
 
-    @Override
-    public int updateItemToBuyInventory(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException {
-        //throws NoItemIventoryException
-        //throws InsufficientFundsException
-        Item currentItem = dao.getItem(itemName);
-        int inventory = currentItem.getInventoryOfItem();
-        BigDecimal price = currentItem.getPrice();
-        if (price.equals(money) || price.compareTo(money) > 0) {
-            inventory = inventory - 1;
-            return inventory;
-        }
-        if (price.compareTo(money) < 0) {
-            throw new InsufficientFundsException("You do not have enough money for this selection. You only have " + money);
-
-        }
-        return inventory;
-    }
-
-    @Override
-    public Change giveChange(BigDecimal pennies) {
-        int changeDue = pennies.intValue();
-        Change myChange = new Change(changeDue);
-        if (changeDue >= CoinValues.QUARTER.value){
-            changeDue = changeDue / CoinValues.QUARTER.value;
-            myChange.setNumQuarters(changeDue);
-            int dimeChange = changeDue - (changeDue  * CoinValues.QUARTER.value);
-            dimeChange = dimeChange / CoinValues.DIME.value;
-            myChange.setNumDimes(dimeChange);
-            int nickelChange = dimeChange - (dimeChange * CoinValues.DIME.value);
-            nickelChange = nickelChange / CoinValues.NICKEL.value;
-            myChange.setNumNickels(nickelChange);
-            int pennyChange = nickelChange - (nickelChange * CoinValues.NICKEL.value);
-            pennyChange = pennyChange / CoinValues.PENNY.value;
-            myChange.setNumPennies(pennyChange);
-            return myChange;
-        }
-        if (changeDue >= CoinValues.DIME.value && changeDue < CoinValues.QUARTER.value){
-            changeDue = changeDue / CoinValues.DIME.value;
-            myChange.setNumDimes(changeDue);
-            int nickelChange = changeDue - (changeDue * CoinValues.DIME.value);
-            nickelChange = nickelChange / CoinValues.NICKEL.value;
-            myChange.setNumNickels(nickelChange);
-            int pennyChange = nickelChange - (nickelChange * CoinValues.NICKEL.value);
-            pennyChange = pennyChange / CoinValues.PENNY.value;
-            myChange.setNumPennies(pennyChange);
-            return myChange;
-        }
-        if (changeDue >= CoinValues.NICKEL.value && changeDue < CoinValues.DIME.value){
-            changeDue = changeDue / CoinValues.NICKEL.value;
-            myChange.setNumNickels(changeDue);
-            int pennyChange = changeDue - (changeDue * CoinValues.NICKEL.value);
-            pennyChange = pennyChange / CoinValues.PENNY.value;
-            myChange.setNumPennies(pennyChange);
-            return myChange;
-        }
-        if (changeDue < CoinValues.NICKEL.value){
-            changeDue = changeDue / CoinValues.PENNY.value;
-            myChange.setNumPennies(changeDue);
-            return myChange;
-        }   
-        return myChange;
-    }
-
-    @Override
+     @Override
     public BigDecimal buyItem(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException {
         Item currentItem = dao.getItem(itemName);
         BigDecimal itemPrice = currentItem.getPrice();
         BigDecimal changeDue = new BigDecimal("0");
         BigDecimal multiplyForPennyConversion = new BigDecimal("100");
 
-        if (money.equals(itemPrice)) {
-            return changeDue;
-        }
+        
         if (money.compareTo(itemPrice) > 0) {
             changeDue = money.subtract(itemPrice).setScale(2,RoundingMode.HALF_UP);
             BigDecimal changeDuePennies = new BigDecimal(changeDue.toString()).multiply(multiplyForPennyConversion);
@@ -172,9 +95,118 @@ public class VendingMachineServiceImpl implements VendingMachineService {
         return changeDue;
     }
 
+
+    @Override
+    public Change giveChange(BigDecimal pennies) {
+        int change = pennies.intValue();
+        Change myChange = new Change(change);
+        
+    int quarters = Math.round((int)change/25);
+    myChange.setNumQuarters(quarters);
+    change=change%25;
+    int dimes = Math.round((int)change/10);
+    myChange.setNumDimes(dimes);
+    change=change%10;
+    int nickels = Math.round((int)change/5);
+    myChange.setNumNickels(nickels);
+    change=change%5;
+    int totalPennies = Math.round((int)change/1);
+    myChange.setNumPennies(totalPennies);
+
+
+//    System.out.println("Quarters: " + quarters);
+//    System.out.println("Dimes: " + dimes);
+//    System.out.println("Nickels: " + nickels);
+//    System.out.println("Pennies: " + pennies);
+//        if (changeDue >= CoinValues.QUARTER.value){
+//            changeDue = changeDue / CoinValues.QUARTER.value;
+//            myChange.setNumQuarters(changeDue);
+//            int remainingQuarterChange = (changeDue * CoinValues.QUARTER.value) - (changeDue  * CoinValues.QUARTER.value);
+//            int dimeChange = remainingQuarterChange / CoinValues.DIME.value;
+//            myChange.setNumDimes(dimeChange);
+//            int remainingDimeChange = (dimeChange * CoinValues.DIME.value) - (dimeChange * CoinValues.DIME.value);
+//            int nickelChange = remainingDimeChange / CoinValues.NICKEL.value;
+//            myChange.setNumNickels(nickelChange);
+//            int remainingNickelChange = (nickelChange * CoinValues.NICKEL.value) - (nickelChange * CoinValues.NICKEL.value);
+//            int pennyChange = remainingNickelChange / CoinValues.PENNY.value;
+//            myChange.setNumPennies(pennyChange);
+//            return myChange;
+//        }
+//        if (changeDue >= CoinValues.DIME.value && changeDue < CoinValues.QUARTER.value){
+//            changeDue = changeDue / CoinValues.DIME.value;
+//            myChange.setNumDimes(changeDue);
+//            int remainingDimeChange = (changeDue * CoinValues.DIME.value) - (changeDue * CoinValues.DIME.value);
+//          
+//            int nickelChange = remainingDimeChange / CoinValues.NICKEL.value;
+//            myChange.setNumNickels(nickelChange);
+//            int remainingNickelChange = (nickelChange * CoinValues.NICKEL.value) - (nickelChange * CoinValues.NICKEL.value);
+//            int pennyChange = remainingNickelChange / CoinValues.PENNY.value;
+//            myChange.setNumPennies(pennyChange);
+//            return myChange;
+//        }
+//        if (changeDue >= CoinValues.NICKEL.value && changeDue < CoinValues.DIME.value){
+//            changeDue = changeDue / CoinValues.NICKEL.value;
+//            myChange.setNumNickels(changeDue);
+//            int remainingNickelChange = (changeDue * CoinValues.NICKEL.value) - (changeDue * CoinValues.NICKEL.value);
+//            int pennyChange = remainingNickelChange / CoinValues.PENNY.value;
+//            myChange.setNumPennies(pennyChange);
+//            return myChange;
+//        }
+//        if (changeDue < CoinValues.NICKEL.value){
+//            changeDue = changeDue / CoinValues.PENNY.value;
+//            myChange.setNumPennies(changeDue);
+//            return myChange;
+//        }   
+        return myChange;
+    }
+
+     @Override
+    public void updateItemToBuyInventory(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException {
+        //throws NoItemIventoryException
+        //throws InsufficientFundsException
+        Item currentItem = dao.getItem(itemName);
+        
+        BigDecimal price = currentItem.getPrice();
+        if (price.equals(money) || price.compareTo(money) < 0) {
+            currentItem.setInventoryOfItem(currentItem.getInventoryOfItem() - 1);
+            }
+        if (price.compareTo(money) > 0) {
+            throw new InsufficientFundsException("You do not have enough money for this selection. You only have $ " + money);
+
+        }
+        
+    }
+
     @Override
     public List<Item> getAllItems() throws VendingMachinePersistenceException, NoItemInventoryException {
         return dao.getAllItems();
     }
+public void validateItemData(Item item) throws VendingMachineDataValidationException{
+String inventory = Integer.toString(item.getInventoryOfItem()); 
+if (item.getPrice() == null || item.getPrice().toString().trim().length() == 0 
+	||item.getItemName()== null || item.getItemName().trim().length() == 0
+	||item.getInventoryOfItem() == 0 || inventory.trim().length() == 0){
+throw new VendingMachineDataValidationException("ERROR: All Fields are required.");
+}
+}
+public void validateNumericData(String string) throws VendingMachineDataValidationException{
 
+boolean isNumeric = true;
+double num = Double.parseDouble(string);
+
+try {  
+    Double.parseDouble(string);  
+    isNumeric = true;
+  } catch(NumberFormatException e){  
+    isNumeric = false;  
+  }  
+
+if (isNumeric == false || string == null){
+throw new VendingMachineDataValidationException("ERROR: Field must be numeric.");
+}
+if (num <= 0 || num > 10){
+throw new VendingMachineDataValidationException("ERROR: Amount must be between 0 and 10.");
+}
+
+}
 }
