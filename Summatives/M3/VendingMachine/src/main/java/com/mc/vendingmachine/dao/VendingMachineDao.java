@@ -24,14 +24,14 @@ public interface VendingMachineDao {
      * @return the Item object associated with the given  
      * item name if it exists, null otherwise
      */
-    Item addItem(String itemName, Item item);
+    Item addItem(String itemName, Item item)throws VendingMachinePersistenceException;
 
     /**
      * Returns a List of all items in the vending machine.
      *
      * @return List containing all items in the vending machine.
      */
-    List<Item> getAllItems();
+    List<Item> getAllItems()throws VendingMachinePersistenceException;
 
     /**
      * Returns the item object associated with the given item name.
@@ -41,7 +41,7 @@ public interface VendingMachineDao {
      * @return the Item object associated with the given item name,  
      * null if no such item exists
      */
-    Item getItem(String itemName);
+    Item getItem(String itemName)throws VendingMachinePersistenceException;
 
     /**
      * Removes from the vending machine the item associated with the item name.
@@ -52,7 +52,7 @@ public interface VendingMachineDao {
      * @return Item object that was removed or null if no item
      * was associated with the given item name
      */
-    Item deleteItem(String itemName);
+    Item deleteItem(String itemName)throws VendingMachinePersistenceException;
     /**
      * Returns the item object associated with the given item name.
      * Returns null if no such item exists
@@ -61,7 +61,7 @@ public interface VendingMachineDao {
      * @return the edited item object associated with the given item name,  
      * null if no such item exists
      */
-    Item editItem(String itemName, Item item);
+    Item editItem(String itemName, Item item)throws VendingMachinePersistenceException;
     
     int giveChange (BigDecimal pennies);
 }
