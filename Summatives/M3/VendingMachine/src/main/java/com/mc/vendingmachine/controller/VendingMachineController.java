@@ -36,7 +36,7 @@ public class VendingMachineController {
         int menuSelection = 0;
         try {
             while (keepGoing) {
-              
+
 //                view.displayItemList(service.getAllItemsInInventory());
                 menuSelection = getMenuSelection();
 
@@ -79,7 +79,7 @@ public class VendingMachineController {
         do {
             Item currentItem = view.getItemInfo();
             try {
-               
+
                 service.addItem(currentItem.getItemName(), currentItem);
                 hasErrors = false;
             } catch (VendingMachineDataValidationException e) {
@@ -88,7 +88,7 @@ public class VendingMachineController {
             }
         } while (hasErrors);
     }
-    
+
     private void editItems() throws VendingMachinePersistenceException, VendingMachineDataValidationException {
         boolean hasErrors = false;
         do {
@@ -115,14 +115,26 @@ public class VendingMachineController {
     }
 
     public void selectItemToBuy() throws VendingMachineDataValidationException, NoItemInventoryException, VendingMachinePersistenceException, InsufficientFundsException {
-        String money = view.getMoneyAmount();
-        
 
-        BigDecimal moneyAdded = service.addMoney(money);
+        String money = view.getMoneyAmount();
+
+        try {
+            service.addMoney(money);
+
+        } catch (VendingMachineDataValidationException e) {
+            view.displayErrorMessage(e.getMessage());
+            return;
+        }
+
+        BigDecimal moneyAdded = new BigDecimal(money.replaceAll(",", ""));
 
         String choice = view.getItemChoice().toUpperCase();
-        
-        service.updateItemToBuyInventory(choice, moneyAdded);
+        try {
+            service.updateItemToBuyInventory(choice, moneyAdded);
+        } catch (InsufficientFundsException  | NoItemInventoryException e) {
+            view.displayErrorMessage(e.getMessage());
+            return;
+        }
         BigDecimal change = service.buyItem(choice, moneyAdded);
         Change myChange = service.giveChange(change);
         view.displayChange(myChange);

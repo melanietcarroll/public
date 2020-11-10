@@ -74,6 +74,7 @@ throw new NoItemInventoryException("ERROR: Zero inventory for selected item.");
     public BigDecimal addMoney(String amount) throws VendingMachineDataValidationException {
         validateNumericData(amount);
         BigDecimal moneyAdded = new BigDecimal(amount);
+     isMoneyInRange(moneyAdded);
         return moneyAdded;
     }
 
@@ -124,11 +125,14 @@ throw new NoItemInventoryException("ERROR: Zero inventory for selected item.");
         Item currentItem = dao.getItem(itemName);
         
         BigDecimal price = currentItem.getPrice();
+        if (currentItem.getInventoryOfItem() < 1){
+            throw new NoItemInventoryException("No items left!");
+        }
         if (price.equals(money) || price.compareTo(money) < 0) {
             currentItem.setInventoryOfItem(currentItem.getInventoryOfItem() - 1);
             }
         if (price.compareTo(money) > 0) {
-            throw new InsufficientFundsException("You do not have enough money for this selection. You only have $ " + money);
+            throw new InsufficientFundsException("You do not have enough money for this selection. You only have $" + money);
 
         }
         
@@ -158,20 +162,26 @@ if (item.getInventoryOfItem() < 0){
 public void validateNumericData(String string) throws VendingMachineDataValidationException{
 
 boolean isNumeric = true;
-double num = Double.parseDouble(string);
 
 try {  
     Double.parseDouble(string);  
     isNumeric = true;
   } catch(NumberFormatException e){  
-    isNumeric = false;  
-  }  
+    isNumeric = false; 
+    throw new VendingMachineDataValidationException("ERROR: You must enter a number!");
+  }
 
-if (isNumeric == false || string == null){
+if (string == null){
 throw new VendingMachineDataValidationException("ERROR: Field must be numeric.");
 }
-if (num <= 0 || num > 10){
-throw new VendingMachineDataValidationException("ERROR: Amount must be between 0 and 10.");
+
+    
+}
+
+public void isMoneyInRange(BigDecimal amount) throws VendingMachineDataValidationException{
+if (amount.compareTo(BigDecimal.valueOf(0)) <= 0 || amount.compareTo(BigDecimal.valueOf(10)) > 0 ) {
+   throw new VendingMachineDataValidationException("ERROR: Dollar range must be greater than 0 and less than 10.");
+  
 }
 
 }
