@@ -31,13 +31,13 @@ public class VendingMachineController {
         this.view = view;
     }
 
-    public void run() throws VendingMachineDataValidationException, NoItemInventoryException, InsufficientFundsException {
+    public void run() throws VendingMachineDataValidationException, NoItemInventoryException, InsufficientFundsException, VendingMachinePersistenceException {
         boolean keepGoing = true;
         int menuSelection = 0;
         try {
             while (keepGoing) {
 
-//                view.displayItemList(service.getAllItemsInInventory());
+                view.displayInventoryItemList(service.getAllItemsInInventory());
                 menuSelection = getMenuSelection();
 
                 switch (menuSelection) {
@@ -131,7 +131,7 @@ public class VendingMachineController {
         String choice = view.getItemChoice().toUpperCase();
         try {
             service.updateItemToBuyInventory(choice, moneyAdded);
-        } catch (InsufficientFundsException  | NoItemInventoryException e) {
+        } catch (InsufficientFundsException | NoItemInventoryException e) {
             view.displayErrorMessage(e.getMessage());
             return;
         }

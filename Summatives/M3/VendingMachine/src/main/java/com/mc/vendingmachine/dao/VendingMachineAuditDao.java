@@ -10,5 +10,5 @@ package com.mc.vendingmachine.dao;
  * @author Melanie Carroll
  */
 public interface VendingMachineAuditDao {
-    
+    public void writeAuditEntry(String entry) throws VendingMachinePersistenceException;
 }

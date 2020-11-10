@@ -99,5 +99,16 @@ public void displayErrorMessage(String errorMsg) {
         io.print(itemInfo);
         io.readString("Please hit enter to continue.");
     }
+
+    public void displayInventoryItemList(List<Item> allItemsInInventory) {
+        io.print("=== Current Items Available ===");
+        for (Item currentItem : allItemsInInventory) {
+        String itemInfo = String.format("Item: %s Price: %s Inventory: %s",
+              currentItem.getItemName(),
+              currentItem.getPrice(),
+              currentItem.getInventoryOfItem());
+        io.print(itemInfo);
+    }
+    }
        
 }

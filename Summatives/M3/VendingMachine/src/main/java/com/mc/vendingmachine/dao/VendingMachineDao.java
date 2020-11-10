@@ -7,6 +7,8 @@ package com.mc.vendingmachine.dao;
 
 import com.mc.vendingmachine.dto.Change;
 import com.mc.vendingmachine.dto.Item;
+import com.mc.vendingmachine.service.InsufficientFundsException;
+import com.mc.vendingmachine.service.NoItemInventoryException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -20,7 +22,7 @@ public interface VendingMachineDao {
      * item name. 
      *
      * @param item name with which item is to be associated
-     * @param student student to be added to the roster
+     * @param item item to be added to the list
      * @return the Item object associated with the given  
      * item name if it exists, null otherwise
      */
@@ -64,5 +66,7 @@ public interface VendingMachineDao {
     Item editItem(String itemName, Item item)throws VendingMachinePersistenceException;
     
     int giveChange (BigDecimal pennies);
+    
+    void updateItemInventory(String itemName)throws VendingMachinePersistenceException;
 }
 

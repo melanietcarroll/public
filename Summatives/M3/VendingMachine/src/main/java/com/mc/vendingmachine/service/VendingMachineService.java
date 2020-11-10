@@ -27,9 +27,9 @@ public interface VendingMachineService {
     
     public BigDecimal addMoney(String money) throws VendingMachineDataValidationException;
             
-    public void updateItemToBuyInventory(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException;
+    public void updateItemToBuyInventory(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException, VendingMachinePersistenceException;
     
-    public BigDecimal buyItem(String itemName, BigDecimal money)throws NoItemInventoryException, InsufficientFundsException;
+    public BigDecimal buyItem(String itemName, BigDecimal money)throws NoItemInventoryException, InsufficientFundsException, VendingMachinePersistenceException;
     
     public Change giveChange(BigDecimal pennies);
 }

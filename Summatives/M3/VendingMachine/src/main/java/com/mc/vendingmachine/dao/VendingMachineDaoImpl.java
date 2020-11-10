@@ -7,6 +7,8 @@ package com.mc.vendingmachine.dao;
 
 import com.mc.vendingmachine.dto.Change;
 import com.mc.vendingmachine.dto.Item;
+import com.mc.vendingmachine.service.InsufficientFundsException;
+import com.mc.vendingmachine.service.NoItemInventoryException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -190,4 +192,14 @@ private void writeList() throws VendingMachinePersistenceException{
     // Clean up
     out.close();
 }
-}
+
+    @Override
+    public void updateItemInventory(String itemName) throws VendingMachinePersistenceException {
+       Item currentItem = items.get(itemName);
+       int inventory = currentItem.getInventoryOfItem()-1;
+       currentItem.setInventoryOfItem(inventory);
+       writeList();
+             
+    }             
+    }
+
