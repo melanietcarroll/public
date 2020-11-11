@@ -18,10 +18,10 @@ import java.util.List;
  * @author Melanie Carroll
  */
 public interface VendingMachineService {
-    Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException ;
+    Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException, VendingMachineDuplicateItemNameException ;
     List<Item> getAllItems()throws VendingMachinePersistenceException, NoItemInventoryException;
     List<Item> getAllItemsInInventory() throws VendingMachinePersistenceException, NoItemInventoryException;
-    Item getItem(String itemName)throws NoItemInventoryException,VendingMachinePersistenceException;
+    Item getItem(String itemName)throws NoItemInventoryException,VendingMachinePersistenceException, VendingMachineDataValidationException;
     Item deleteItem(String itemName)throws VendingMachinePersistenceException ;
     Item editItem(String itemName, Item item)throws VendingMachinePersistenceException, VendingMachineDataValidationException ;
     
@@ -32,4 +32,6 @@ public interface VendingMachineService {
     public BigDecimal buyItem(String itemName, BigDecimal money)throws NoItemInventoryException, InsufficientFundsException, VendingMachinePersistenceException;
     
     public Change giveChange(BigDecimal pennies);
+
+    public void isFieldEmpty(String choice) throws  VendingMachineDataValidationException;
 }

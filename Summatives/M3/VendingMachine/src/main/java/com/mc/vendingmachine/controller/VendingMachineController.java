@@ -11,6 +11,7 @@ import com.mc.vendingmachine.dto.Item;
 import com.mc.vendingmachine.service.VendingMachineDataValidationException;
 import com.mc.vendingmachine.service.InsufficientFundsException;
 import com.mc.vendingmachine.service.NoItemInventoryException;
+import com.mc.vendingmachine.service.VendingMachineDuplicateItemNameException;
 import com.mc.vendingmachine.service.VendingMachineService;
 import com.mc.vendingmachine.ui.VendingMachineView;
 import java.math.BigDecimal;
@@ -31,7 +32,7 @@ public class VendingMachineController {
         this.view = view;
     }
 
-    public void run() throws VendingMachineDataValidationException, NoItemInventoryException, InsufficientFundsException, VendingMachinePersistenceException {
+    public void run() throws VendingMachineDataValidationException, NoItemInventoryException, InsufficientFundsException, VendingMachinePersistenceException, VendingMachineDuplicateItemNameException {
         boolean keepGoing = true;
         int menuSelection = 0;
         try {
@@ -74,7 +75,7 @@ public class VendingMachineController {
         return view.printMenuAndGetSelection();
     }
 
-    private void addItemsToBuy() throws VendingMachinePersistenceException {
+    private void addItemsToBuy() throws VendingMachinePersistenceException, VendingMachineDuplicateItemNameException {
         boolean hasErrors = false;
         do {
             Item currentItem = view.getItemInfo();
@@ -82,7 +83,7 @@ public class VendingMachineController {
 
                 service.addItem(currentItem.getItemName(), currentItem);
                 hasErrors = false;
-            } catch (VendingMachineDataValidationException e) {
+            } catch (VendingMachineDataValidationException | VendingMachineDuplicateItemNameException e) {
                 hasErrors = true;
                 view.displayErrorMessage(e.getMessage());
             }
@@ -90,6 +91,7 @@ public class VendingMachineController {
     }
 
     private void editItems() throws VendingMachinePersistenceException, VendingMachineDataValidationException {
+        
         boolean hasErrors = false;
         do {
             Item editedItem = view.getItemInfo();
@@ -104,7 +106,20 @@ public class VendingMachineController {
     }
 
     private void deleteItems() throws VendingMachinePersistenceException {
-        String item = view.getItemChoice().toUpperCase();
+        String item = view.getItemChoice(); 
+        try {
+                 service.isFieldEmpty(item);
+            } catch (VendingMachineDataValidationException e) {
+                view.displayErrorMessage(e.getMessage());
+                return;
+            }      
+            
+            try {
+                service.getItem(item.toUpperCase());
+            } catch (VendingMachineDataValidationException |NoItemInventoryException e) {              
+                view.displayErrorMessage(e.getMessage());
+                return;
+            }
         service.deleteItem(item);
     }
 
@@ -128,7 +143,21 @@ public class VendingMachineController {
 
         BigDecimal moneyAdded = new BigDecimal(money.replaceAll(",", ""));
 
-        String choice = view.getItemChoice().toUpperCase();
+            String choice = view.getItemChoice();
+            try {
+                 service.isFieldEmpty(choice);
+            } catch (VendingMachineDataValidationException e) {
+                view.displayErrorMessage(e.getMessage());
+                return;
+            }      
+            
+            try {
+                service.getItem(choice.toUpperCase());
+            } catch (VendingMachineDataValidationException e) {              
+                view.displayErrorMessage(e.getMessage());
+                return;
+            }
+        
         try {
             service.updateItemToBuyInventory(choice, moneyAdded);
         } catch (InsufficientFundsException | NoItemInventoryException e) {

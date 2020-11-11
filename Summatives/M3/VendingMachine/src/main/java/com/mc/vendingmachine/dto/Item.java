@@ -6,13 +6,43 @@
 package com.mc.vendingmachine.dto;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
- *
- * @author Shawn
+ *  created 11/7/20
+ * @author Melanie Carroll
  */
 public class Item {
     private String itemName;
+
+    @Override
+    public String toString() {
+        return "Item{" + "itemName=" + itemName + ", price=" + price + ", inventoryOfItem=" + inventoryOfItem + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.itemName);
+        hash = 67 * hash + Objects.hashCode(this.price);
+        hash = 67 * hash + this.inventoryOfItem;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        return true;
+    }
     private BigDecimal price;
     private int inventoryOfItem;
     

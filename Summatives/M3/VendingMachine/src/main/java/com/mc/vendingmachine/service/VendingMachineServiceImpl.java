@@ -40,7 +40,14 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
 
     @Override
-    public Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException {
+    public Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException, VendingMachineDuplicateItemNameException {
+        if (dao.getItem(item.getItemName()) != null) {
+        throw new VendingMachineDuplicateItemNameException(
+                "ERROR: Could not create item.  Item "
+                + item.getItemName()
+                + " already exists");
+    }
+        
         validateItemData(item);
         auditDao.writeAuditEntry(
                 "Item " + item.getItemName() + " CREATED.");
@@ -61,9 +68,13 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     }
 
     @Override
-    public Item getItem(String itemName) throws NoItemInventoryException, VendingMachinePersistenceException {
+    public Item getItem(String itemName) throws NoItemInventoryException, VendingMachinePersistenceException, VendingMachineDataValidationException {
         //if greater than zero inventory
         Item currentItem = dao.getItem(itemName);
+        if (currentItem == null){
+            throw new VendingMachineDataValidationException("ERROR: no such item.");
+            
+        }
         if (currentItem.getInventoryOfItem() < 0) {
             throw new NoItemInventoryException("ERROR: Zero inventory for selected item.");
         }
@@ -156,6 +167,13 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     @Override
     public List<Item> getAllItems() throws VendingMachinePersistenceException, NoItemInventoryException {
         return dao.getAllItems();
+    }
+     @Override
+    public void isFieldEmpty(String string) throws VendingMachineDataValidationException{
+        
+         if (string == null || string.trim().length() == 0){
+            throw new VendingMachineDataValidationException("ERROR: All Fields are required.");
+    }
     }
 
     public void validateItemData(Item item) throws VendingMachineDataValidationException {

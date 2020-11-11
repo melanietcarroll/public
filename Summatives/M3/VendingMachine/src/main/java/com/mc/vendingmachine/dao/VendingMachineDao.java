@@ -64,9 +64,15 @@ public interface VendingMachineDao {
      * null if no such item exists
      */
     Item editItem(String itemName, Item item)throws VendingMachinePersistenceException;
-    
+    /**
+     * @param BigDecimal pennies 
+     * @return the int number to pennies 
+     */
     int giveChange (BigDecimal pennies);
-    
+    /**
+     * @param item name of the item to retrieve
+     * @set inventory getter of the item object associated with the given item name,  
+     */
     void updateItemInventory(String itemName)throws VendingMachinePersistenceException;
 }
 
