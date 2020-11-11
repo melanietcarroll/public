@@ -77,10 +77,11 @@ public class VendingMachineController {
 
     private void addItemsToBuy() throws VendingMachinePersistenceException, VendingMachineDuplicateItemNameException {
         boolean hasErrors = false;
+             
         do {
             Item currentItem = view.getItemInfo();
             try {
-
+ 
                 service.addItem(currentItem.getItemName(), currentItem);
                 hasErrors = false;
             } catch (VendingMachineDataValidationException | VendingMachineDuplicateItemNameException e) {
@@ -91,7 +92,7 @@ public class VendingMachineController {
     }
 
     private void editItems() throws VendingMachinePersistenceException, VendingMachineDataValidationException {
-        
+
         boolean hasErrors = false;
         do {
             Item editedItem = view.getItemInfo();
@@ -106,20 +107,26 @@ public class VendingMachineController {
     }
 
     private void deleteItems() throws VendingMachinePersistenceException {
-        String item = view.getItemChoice(); 
+        String item = view.getItemChoice();
         try {
-                 service.isFieldEmpty(item);
-            } catch (VendingMachineDataValidationException e) {
-                view.displayErrorMessage(e.getMessage());
-                return;
-            }      
-            
-            try {
-                service.getItem(item.toUpperCase());
-            } catch (VendingMachineDataValidationException |NoItemInventoryException e) {              
-                view.displayErrorMessage(e.getMessage());
-                return;
-            }
+            service.isFieldEmpty(item);
+        } catch (VendingMachineDataValidationException e) {
+            view.displayErrorMessage(e.getMessage());
+            return;
+        }
+        try {
+            service.onlyLettersSpaces(item);
+        } catch (VendingMachineDataValidationException e) {
+            view.displayErrorMessage(e.getMessage());
+            return;
+        }
+
+        try {
+            service.getItem(item.toUpperCase());
+        } catch (VendingMachineDataValidationException | NoItemInventoryException e) {
+            view.displayErrorMessage(e.getMessage());
+            return;
+        }
         service.deleteItem(item);
     }
 
@@ -143,21 +150,21 @@ public class VendingMachineController {
 
         BigDecimal moneyAdded = new BigDecimal(money.replaceAll(",", ""));
 
-            String choice = view.getItemChoice();
-            try {
-                 service.isFieldEmpty(choice);
-            } catch (VendingMachineDataValidationException e) {
-                view.displayErrorMessage(e.getMessage());
-                return;
-            }      
-            
-            try {
-                service.getItem(choice.toUpperCase());
-            } catch (VendingMachineDataValidationException e) {              
-                view.displayErrorMessage(e.getMessage());
-                return;
-            }
-        
+        String choice = view.getItemChoice();
+        try {
+            service.isFieldEmpty(choice);
+        } catch (VendingMachineDataValidationException e) {
+            view.displayErrorMessage(e.getMessage());
+            return;
+        }
+
+        try {
+            service.getItem(choice.toUpperCase());
+        } catch (VendingMachineDataValidationException e) {
+            view.displayErrorMessage(e.getMessage());
+            return;
+        }
+
         try {
             service.updateItemToBuyInventory(choice, moneyAdded);
         } catch (InsufficientFundsException | NoItemInventoryException e) {

@@ -34,4 +34,6 @@ public interface VendingMachineService {
     public Change giveChange(BigDecimal pennies);
 
     public void isFieldEmpty(String choice) throws  VendingMachineDataValidationException;
+
+    public void onlyLettersSpaces(String item)throws  VendingMachineDataValidationException;;
 }

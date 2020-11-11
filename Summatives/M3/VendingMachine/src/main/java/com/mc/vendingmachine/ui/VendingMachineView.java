@@ -11,16 +11,19 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- *  created 11/7/20
+ * created 11/7/20
+ *
  * @author Melanie Carroll
  */
 public class VendingMachineView {
+
     private UserIO io;
 
     public VendingMachineView(UserIO io) {
         this.io = io;
     }
-public int printMenuAndGetSelection() {
+
+    public int printMenuAndGetSelection() {
         io.print("Vending Machine Menu:");
         io.print("1. Add items to the vending machine");
         io.print("2. Edit items in the vending machine");
@@ -31,71 +34,84 @@ public int printMenuAndGetSelection() {
 
         return io.readInt("Please select from the above choices.", 1, 6);
     }
-public Item getItemInfo() {
-    String itemName = io.readString("Please enter the item name");
-    String price = io.readString("Please enter the item's price");
-    String numItems = io.readString("Please enter how many units of the item you currently have");
+
+    public Item getItemInfo() {
+        String itemName = io.readString("Please enter the item name");
+        String price = io.readString("Please enter the item's price");
+        String numItems = io.readString("Please enter how many units of the item you currently have");
+
+        if (price.isEmpty() != true || numItems.isEmpty() != true || itemName.isEmpty() != true) {
+
+            Item currentItem = new Item(itemName.toUpperCase());
+
+            boolean isNumeric = numItems.chars().allMatch(x -> Character.isDigit(x));
+            if (isNumeric == true) {
+                int amount = Integer.parseInt(numItems);
+                currentItem.setInventoryOfItem(amount);
+            }
+
+            boolean isAChar = price.chars().allMatch(x -> Character.isLetter(x));
+            if (isAChar != true) {
+                BigDecimal itemPrice = new BigDecimal(price.replaceAll(",", ""));
+                currentItem.setPrice(itemPrice);
+            }
+            return currentItem;
+        }else{
+            io.print("ERROR");
+        }
+        return null;
+    }
     
-    Item currentItem = new Item(itemName.toUpperCase());
-    boolean isNumeric = numItems.chars().allMatch(x -> Character.isDigit(x));
-    if (isNumeric == true){
-    int amount = Integer.parseInt(numItems);
-    currentItem.setInventoryOfItem(amount);
+
+    public void displayCreateItemBanner() {
+        io.print("=== Create Item ===");
     }
-    while (price.isEmpty()== true){
-        price = io.readString("Please enter the item's price"); 
+
+    public void displayCreateSuccessBanner() {
+        io.readString(
+                "Item successfully created.  Please hit enter to continue");
     }
-    boolean isAChar = price.chars().allMatch(x -> Character.isLetter(x));
-    if (isAChar != true){
-    BigDecimal itemPrice = new BigDecimal(price.replaceAll(",", ""));
-    currentItem.setPrice(itemPrice);
-    } 
-    return currentItem;
-}
-public void displayCreateItemBanner() {
-    io.print("=== Create Item ===");
-}
-public void displayCreateSuccessBanner() {
-    io.readString(
-            "Item successfully created.  Please hit enter to continue");
-}
-public void displayItemList(List<Item> itemList) {
-    for (Item currentItem : itemList) {
-        String itemInfo = String.format("Item: %s Price: %s Inventory: %s",
-              currentItem.getItemName(),
-              currentItem.getPrice(),
-              currentItem.getInventoryOfItem());
-        io.print(itemInfo);
+
+    public void displayItemList(List<Item> itemList) {
+        for (Item currentItem : itemList) {
+            String itemInfo = String.format("Item: %s Price: %s Inventory: %s",
+                    currentItem.getItemName(),
+                    currentItem.getPrice(),
+                    currentItem.getInventoryOfItem());
+            io.print(itemInfo);
+        }
+        io.readString("Please hit enter to continue.");
     }
-    io.readString("Please hit enter to continue.");
-}
 
     public String getItemChoice() {
         return io.readString("Please enter the item name.");
     }
-    public void displayUnknownCommandBanner() {
-    io.print("Unknown Command!!!");
-}
-public void displayErrorMessage(String errorMsg) {
-    io.print("=== ERROR ===");
-    io.print(errorMsg);
-}
- public void displayExitBanner() {
-    io.print("Good Bye!!!");
-}
 
- public String getMoneyAmount() {
+    public void displayUnknownCommandBanner() {
+        io.print("Unknown Command!!!");
+    }
+
+    public void displayErrorMessage(String errorMsg) {
+        io.print("=== ERROR ===");
+        io.print(errorMsg);
+    }
+
+    public void displayExitBanner() {
+        io.print("Good Bye!!!");
+    }
+
+    public String getMoneyAmount() {
         String money = io.readString("Please add money. This machine does not accept more than $10 per transaction!");
-         return money;
+        return money;
     }
 
     public void displayChange(Change myChange) {
         io.print("Here is your change, thank you!");
         String itemInfo = String.format("Quarters: %s, Dimes: %s, Nickels: %s, Pennies %s.",
-              myChange.getNumQuarters(),
-              myChange.getNumDimes(),
-              myChange.getNumNickels(), 
-              myChange.getNumPennies());
+                myChange.getNumQuarters(),
+                myChange.getNumDimes(),
+                myChange.getNumNickels(),
+                myChange.getNumPennies());
         io.print(itemInfo);
         io.readString("Please hit enter to continue.");
     }
@@ -103,12 +119,12 @@ public void displayErrorMessage(String errorMsg) {
     public void displayInventoryItemList(List<Item> allItemsInInventory) {
         io.print("=== Current Items Available ===");
         for (Item currentItem : allItemsInInventory) {
-        String itemInfo = String.format("Item: %s Price: %s Inventory: %s",
-              currentItem.getItemName(),
-              currentItem.getPrice(),
-              currentItem.getInventoryOfItem());
-        io.print(itemInfo);
+            String itemInfo = String.format("Item: %s Price: %s Inventory: %s",
+                    currentItem.getItemName(),
+                    currentItem.getPrice(),
+                    currentItem.getInventoryOfItem());
+            io.print(itemInfo);
+        }
     }
-    }
-       
+
 }

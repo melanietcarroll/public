@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  *
- * @author Shawn
+ * @author Melanie Carroll
  */
 public class VendingMachineDaoImplTest {
 

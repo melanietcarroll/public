@@ -5,6 +5,8 @@
  */
 package com.mc.addressbook.dto;
 
+import java.util.Objects;
+
 /**
  *
  * @author Shawn
@@ -12,6 +14,38 @@ package com.mc.addressbook.dto;
 public class Address {
     private String firstName;
     private String lastName;
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 61 * hash + Objects.hashCode(this.firstName);
+        hash = 61 * hash + Objects.hashCode(this.lastName);
+        hash = 61 * hash + Objects.hashCode(this.streetAddress);
+        hash = 61 * hash + Objects.hashCode(this.city);
+        hash = 61 * hash + Objects.hashCode(this.state);
+        hash = 61 * hash + Objects.hashCode(this.zip);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" + "firstName=" + firstName + ", lastName=" + lastName + ", streetAddress=" + streetAddress + ", city=" + city + ", state=" + state + ", zip=" + zip + '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Address other = (Address) obj;
+        return true;
+    }
     //unit number and street name
     private String streetAddress;
     private String city;

@@ -42,12 +42,12 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     @Override
     public Item addItem(String itemName, Item item) throws VendingMachinePersistenceException, VendingMachineDataValidationException, VendingMachineDuplicateItemNameException {
         if (dao.getItem(item.getItemName()) != null) {
-        throw new VendingMachineDuplicateItemNameException(
-                "ERROR: Could not create item.  Item "
-                + item.getItemName()
-                + " already exists");
-    }
-        
+            throw new VendingMachineDuplicateItemNameException(
+                    "ERROR: Could not create item.  Item "
+                    + item.getItemName()
+                    + " already exists");
+        }
+
         validateItemData(item);
         auditDao.writeAuditEntry(
                 "Item " + item.getItemName() + " CREATED.");
@@ -83,7 +83,7 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 
     @Override
     public Item deleteItem(String itemName) throws VendingMachinePersistenceException {
- Item removedItem = dao.deleteItem(itemName.toUpperCase());        
+        Item removedItem = dao.deleteItem(itemName.toUpperCase());
 // Write to audit log
         auditDao.writeAuditEntry("Item " + itemName + " REMOVED.");
         return removedItem;
@@ -115,14 +115,14 @@ public class VendingMachineServiceImpl implements VendingMachineService {
             changeDue = money.subtract(itemPrice).setScale(2, RoundingMode.HALF_UP);
             BigDecimal changeDuePennies = new BigDecimal(changeDue.toString()).multiply(multiplyForPennyConversion);
             auditDao.writeAuditEntry("Item " + itemName + " bought.");
-            
+
             return changeDuePennies;
         }
         if (money.compareTo(itemPrice) < 1) {
             throw new InsufficientFundsException("You do not have enough money to purchase this item. You only have " + money);
         }
         // Write to audit log
-        
+
         return changeDue;
     }
 
@@ -169,12 +169,28 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     public List<Item> getAllItems() throws VendingMachinePersistenceException, NoItemInventoryException {
         return dao.getAllItems();
     }
-     @Override
-    public void isFieldEmpty(String string) throws VendingMachineDataValidationException{
-        
-         if (string == null || string.trim().length() == 0){
+
+    @Override
+    public void isFieldEmpty(String string) throws VendingMachineDataValidationException {
+
+        if (string == null || string.trim().length() == 0) {
             throw new VendingMachineDataValidationException("ERROR: All Fields are required.");
+        }
     }
+
+    @Override
+    public void onlyLettersSpaces(String string) throws VendingMachineDataValidationException {
+        boolean hasErrors = false;
+
+        for (int i = 0; i < string.length(); i++) {
+            char character = string.charAt(i);
+            if (Character.isLetter(character) || character == ' ') {
+                continue;
+            }
+            hasErrors = true;
+            throw new VendingMachineDataValidationException("ERROR: cannot enter numbers!");
+
+        }
     }
 
     public void validateItemData(Item item) throws VendingMachineDataValidationException {
@@ -218,6 +234,6 @@ public class VendingMachineServiceImpl implements VendingMachineService {
             throw new VendingMachineDataValidationException("ERROR: Dollar range must be greater than 0 and less than 10.");
 
         }
-
     }
+
 }

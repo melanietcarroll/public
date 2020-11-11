@@ -24,8 +24,16 @@ import java.util.Scanner;
  */
 public class AddressBookDaoFileImpl implements AddressBookDao {
     
-    public static final String ADDRESS_FILE = "address.txt";
+    public static String ADDRESS_FILE;
     public static final String DELIMITER = "::";
+    
+    public AddressBookDaoFileImpl(){
+    ADDRESS_FILE = "address.txt";
+}
+
+public AddressBookDaoFileImpl(String addressTextFile){
+    ADDRESS_FILE = addressTextFile;
+}
 
     private Map<String, Address> addresses = new HashMap<>();
 

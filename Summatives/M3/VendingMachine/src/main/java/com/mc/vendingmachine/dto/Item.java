@@ -49,6 +49,9 @@ public class Item {
      public Item(String itemName) {
         this.itemName = itemName;
     }
+     public Item(){
+         
+     }
 
     public String getItemName() {
         return itemName;
