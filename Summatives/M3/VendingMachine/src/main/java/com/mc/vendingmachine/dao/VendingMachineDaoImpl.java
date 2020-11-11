@@ -45,6 +45,7 @@ public class VendingMachineDaoImpl implements VendingMachineDao {
 
     @Override
     public Item addItem(String itemName, Item item) throws VendingMachinePersistenceException {
+        loadList();
         Item prevItem = items.put(itemName, item);
         writeList();
         return prevItem;
@@ -59,13 +60,13 @@ public class VendingMachineDaoImpl implements VendingMachineDao {
     @Override
     public Item getItem(String itemName) throws VendingMachinePersistenceException {
         loadList();
-        return items.get(itemName);
+        return items.get(itemName.toUpperCase());
     }
 
     @Override
     public Item deleteItem(String itemName) throws VendingMachinePersistenceException {
         loadList();
-        Item removedItem = items.remove(itemName);
+        Item removedItem = items.remove(itemName.toUpperCase());
         writeList();
         return removedItem;
     }

@@ -71,10 +71,10 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     public Item getItem(String itemName) throws NoItemInventoryException, VendingMachinePersistenceException, VendingMachineDataValidationException {
         //if greater than zero inventory
         Item currentItem = dao.getItem(itemName);
-        if (currentItem == null){
-            throw new VendingMachineDataValidationException("ERROR: no such item.");
-            
-        }
+//        if (itemName == null){
+//            throw new VendingMachineDataValidationException("ERROR: no such item.");
+//            
+//        }
         if (currentItem.getInventoryOfItem() < 0) {
             throw new NoItemInventoryException("ERROR: Zero inventory for selected item.");
         }
@@ -83,9 +83,10 @@ public class VendingMachineServiceImpl implements VendingMachineService {
 
     @Override
     public Item deleteItem(String itemName) throws VendingMachinePersistenceException {
-        // Write to audit log
+ Item removedItem = dao.deleteItem(itemName.toUpperCase());        
+// Write to audit log
         auditDao.writeAuditEntry("Item " + itemName + " REMOVED.");
-        return dao.deleteItem(itemName);
+        return removedItem;
     }
 
     @Override
@@ -148,14 +149,14 @@ public class VendingMachineServiceImpl implements VendingMachineService {
     @Override
     public void updateItemToBuyInventory(String itemName, BigDecimal money) throws NoItemInventoryException, InsufficientFundsException, VendingMachinePersistenceException {
 
-        Item currentItem = dao.getItem(itemName);
+        Item currentItem = dao.getItem(itemName.toUpperCase());
 
         BigDecimal price = currentItem.getPrice();
         if (currentItem.getInventoryOfItem() < 1) {
             throw new NoItemInventoryException("No items left!");
         }
         if (price.equals(money) || price.compareTo(money) < 0) {
-            dao.updateItemInventory(itemName);
+            dao.updateItemInventory(itemName.toUpperCase());
         }
         if (price.compareTo(money) > 0) {
             throw new InsufficientFundsException("You do not have enough money for this selection. You only have $" + money);
