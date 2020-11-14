@@ -5,6 +5,7 @@
  */
 package com.mc.vendingmachine.ui;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Scanner;
  * 
  * @author Melanie Carroll
  */
-public class UserIOFileImpl implements UserIO{
+public class UserIOConsoleImpl implements UserIO{
     
       Scanner myScanner = new Scanner(System.in);
 
@@ -124,5 +125,27 @@ public class UserIOFileImpl implements UserIO{
 
         return num;
     } 
+
+    @Override
+    public BigDecimal readBig(String prompt) {
+        boolean invalidInput = true;
+        BigDecimal num = new BigDecimal("0");
+        while (invalidInput) {
+            try {
+              
+                // print the message msgPrompt (ex: asking for the # of cats!)
+                String stringValue = this.readString(prompt);
+                // Get the input line, and try and parse
+              num = new BigDecimal(stringValue); // if it's 'bob' it'll break
+                invalidInput = false; // or you can use 'break;'
+                return num;
+            } catch (NumberFormatException e) {
+                // If it explodes, it'll go here and do this.
+                this.print("Incorrect value. Enter a valid number.");
+            }
+           
+        }
+        return num;
     
+}
 }

@@ -38,10 +38,10 @@ public class VendingMachineView {
     public Item getItemInfo() {
         
         String itemName = io.readString("Please enter the item name");
-        String price = io.readString("Please enter the item's price");
-        String numItems = io.readString("Please enter how many units of the item you currently have");
+        BigDecimal price = io.readBig("Please enter the item's price");
+        int numItems = io.readInt("Please enter how many units of the item you currently have");
 
-        if (price.isEmpty() != true || numItems.isEmpty() != true || itemName.isEmpty() != true) {
+        if (price.toString().isEmpty() != true || String.valueOf(numItems).isEmpty() != true || itemName.isEmpty() != true) {
 
             boolean isACharacter = itemName.chars().allMatch(x -> Character.isLetter(x));
             if (isACharacter != false) {
@@ -50,21 +50,11 @@ public class VendingMachineView {
             
             Item currentItem = new Item(itemName);
 
-            boolean isNumeric = numItems.chars().allMatch(x -> Character.isDigit(x));
-            if (isNumeric == true) {
-                int amount = Integer.parseInt(numItems);
-                currentItem.setInventoryOfItem(amount);
-            }
-
-            boolean isAChar = price.chars().allMatch(x -> Character.isLetter(x));
-            if (isAChar != true) {
-                BigDecimal itemPrice = new BigDecimal(price.replaceAll(",", ""));
-                currentItem.setPrice(itemPrice);
-            }
-            return currentItem;
-        }else{
-            io.print("ERROR");
+            currentItem.setInventoryOfItem(numItems);      
+                
+            currentItem.setPrice(price);
             
+            return currentItem;
         }
         return null;
     }

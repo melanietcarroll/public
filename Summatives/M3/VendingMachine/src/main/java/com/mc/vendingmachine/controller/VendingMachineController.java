@@ -80,6 +80,9 @@ public class VendingMachineController {
              
         do {
             Item currentItem = view.getItemInfo();
+            if (currentItem == null){
+                return;
+            }
             try {
  
                 service.addItem(currentItem.getItemName(), currentItem);

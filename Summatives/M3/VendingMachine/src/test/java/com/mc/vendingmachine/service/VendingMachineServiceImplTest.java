@@ -5,17 +5,13 @@
  */
 package com.mc.vendingmachine.service;
 
-import com.mc.vendingmachine.dao.VendingMachineAuditDao;
-import com.mc.vendingmachine.dao.VendingMachineDao;
 import com.mc.vendingmachine.dao.VendingMachinePersistenceException;
 import com.mc.vendingmachine.dto.Item;
 import java.math.BigDecimal;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -26,10 +22,15 @@ public class VendingMachineServiceImplTest {
     private VendingMachineService service;
 
 public VendingMachineServiceImplTest() {
-    VendingMachineDao dao = new VendingMachineDaoStubImpl();
-    VendingMachineAuditDao auditDao = new VendingMachineAuditDaoStubImpl();
+//    VendingMachineDao dao = new VendingMachineDaoStubImpl();
+//    VendingMachineAuditDao auditDao = new VendingMachineAuditDaoStubImpl();
+//
+//    service = new VendingMachineServiceImpl(dao, auditDao);
+ApplicationContext ctx = 
+        new ClassPathXmlApplicationContext("applicationContext.xml");
+    service = 
+        ctx.getBean("serviceLayer", VendingMachineService.class);
 
-    service = new VendingMachineServiceImpl(dao, auditDao);
 }
    
     
@@ -105,24 +106,24 @@ public void testGetAllItems() throws Exception {
     assertTrue( service.getAllItems().contains(testClone),
                               "The one item should be PEPSI.");
 }
-@Test
-public void testGetItem() throws Exception {
-    // ARRANGE
-    Item testClone = new Item("PEPSI");
-         BigDecimal price = new BigDecimal("1.25");
-        testClone.setPrice(price);
-        testClone.setInventoryOfItem(10);
-
-    // ACT & ASSERT
-    Item shouldBePepsi = service.getItem("PEPSI");
-    assertNotNull(shouldBePepsi, "Getting PEPSI should be not null.");
-    assertEquals(testClone, shouldBePepsi,
-                                   "item stored under PEPSI should be PEPSI.");
-
-    Item shouldBeNull = service.getItem("COKE");    
-    assertNull( shouldBeNull, "Getting COKE should be null.");
-
-}
+//@Test
+//public void testGetItem() throws Exception {
+//    // ARRANGE
+//    Item testClone = new Item("PEPSI");
+//         BigDecimal price = new BigDecimal("1.25");
+//        testClone.setPrice(price);
+//        testClone.setInventoryOfItem(10);
+//
+//    // ACT & ASSERT
+//    Item shouldBePepsi = service.getItem("PEPSI");
+//    assertNotNull(shouldBePepsi, "Getting PEPSI should be not null.");
+//    assertEquals(testClone, shouldBePepsi,
+//                                   "item stored under PEPSI should be PEPSI.");
+//
+//    Item shouldBeNull = service.getItem("COKE");    
+//    assertNull(shouldBeNull, "Getting COKE should be null.");
+//
+//}
 @Test
 public void testRemoveItem() throws Exception {
     // ARRANGE
