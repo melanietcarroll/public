@@ -5,30 +5,40 @@
  */
 package com.mc.classroster.service;
 
-import com.mc.classroster.dao.ClassRosterAuditDao;
-import com.mc.classroster.dao.ClassRosterDao;
 import com.mc.classroster.dao.ClassRosterPersistenceException;
 import com.mc.classroster.dto.Student;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author Shawn
  */
 public class ClassRosterServiceLayerImplTest {
+    
+     // wire the Service Layer with stub implementations of the Dao and
+    // Audit Dao
+    // ClassRosterDao dao = new ClassRosterDaoStubImpl();
+    // ClassRosterAuditDao auditDao = 
+    //           new ClassRosterAuditDaoStubImpl();
+    //
+    // service = new ClassRosterServiceLayerImpl(dao, auditDao);
 
     private ClassRosterServiceLayer service;
 
     public ClassRosterServiceLayerImplTest() {
-        ClassRosterDao dao = new ClassRosterDaoStubImpl();
-        ClassRosterAuditDao auditDao = new ClassRosterAuditDaoStubImpl();
+//        ClassRosterDao dao = new ClassRosterDaoStubImpl();
+//        ClassRosterAuditDao auditDao = new ClassRosterAuditDaoStubImpl();
+//
+//        service = new ClassRosterServiceLayerImpl(dao, auditDao);
+ApplicationContext ctx = 
+        new ClassPathXmlApplicationContext("applicationContext.xml");
+    service = 
+        ctx.getBean("serviceLayer", ClassRosterServiceLayer.class);
 
-        service = new ClassRosterServiceLayerImpl(dao, auditDao);
+
     }
 
     @Test

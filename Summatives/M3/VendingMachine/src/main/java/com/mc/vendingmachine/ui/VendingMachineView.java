@@ -36,13 +36,19 @@ public class VendingMachineView {
     }
 
     public Item getItemInfo() {
+        
         String itemName = io.readString("Please enter the item name");
         String price = io.readString("Please enter the item's price");
         String numItems = io.readString("Please enter how many units of the item you currently have");
 
         if (price.isEmpty() != true || numItems.isEmpty() != true || itemName.isEmpty() != true) {
 
-            Item currentItem = new Item(itemName.toUpperCase());
+            boolean isACharacter = itemName.chars().allMatch(x -> Character.isLetter(x));
+            if (isACharacter != false) {
+               itemName = itemName.toUpperCase();
+            }
+            
+            Item currentItem = new Item(itemName);
 
             boolean isNumeric = numItems.chars().allMatch(x -> Character.isDigit(x));
             if (isNumeric == true) {
@@ -58,6 +64,7 @@ public class VendingMachineView {
             return currentItem;
         }else{
             io.print("ERROR");
+            
         }
         return null;
     }
