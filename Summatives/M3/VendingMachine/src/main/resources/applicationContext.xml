@@ -24,7 +24,7 @@
     </bean>
     
     <bean id="vendingMachineDao" 
-         class="com.mc.vendingmachine.dao.VendingMachineDaoFileImpl"/>
+         class="com.mc.vendingmachine.dao.VendingMachineDaoImpl"/>
     
     <bean id="auditDao" 
          class="com.mc.vendingmachine.dao.VendingMachineAuditDaoFileImpl"/>
