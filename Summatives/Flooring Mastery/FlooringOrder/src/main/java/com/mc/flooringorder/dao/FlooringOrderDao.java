@@ -23,7 +23,7 @@ public interface FlooringOrderDao {
      * @return the order object
      * @throws FlooringOrderPersistenceException
      */
-    Order addOrder(int orderNumber, Order order);
+    Order addOrder(int orderNumber, Order order)throws FlooringOrderPersistenceException ;
     // throws FlooringOrderPersistenceException;
 
     /**

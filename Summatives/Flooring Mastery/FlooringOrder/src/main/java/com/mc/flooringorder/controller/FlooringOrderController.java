@@ -7,6 +7,7 @@ package com.mc.flooringorder.controller;
 
 import com.mc.flooringorder.dao.FlooringOrderDao;
 import com.mc.flooringorder.dao.FlooringOrderDaoFileImpl;
+import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
 import com.mc.flooringorder.dto.Order;
 import com.mc.flooringorder.ui.FlooringOrderView;
 import com.mc.flooringorder.ui.UserIO;
@@ -24,7 +25,7 @@ public class FlooringOrderController {
     private UserIO io = new UserIOConsoleImpl();
     
     
-     public void run() {
+     public void run() throws FlooringOrderPersistenceException {
     boolean keepGoing = true;
     int menuSelection = 0;
    
@@ -59,7 +60,7 @@ public class FlooringOrderController {
     return view.printMenuAndGetSelection();
      }
      
-     private void addOrder(){
+     private void addOrder() throws FlooringOrderPersistenceException{
          view.displayCreateOrderBanner();
          int getOrderNumberFromFile = 1;//read in order number from last order OR read in order number from a saved file
          Order newOrder = new Order(getOrderNumberFromFile);

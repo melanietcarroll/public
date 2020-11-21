@@ -6,9 +6,17 @@
 package com.mc.flooringorder.dao;
 
 /**
- *
- * @author Shawn
+ * created 11/21/20
+ * @author Melanie Carroll
  */
-public class FlooringOrderPersistenceException {
+public class FlooringOrderPersistenceException extends Exception{
+    
+    public FlooringOrderPersistenceException(String message) {
+        super(message);
+    }
+    
+    public FlooringOrderPersistenceException(String message, Throwable cause) {
+        super(message, cause);
+    }
     
 }

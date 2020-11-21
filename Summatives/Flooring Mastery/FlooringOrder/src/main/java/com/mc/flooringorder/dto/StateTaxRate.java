@@ -16,6 +16,10 @@ public class StateTaxRate {
     private String stateAbbreviation;
     private String stateName;
     private BigDecimal stateTaxRate;
+    
+    public StateTaxRate(String stateAbbreviation) {
+        this.stateAbbreviation = stateAbbreviation;
+    }
 
     public String getStateAbbreviation() {
         return stateAbbreviation;
