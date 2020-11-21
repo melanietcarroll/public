@@ -5,10 +5,41 @@
  */
 package com.mc.flooringorder.dto;
 
+import java.math.BigDecimal;
+
 /**
- *
- * @author Shawn
+ * created 11/21/20
+ * @author Melanie Carroll
  */
 public class Product {
+    
+    private String productType;
+    private BigDecimal productCostPerSquareFoot;
+    private BigDecimal productLaborCostPerSquareFoot;
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public BigDecimal getProductCostPerSquareFoot() {
+        return productCostPerSquareFoot;
+    }
+
+    public void setProductCostPerSquareFoot(BigDecimal productCostPerSquareFoot) {
+        this.productCostPerSquareFoot = productCostPerSquareFoot;
+    }
+
+    public BigDecimal getProductLaborCostPerSquareFoot() {
+        return productLaborCostPerSquareFoot;
+    }
+
+    public void setProductLaborCostPerSquareFoot(BigDecimal productLaborCostPerSquareFoot) {
+        this.productLaborCostPerSquareFoot = productLaborCostPerSquareFoot;
+    }
+    
     
 }

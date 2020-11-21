@@ -128,6 +128,8 @@ public class UserIOConsoleImpl implements UserIO{
 
     @Override
     public BigDecimal readBig(String prompt) {
+        BigDecimal max = new BigDecimal("9.99");
+        BigDecimal min = new BigDecimal("0.01");
         boolean invalidInput = true;
         BigDecimal num = new BigDecimal("0");
         while (invalidInput) {
@@ -138,7 +140,14 @@ public class UserIOConsoleImpl implements UserIO{
                 // Get the input line, and try and parse
               num = new BigDecimal(stringValue); // if it's 'bob' it'll break
                 invalidInput = false; // or you can use 'break;'
-                return num;
+              
+                
+                if (num.compareTo(min)<0){
+                    invalidInput = true;
+                }
+                if (num.compareTo(max)>0){
+                    invalidInput = true;
+                }
             } catch (NumberFormatException e) {
                 // If it explodes, it'll go here and do this.
                 this.print("Incorrect value. Enter a valid number.");

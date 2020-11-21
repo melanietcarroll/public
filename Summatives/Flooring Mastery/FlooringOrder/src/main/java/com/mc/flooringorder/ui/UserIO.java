@@ -6,6 +6,7 @@
 package com.mc.flooringorder.ui;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * created 11/21/20
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
 public interface UserIO {
     void print(String message);
 
-    String readString(String prompt);
+    String readStringInput(String prompt);
 
     int readInt(String prompt);
 
@@ -33,4 +34,10 @@ public interface UserIO {
     long readLong(String prompt, long min, long max);
 
     BigDecimal readBig(String prompt);
+    
+    LocalDate readDate(String prompt);
+    
+    BigDecimal readArea(String prompt);
+    
+    String readString(String prompt);
 }

@@ -5,10 +5,41 @@
  */
 package com.mc.flooringorder.dto;
 
+import java.math.BigDecimal;
+
 /**
- *
- * @author Shawn
+ * created 11/21/20
+ * @author Melanie Carroll
  */
 public class StateTaxRate {
+    
+    private String stateAbbreviation;
+    private String stateName;
+    private BigDecimal stateTaxRate;
+
+    public String getStateAbbreviation() {
+        return stateAbbreviation;
+    }
+
+    public void setStateAbbreviation(String stateAbbreviation) {
+        this.stateAbbreviation = stateAbbreviation;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public BigDecimal getStateTaxRate() {
+        return stateTaxRate;
+    }
+
+    public void setStateTaxRate(BigDecimal stateTaxRate) {
+        this.stateTaxRate = stateTaxRate;
+    }
+    
     
 }

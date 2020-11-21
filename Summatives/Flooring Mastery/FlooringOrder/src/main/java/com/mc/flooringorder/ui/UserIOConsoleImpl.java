@@ -5,8 +5,14 @@
  */
 package com.mc.flooringorder.ui;
 
+import static java.lang.Integer.max;
+import static java.lang.Integer.min;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * created 11/21/20
@@ -23,12 +29,24 @@ public class UserIOConsoleImpl implements UserIO{
     }
 
     @Override
-    public String readString(String prompt) {
+    public String readStringInput(String prompt) {
+        boolean hasErrors = false;
+        String read;
+        do{
         System.out.println(prompt);
-        String read = myScanner.nextLine();
+        read = myScanner.nextLine();
+        if(Pattern.matches("[\\w,.]", read)){
+            hasErrors = false;
+        }
+        if (read.trim().isEmpty()){
+            hasErrors = true;
+        }
+        }
+        while (hasErrors);
+                   
         return read;
     }
-
+        
     @Override
     public int readInt(String prompt) {
         boolean invalidInput = true;
@@ -147,6 +165,61 @@ public class UserIOConsoleImpl implements UserIO{
         return num;
     
 }
-    
+
+    @Override
+    public LocalDate readDate(String prompt) {
+         LocalDate today = LocalDate.now();
+         LocalDate max = today.plusMonths(2);
+        LocalDate date;
+        do {
+            date = readDate(prompt);
+            try{
+                date = date.parse(prompt, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            }catch (DateTimeParseException e){
+            System.out.println("Invalid date!");
+            }
+        } while (date.isBefore(today)  || date.isAfter(max));
+
+        return date;
+    }
+
+    @Override
+    public BigDecimal readArea(String prompt) {
+         
+        BigDecimal min = new BigDecimal("100");
+        boolean invalidInput = true;
+        BigDecimal num = new BigDecimal("0");
+        while (invalidInput) {
+            try {
+              
+                // print the message msgPrompt (ex: asking for the # of cats!)
+                String stringValue = this.readString(prompt);
+                // Get the input line, and try and parse
+              num = new BigDecimal(stringValue); // if it's 'bob' it'll break
+                invalidInput = false; // or you can use 'break;'
+              
+                
+                if (num.compareTo(min)<0){
+                    invalidInput = true;
+                }
+                
+            } catch (NumberFormatException e) {
+                // If it explodes, it'll go here and do this.
+                this.print("Incorrect value. Enter a valid number.");
+            }
+           
+        }
+        return num;
     
 }
+
+    @Override
+    public String readString(String prompt) {
+         System.out.println(prompt);
+        String read = myScanner.nextLine();
+        return read;
+    }
+    }
+    
+    
+
