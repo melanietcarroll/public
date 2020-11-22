@@ -6,9 +6,9 @@
 package com.mc.flooringorder.dao;
 
 /**
- *
- * @author Shawn
+ * created 11/21/20
+ * @author Melanie Carroll
  */
 public interface FlooringOrderAuditDao {
-    
+    public void writeAuditEntry(String entry) throws FlooringOrderPersistenceException;
 }
