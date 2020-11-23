@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,17 +39,17 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     private Map<String, Product> products = new HashMap<>();
 
     @Override
-    public List<Order> displayOrders(LocalDateTime date) {
+    public List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order editOrder(LocalDateTime orderDate, int orderNumber) {
+    public Order editOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order removeOrder(LocalDateTime orderDate, int orderNumber) {
+    public Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -56,9 +57,11 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     public Order addOrder(int orderNumber, Order order) throws FlooringOrderPersistenceException {
         loadProduct();
         loadTax();
-        orderNumber = loadOrderNumber();
-        orderNumber += 1;
-        Order prevOrder = orders.put(orderNumber, order);
+        orderNumber = getOrderNumber();
+//        orderNumber += 1;
+
+        Order prevOrder = orders.put(orderNumber, order);//where am I getting this order from??
+        
         writeOrderNumber(orderNumber); //only if user saves order
         return prevOrder;
     }
@@ -234,38 +237,38 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
      * @throws FlooringOrderPersistenceException if an error occurs writing to
      * the file
      */
-    private void writeOrderFile() throws FlooringOrderPersistenceException {
-        // We are not handling the IOException - but
-        // we are translating it to an application specific exception and 
-        // then simple throwing it (i.e. 'reporting' it) to the code that
-        // called us.  It is the responsibility of the calling code to 
-        // handle any errors that occur.
-        PrintWriter out;
-        try {
-            out = new PrintWriter(new FileWriter(ROSTER_FILE));
-        } catch (IOException e) {
-            throw new FlooringOrderPersistenceException(
-                    "Could not save order data.", e);
-
-        }
-        // Write out the Order objects to the file.
-        // We could just grab the student map,
-        // get the Collection of Students and iterate over them but we've
-        // already created a method that gets a List of Students so
-        // we'll reuse it.
-        String studentAsText;
-        List<Student> studentList = this.getAllStudents();
-        for (Student currentStudent : studentList) {
-            // turn a Student into a String
-            studentAsText = marshallStudent(currentStudent);
-            // write the Student object to the file
-            out.println(studentAsText);
-            // force PrintWriter to write line to the file
-            out.flush();
-        }
-        // Clean up
-        out.close();
-    }
+//    private void writeOrderFile() throws FlooringOrderPersistenceException {
+//        // We are not handling the IOException - but
+//        // we are translating it to an application specific exception and 
+//        // then simple throwing it (i.e. 'reporting' it) to the code that
+//        // called us.  It is the responsibility of the calling code to 
+//        // handle any errors that occur.
+//        PrintWriter out;
+//        try {
+//            out = new PrintWriter(new FileWriter(ROSTER_FILE));
+//        } catch (IOException e) {
+//            throw new FlooringOrderPersistenceException(
+//                    "Could not save order data.", e);
+//
+//        }
+//        // Write out the Order objects to the file.
+//        // We could just grab the student map,
+//        // get the Collection of Students and iterate over them but we've
+//        // already created a method that gets a List of Students so
+//        // we'll reuse it.
+//        String studentAsText;
+//        List<Student> studentList = this.getAllStudents();
+//        for (Student currentStudent : studentList) {
+//            // turn a Student into a String
+//            studentAsText = marshallStudent(currentStudent);
+//            // write the Student object to the file
+//            out.println(studentAsText);
+//            // force PrintWriter to write line to the file
+//            out.flush();
+//        }
+//        // Clean up
+//        out.close();
+//    }
 //     private int unmarshallOrderNumber(String orderNumberAsText){
 //      
 //        String orderNumberToken = orderNumberAsText;
@@ -315,4 +318,37 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         // Clean up
         out.close();
     }
+
+    @Override
+    public int getOrderNumber() throws FlooringOrderPersistenceException {
+        int orderNumber = loadOrderNumber();
+        orderNumber += 1;
+        return orderNumber;
+}
+
+    @Override
+    public ArrayList<String> getAllTaxRatesStateAbbreviations() throws FlooringOrderPersistenceException {
+        loadTax();
+        return new ArrayList<String>(taxRates.keySet());
+    }
+
+    @Override
+    public ArrayList<String> getAllProductNames() throws FlooringOrderPersistenceException {
+         loadProduct();
+        return new ArrayList<String>(products.keySet());
+    }
+
+    @Override
+    public StateTaxRate getStateTaxRate(String stateAbbreviation) throws FlooringOrderPersistenceException {
+        loadTax();
+        return taxRates.get(stateAbbreviation);
+    }
+
+    @Override
+    public Product getProduct(String productName) throws FlooringOrderPersistenceException {
+        loadProduct();
+        return products.get(productName);
+    }
+
+   
 }

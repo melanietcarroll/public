@@ -24,5 +24,5 @@ public interface FlooringOrderServiceLayer {
     
     Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
     
-    
+    int getOrderNumber() throws FlooringOrderPersistenceException;
 }

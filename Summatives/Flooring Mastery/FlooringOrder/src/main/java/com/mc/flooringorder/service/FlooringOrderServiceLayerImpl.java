@@ -5,6 +5,8 @@
  */
 package com.mc.flooringorder.service;
 
+import com.mc.flooringorder.dao.FlooringOrderAuditDao;
+import com.mc.flooringorder.dao.FlooringOrderDao;
 import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
 import com.mc.flooringorder.dto.Order;
 import java.time.LocalDateTime;
@@ -15,6 +17,9 @@ import java.util.List;
  * @author Melanie Carroll
  */
 public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer {
+    
+    private FlooringOrderAuditDao auditDao;
+    FlooringOrderDao dao;
 
     @Override
     public void createOrder(Order order) throws FlooringOrderPersistenceException {
@@ -34,6 +39,12 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
     @Override
     public Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getOrderNumber() throws FlooringOrderPersistenceException {
+        int orderNum = dao.getOrderNumber();
+        return orderNum;
     }
     
 }

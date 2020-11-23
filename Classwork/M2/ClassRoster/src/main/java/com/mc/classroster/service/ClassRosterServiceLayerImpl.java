@@ -25,6 +25,7 @@ public class ClassRosterServiceLayerImpl implements ClassRosterServiceLayer {
         this.auditDao = auditDao;
     }
 
+    
     @Override
     public void createStudent(Student student) throws
             ClassRosterDuplicateIdException,

@@ -6,7 +6,10 @@
 package com.mc.flooringorder.dao;
 
 import com.mc.flooringorder.dto.Order;
+import com.mc.flooringorder.dto.Product;
+import com.mc.flooringorder.dto.StateTaxRate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +35,7 @@ public interface FlooringOrderDao {
      * @return Orders List containing all orders in the file for date selected.
      * @throws FlooringOrderPersistenceException
      */
-    List<Order> displayOrders(LocalDateTime date);
+    List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
 
     /**
@@ -45,7 +48,7 @@ public interface FlooringOrderDao {
      * null if no such order exists
      * @throws FlooringOrderPersistenceException
      */
-    Order editOrder(LocalDateTime orderDate, int orderNumber);
+    Order editOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
 
     /**
@@ -59,6 +62,17 @@ public interface FlooringOrderDao {
      * was associated with the given order date and order number
      * @throws FlooringOrderPersistenceException
      */
-    Order removeOrder(LocalDateTime orderDate, int orderNumber);
+    Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
+    
+    int getOrderNumber() throws FlooringOrderPersistenceException;
+    
+    ArrayList<String> getAllTaxRatesStateAbbreviations() throws FlooringOrderPersistenceException;
+    
+    ArrayList<String> getAllProductNames() throws FlooringOrderPersistenceException;
+    
+    StateTaxRate getStateTaxRate(String stateAbbreviation) throws FlooringOrderPersistenceException;
+    
+    Product getProduct(String productName) throws FlooringOrderPersistenceException;
+            
 }
