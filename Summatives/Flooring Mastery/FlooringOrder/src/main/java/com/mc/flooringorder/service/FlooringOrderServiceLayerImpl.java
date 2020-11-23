@@ -9,8 +9,12 @@ import com.mc.flooringorder.dao.FlooringOrderAuditDao;
 import com.mc.flooringorder.dao.FlooringOrderDao;
 import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
 import com.mc.flooringorder.dto.Order;
+import com.mc.flooringorder.dto.Product;
+import com.mc.flooringorder.dto.StateTaxRate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * created 11/22/20
@@ -20,10 +24,13 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
     
     private FlooringOrderAuditDao auditDao;
     FlooringOrderDao dao;
+    
+//    private Map<String, StateTaxRate> taxRates = new HashMap<>();
+//    private Map<String, Product> products = new HashMap<>();
 
     @Override
     public void createOrder(Order order) throws FlooringOrderPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override

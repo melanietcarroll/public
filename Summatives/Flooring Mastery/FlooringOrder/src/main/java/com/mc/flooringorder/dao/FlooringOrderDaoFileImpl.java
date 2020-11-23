@@ -345,9 +345,9 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     }
 
     @Override
-    public Product getProduct(String productName) throws FlooringOrderPersistenceException {
+    public Product getProduct(String productType) throws FlooringOrderPersistenceException {
         loadProduct();
-        return products.get(productName);
+        return products.get(productType);
     }
 
    
