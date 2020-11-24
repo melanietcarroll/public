@@ -57,10 +57,11 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     public Order addOrder(int orderNumber, Order order) throws FlooringOrderPersistenceException {
         loadProduct();
         loadTax();
-        orderNumber = getOrderNumber();
-//        orderNumber += 1;
+        orderNumber = getOrderNumber();//do this in service to set order number?
+//        orderNumber += 1;  //incrementing in method
 
-        Order prevOrder = orders.put(orderNumber, order);//where am I getting this order from??
+        Order prevOrder = orders.put(orderNumber, order);//putting the order from param into a map
+        //if user accepts order write order to file with order date Orders_MMDDYYYY.txt
         
         writeOrderNumber(orderNumber); //only if user saves order
         return prevOrder;
@@ -237,45 +238,57 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
      * @throws FlooringOrderPersistenceException if an error occurs writing to
      * the file
      */
-//    private void writeOrderFile() throws FlooringOrderPersistenceException {
-//        // We are not handling the IOException - but
-//        // we are translating it to an application specific exception and 
-//        // then simple throwing it (i.e. 'reporting' it) to the code that
-//        // called us.  It is the responsibility of the calling code to 
-//        // handle any errors that occur.
-//        PrintWriter out;
-//        try {
-//            out = new PrintWriter(new FileWriter(ROSTER_FILE));
-//        } catch (IOException e) {
-//            throw new FlooringOrderPersistenceException(
-//                    "Could not save order data.", e);
-//
-//        }
-//        // Write out the Order objects to the file.
-//        // We could just grab the student map,
-//        // get the Collection of Students and iterate over them but we've
-//        // already created a method that gets a List of Students so
-//        // we'll reuse it.
-//        String studentAsText;
-//        List<Student> studentList = this.getAllStudents();
-//        for (Student currentStudent : studentList) {
-//            // turn a Student into a String
-//            studentAsText = marshallStudent(currentStudent);
-//            // write the Student object to the file
-//            out.println(studentAsText);
-//            // force PrintWriter to write line to the file
-//            out.flush();
-//        }
-//        // Clean up
-//        out.close();
-//    }
-//     private int unmarshallOrderNumber(String orderNumberAsText){
-//      
-//        String orderNumberToken = orderNumberAsText;
-//        int orderNumber = Integer.parseInt(orderNumberToken);
-//        
-//        return orderNumber;
-//    }
+    private void writeOrderFile() throws FlooringOrderPersistenceException {
+        // We are not handling the IOException - but
+        // we are translating it to an application specific exception and 
+        // then simple throwing it (i.e. 'reporting' it) to the code that
+        // called us.  It is the responsibility of the calling code to 
+        // handle any errors that occur.
+        
+        //readDate format from user date = "MM/dd/yyyy"
+        //format LocalDate into a String:
+        //String formatted = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
+        //check to see if this orderdate file already exists in the folder
+        //Path path = Path.of("orders/currentOrderTextFile"); BUT WILL THIS WORK--currentOrderTextFile is not a String!!
+        //boolean exists = Files.exists(path);
+        //if exists != false, append order
+        //if exists == false, create order file in orders folder
+               
+        //create file for order:
+        //File currentOrderTextFile = newFile("Orders_" + formatted + ".txt");
+        
+        
+        
+        PrintWriter out;
+        try {
+            out = new PrintWriter(new FileWriter(currentOrderTextFile));
+        } catch (IOException e) {
+            throw new FlooringOrderPersistenceException(
+                    "Could not save order data.", e);
+
+        }
+        // Write out the Order objects to the file.
+        
+        String studentAsText;
+        List<Student> studentList = this.getAllStudents();
+        for (Student currentStudent : studentList) {
+            // turn a Student into a String
+            studentAsText = marshallStudent(currentStudent);
+            // write the Student object to the file
+            out.println(studentAsText);
+            // force PrintWriter to write line to the file
+            out.flush();
+        }
+        // Clean up
+        out.close();
+    }
+     private int unmarshallOrderNumber(String orderNumberAsText){
+      
+        String orderNumberToken = orderNumberAsText;
+        int orderNumber = Integer.parseInt(orderNumberToken);
+        
+        return orderNumber;
+    }
 
     private int loadOrderNumber() throws FlooringOrderPersistenceException {
         Scanner myScanner;

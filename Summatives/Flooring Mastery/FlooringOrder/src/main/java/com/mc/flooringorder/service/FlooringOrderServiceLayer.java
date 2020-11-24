@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface FlooringOrderServiceLayer {
     
-    void createOrder(Order order) throws FlooringOrderPersistenceException;
+    Order createOrder(Order order) throws FlooringOrderPersistenceException;
     
     List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException;
     

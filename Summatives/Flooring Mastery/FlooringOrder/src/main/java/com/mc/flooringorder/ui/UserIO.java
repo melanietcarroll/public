@@ -37,6 +37,8 @@ public interface UserIO {
     
     LocalDate readDate(String prompt);
     
+    LocalDate readDate(String prompt, LocalDate max);
+    
     BigDecimal readArea(String prompt);
     
     String readString(String prompt);

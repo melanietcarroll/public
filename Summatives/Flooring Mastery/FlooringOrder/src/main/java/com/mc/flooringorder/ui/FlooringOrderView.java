@@ -31,7 +31,8 @@ public class FlooringOrderView {
     }
 
     public LocalDate getOrderDate() {
-        LocalDate date = io.readDate("Please enter order date in the following format: MM/dd/yyyy");
+        LocalDate max = LocalDate.now().plusMonths(6);
+        LocalDate date = io.readDate("Please enter order date in the following format: MM/dd/yyyy", max);
         return date;
     }
 

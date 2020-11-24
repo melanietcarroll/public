@@ -94,7 +94,7 @@ public class UserIOConsoleImpl implements UserIO{
     public double readDouble(String prompt, double min, double max) {
         double num;
         do {
-            num = readInt(prompt);
+            num = readDouble(prompt);
         } while (num < min || num > max);
 
         return num;
@@ -115,7 +115,7 @@ public class UserIOConsoleImpl implements UserIO{
     public float readFloat(String prompt, float min, float max) {
         float num;
         do {
-            num = readInt(prompt);
+            num = readFloat(prompt);
         } while (num < min || num > max);
 
         return num;
@@ -137,7 +137,7 @@ public class UserIOConsoleImpl implements UserIO{
     public long readLong(String prompt, long min, long max) {
         long num;
         do {
-            num = readInt(prompt);
+            num = readLong(prompt);
         } while (num < min || num > max);
 
         return num;
@@ -155,12 +155,11 @@ public class UserIOConsoleImpl implements UserIO{
                 // Get the input line, and try and parse
               num = new BigDecimal(stringValue); // if it's 'bob' it'll break
                 invalidInput = false; // or you can use 'break;'
-                return num;
+//                return num;
             } catch (NumberFormatException e) {
                 // If it explodes, it'll go here and do this.
                 this.print("Incorrect value. Enter a valid number.");
-            }
-           
+            }    
         }
         return num;
     
@@ -168,47 +167,45 @@ public class UserIOConsoleImpl implements UserIO{
 
     @Override
     public LocalDate readDate(String prompt) {
+        boolean invalidInput = true;
          LocalDate today = LocalDate.now();
-         LocalDate max = today.plusMonths(2);
-        LocalDate date;
-        do {
-            date = readDate(prompt);
+         
+        LocalDate date = LocalDate.now();
+
+           while (invalidInput) {
             try{
-                date = date.parse(prompt, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                date = LocalDate.parse(prompt, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                invalidInput = false; // or you can use 'break;'
             }catch (DateTimeParseException e){
             System.out.println("Invalid date!");
             }
-        } while (date.isBefore(today)  || date.isAfter(max));
 
+           }
         return date;
+    }
+    
+    @Override
+    public LocalDate readDate(String prompt, LocalDate max) {
+       LocalDate today = LocalDate.now();
+       max = today.plusMonths(6);
+       LocalDate date;
+       
+       do{
+           date = readDate(prompt);
+       }while (date.isBefore(today)  || date.isAfter(max));
+       return date;
     }
 
     @Override
     public BigDecimal readArea(String prompt) {
          
         BigDecimal min = new BigDecimal("100");
-        boolean invalidInput = true;
-        BigDecimal num = new BigDecimal("0");
-        while (invalidInput) {
-            try {
-              
-                // print the message msgPrompt (ex: asking for the # of cats!)
-                String stringValue = this.readString(prompt);
-                // Get the input line, and try and parse
-              num = new BigDecimal(stringValue); // if it's 'bob' it'll break
-                invalidInput = false; // or you can use 'break;'
-              
-                
-                if (num.compareTo(min)<0){
-                    invalidInput = true;
-                }
-                
-            } catch (NumberFormatException e) {
-                // If it explodes, it'll go here and do this.
-                this.print("Incorrect value. Enter a valid number.");
-            }
-           
+        BigDecimal num;
+        do{
+            num = readBig(prompt);
         }
+        while (num.compareTo(min)<0);
+    
         return num;
     
 }
@@ -219,6 +216,8 @@ public class UserIOConsoleImpl implements UserIO{
         String read = myScanner.nextLine();
         return read;
     }
+
+    
     }
     
     
