@@ -257,6 +257,15 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //create file for order:
         //File currentOrderTextFile = newFile("Orders_" + formatted + ".txt");
         
+        //if order is edited, will have to check if order file exists and grab all orders from that date
+        //to re-write to file (don't want to append edited order to file with previous order)
+        
+        //if order is deleted will have to pull that order file and grab all orders from that date to 
+        //re-write to the file
+        
+        //also have to write out the header file at the beginning of each new file
+        //System.out.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
+        //currently have a date field in the Order object--
         
         
         PrintWriter out;
@@ -269,8 +278,8 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         }
         // Write out the Order objects to the file.
         
-        String studentAsText;
-        List<Student> studentList = this.getAllStudents();
+        String OrderAsText;
+        List<Order> studentList = this.getAllStudents();
         for (Student currentStudent : studentList) {
             // turn a Student into a String
             studentAsText = marshallStudent(currentStudent);
