@@ -7,6 +7,7 @@ package com.mc.flooringorder.ui;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * created 11/21/20
@@ -42,4 +43,6 @@ public interface UserIO {
     BigDecimal readArea(String prompt);
     
     String readString(String prompt);
+    
+    String readString(String prompt, List<String> list);
 }

@@ -65,7 +65,7 @@ public interface FlooringOrderDao {
     Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
     
-    int getOrderNumber() throws FlooringOrderPersistenceException;
+//    int getOrderNumber() throws FlooringOrderPersistenceException;
     
     ArrayList<String> getAllTaxRatesStateAbbreviations() throws FlooringOrderPersistenceException;
     
