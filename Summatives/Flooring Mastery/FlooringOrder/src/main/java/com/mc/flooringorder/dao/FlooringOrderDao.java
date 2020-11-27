@@ -75,5 +75,7 @@ public interface FlooringOrderDao {
     StateTaxRate getStateTaxRate(String stateAbbreviation) throws FlooringOrderPersistenceException;
     
     Product getProduct(String productType) throws FlooringOrderPersistenceException;
+    
+    Boolean checkIfFileExists(String date);
             
 }

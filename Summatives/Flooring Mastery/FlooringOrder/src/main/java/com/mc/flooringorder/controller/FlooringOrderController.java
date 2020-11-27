@@ -78,11 +78,17 @@ public class FlooringOrderController {
 //        String state = view.getOrderState();//read in state objects into a list and check for match then use statename and taxrate fields
 
         List<String> stateAbbreviations = dao.getAllTaxRatesStateAbbreviations();
-        String state = view.getOrderState(stateAbbreviations);//read in state objects into a list and check for match then use statename and taxrate fields
+        String state = view.getOrderState(stateAbbreviations).toUpperCase();//read in state objects into a list and check for match then use statename and taxrate fields
+
 
         List<String> productNames = dao.getAllProductNames();
-        String product = view.getOrderProduct(productNames);//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
-        Order newOrder = new Order(service.getOrderNumber(date));
+        String product = view.getOrderProduct(productNames).toUpperCase();//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
+        
+        //int orderNumber = service.getOrderNumber(date);
+//        if (orderNumber == null){
+//            return orderNumber = 1;
+       int orderNumber = 1;
+        Order newOrder = new Order(orderNumber);
 
 //        service.getOrderNumber(date);
         newOrder.setCustomerName(name);

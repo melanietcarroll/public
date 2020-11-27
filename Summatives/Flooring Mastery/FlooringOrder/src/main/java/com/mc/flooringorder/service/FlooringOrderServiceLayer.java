@@ -40,4 +40,6 @@ public interface FlooringOrderServiceLayer {
     Product getProduct(String productType) throws FlooringOrderPersistenceException;
     
     void calculateOrder(Order order);
+    
+    
 }

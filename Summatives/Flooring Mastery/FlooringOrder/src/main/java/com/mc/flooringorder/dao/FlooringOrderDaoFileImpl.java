@@ -49,7 +49,8 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 
     @Override
     public List<Order> displayOrders(String date) throws FlooringOrderPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        loadOrders(date);
+        return new ArrayList(orders.values());
     }
 
     @Override
@@ -65,8 +66,8 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     @Override
     public Order addOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
         loadOrders(date);
-        loadProduct();
-        loadTax();
+//        loadProduct();
+//        loadTax();
 
 //        orderNumber = getOrderNumber();//do this in service to set order number?
 //        orderNumber += 1;  //incrementing in method
@@ -87,7 +88,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         String[] productTokens = productAsText.split(DELIMITER);
 
         // Given the pattern above, the ProductType is in index 0 of the array.
-        String productType = productTokens[0];
+        String productType = productTokens[0].toUpperCase();
 
         // Which we can then use to create a new Product object to satisfy
         // the requirements of the Product constructor.
@@ -123,7 +124,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //process while we have more lines in the file
 
         //have to skip the first header line
-        myScanner.hasNextLine();
+        myScanner.nextLine();
 
         while (myScanner.hasNextLine()) {
             //get the next line in the file
@@ -147,7 +148,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         String[] taxTokens = taxFileAsText.split(DELIMITER);
 
         // Given the pattern above, the State is in index 0 of the array.
-        String state = taxTokens[0];
+        String state = taxTokens[0].toUpperCase();
 
         // Which we can then use to create a new StateTaxRate object to satisfy
         // the requirements of the StateTaxRate constructor.
@@ -156,7 +157,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         // However, there are 2 remaining tokens that need to be set into the
         // new StateTaxRate object. Do this manually by using the appropriate setters.
         // Index 1 - StateName
-        taxFromFile.setStateName(taxTokens[1]);
+        taxFromFile.setStateName(taxTokens[1].toUpperCase());
 
         // Index 2 - TaxRate
         BigDecimal taxRate = new BigDecimal(taxTokens[2]);
@@ -181,7 +182,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //StateTaxRate object by calling the unmarshallTaxFile method
         //process while we have more lines in the file
         //have to skip the first header line
-        myScanner.hasNextLine();
+        myScanner.nextLine();
         while (myScanner.hasNextLine()) {
             //get the next line in the file
             currentLine = myScanner.nextLine();
@@ -326,7 +327,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //Order object by calling the unmarshallOrder method
         //process while we have more lines in the file
         //have to skip the first header line
-        myScanner.hasNextLine();
+        myScanner.nextLine();
         while (myScanner.hasNextLine()) {
             //get the next line in the file
             currentLine = myScanner.nextLine();
@@ -357,7 +358,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //format LocalDate into a String:
         //String formatted = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
   
-        //Path path = Path.of("orders/currentOrderTextFile"); BUT WILL THIS WORK--currentOrderTextFile is not a String!!
+        //Path path = Path.of("orders/"Orders_"+date+".txt"); BUT WILL THIS WORK--currentOrderTextFile is not a String!!
         //boolean exists = Files.exists(path);
         //if exists != false, append order
         //if exists == false, create order file in orders folder

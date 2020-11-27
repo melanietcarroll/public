@@ -173,7 +173,7 @@ public class UserIOConsoleImpl implements UserIO {
 
         while (invalidInput) {
             try {
-                date = LocalDate.parse(prompt, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                date = LocalDate.parse(this.readString(prompt), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
                 invalidInput = false; // or you can use 'break;'
             } catch (DateTimeParseException e) {
                 System.out.println("Invalid date!");
@@ -184,14 +184,12 @@ public class UserIOConsoleImpl implements UserIO {
     }
 
     @Override
-    public LocalDate readDate(String prompt, LocalDate max) {
-        LocalDate today = LocalDate.now();
-        max = today.plusMonths(6);
+    public LocalDate readDate(String prompt, LocalDate min, LocalDate max) {
         LocalDate date;
 
         do {
             date = readDate(prompt);
-        } while (date.isBefore(today) || date.isAfter(max));
+        } while (date.isBefore(min) || date.isAfter(max));
         return date;
     }
 

@@ -7,6 +7,7 @@ package com.mc.flooringorder.service;
 
 import com.mc.flooringorder.dao.FlooringOrderAuditDao;
 import com.mc.flooringorder.dao.FlooringOrderDao;
+import com.mc.flooringorder.dao.FlooringOrderDaoFileImpl;
 import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
 import com.mc.flooringorder.dto.Order;
 import com.mc.flooringorder.dto.Product;
@@ -28,7 +29,7 @@ import java.util.OptionalInt;
 public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer {
 
     private FlooringOrderAuditDao auditDao;
-    FlooringOrderDao dao;
+    FlooringOrderDao dao = new FlooringOrderDaoFileImpl();
     
     @Override
      public Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
@@ -54,9 +55,16 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     @Override
     public int getOrderNumber(String date) throws FlooringOrderPersistenceException {
+        int orderNum = 1;
+        
         List<Order> orderDate = dao.displayOrders(date);
+        if (orderDate == null){
+            orderNum = 1;
+            return orderNum;
+        }
         OptionalInt orderNumber = orderDate.stream().mapToInt((p) -> p.getOrderNumber()).max();
-        int orderNum = orderNumber.getAsInt() + 1;
+        orderNum = orderNumber.getAsInt() + 1;
+       
         return orderNum;
     }
 
@@ -95,8 +103,9 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
         BigDecimal taxRateValue = new BigDecimal(order.getTaxRate().toString());
         BigDecimal percentage = new BigDecimal("100");
-        BigDecimal taxRateCalc = taxRateValue.divide(percentage, 0, RoundingMode.HALF_UP);//tax rates are stored as whole numbers
-        BigDecimal tax = materialCost.add(laborCost).multiply(taxRateCalc).setScale(2, RoundingMode.HALF_UP); 
+        BigDecimal taxRateCalc = taxRateValue.divide(percentage, 2, RoundingMode.HALF_UP);//tax rates are stored as whole numbers
+        BigDecimal addMaterialCostAndLaborCost = materialCost.add(laborCost); 
+        BigDecimal tax = addMaterialCostAndLaborCost.multiply(taxRateCalc).setScale(2, RoundingMode.HALF_UP);
         order.setTax(tax);
 
         BigDecimal total = materialCost.add(laborCost).add(tax).setScale(2, RoundingMode.HALF_UP);
@@ -104,4 +113,5 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     }
 
+    
 }
