@@ -21,7 +21,7 @@ import java.util.OptionalInt;
  */
 public interface FlooringOrderServiceLayer {
     
-    Order createOrder(Order order) throws FlooringOrderPersistenceException;
+    Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException;
     
     List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException;
     
@@ -38,4 +38,6 @@ public interface FlooringOrderServiceLayer {
     StateTaxRate getStateTaxRate(String stateAbbreviation) throws FlooringOrderPersistenceException;
     
     Product getProduct(String productType) throws FlooringOrderPersistenceException;
+    
+    void calculateOrder(Order order);
 }

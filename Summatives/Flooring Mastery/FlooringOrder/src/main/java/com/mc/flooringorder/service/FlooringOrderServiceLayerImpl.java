@@ -29,33 +29,13 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     private FlooringOrderAuditDao auditDao;
     FlooringOrderDao dao;
-
+    
     @Override
-    public Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
-
-        BigDecimal costPerSquareFoot = new BigDecimal(order.getCostPerSquareFoot().toString());
-        BigDecimal projectArea = new BigDecimal(order.getArea().toString());
-//         newOrder.setOrderNumber(orderNumber);
-        //then do calculations
-        BigDecimal materialCost = projectArea.multiply(costPerSquareFoot).setScale(2, RoundingMode.HALF_UP);
-        order.setMaterialCost(materialCost);
-
-        BigDecimal laborCostPerSquareFoot = new BigDecimal(order.getLaborCostPerSquareFoot().toString());
-        BigDecimal laborCost = projectArea.multiply(laborCostPerSquareFoot).setScale(2, RoundingMode.HALF_UP);
-        order.setLaborCost(laborCost);
-
-        BigDecimal taxRateValue = new BigDecimal(order.getTaxRate().toString());
-        BigDecimal percentage = new BigDecimal("100");
-        BigDecimal taxRateCalc = taxRateValue.divide(percentage, 0, RoundingMode.HALF_UP);//tax rates are stored as whole numbers
-        BigDecimal tax = materialCost.add(laborCost).multiply(taxRateCalc).setScale(2, RoundingMode.HALF_UP); 
-        order.setTax(tax);
-
-        BigDecimal total = materialCost.add(laborCost).add(tax).setScale(2, RoundingMode.HALF_UP);
-        order.setTotal(total);
-        
-        return order;
-
+     public Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
+    return dao.addOrder(orderNumber, order, date);
     }
+
+    
 
     @Override
     public List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException {
@@ -98,6 +78,30 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
     @Override
     public Product getProduct(String productType) throws FlooringOrderPersistenceException {
         return dao.getProduct(productType);
+    }
+    @Override
+    public void calculateOrder(Order order){
+
+        BigDecimal costPerSquareFoot = new BigDecimal(order.getCostPerSquareFoot().toString());
+        BigDecimal projectArea = new BigDecimal(order.getArea().toString());
+//         newOrder.setOrderNumber(orderNumber);
+        //then do calculations
+        BigDecimal materialCost = projectArea.multiply(costPerSquareFoot).setScale(2, RoundingMode.HALF_UP);
+        order.setMaterialCost(materialCost);
+
+        BigDecimal laborCostPerSquareFoot = new BigDecimal(order.getLaborCostPerSquareFoot().toString());
+        BigDecimal laborCost = projectArea.multiply(laborCostPerSquareFoot).setScale(2, RoundingMode.HALF_UP);
+        order.setLaborCost(laborCost);
+
+        BigDecimal taxRateValue = new BigDecimal(order.getTaxRate().toString());
+        BigDecimal percentage = new BigDecimal("100");
+        BigDecimal taxRateCalc = taxRateValue.divide(percentage, 0, RoundingMode.HALF_UP);//tax rates are stored as whole numbers
+        BigDecimal tax = materialCost.add(laborCost).multiply(taxRateCalc).setScale(2, RoundingMode.HALF_UP); 
+        order.setTax(tax);
+
+        BigDecimal total = materialCost.add(laborCost).add(tax).setScale(2, RoundingMode.HALF_UP);
+        order.setTotal(total);
+
     }
 
 }

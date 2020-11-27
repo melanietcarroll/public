@@ -65,4 +65,25 @@ public class FlooringOrderView {
     io.readString(
             "Order successfully created.  Please hit enter to continue");
 }
+
+    public String orderSummary(Order order) {
+         String orderInfo = String.format("Order #: %s Name: %s State: %s Tax Rate: %s Product: %s Area: %s Cost Per Square Foot: %s"
+                 + " Labor Cost Per Square Foot: %s Material Cost: %s Labor Cost: %s Tax: %s Total: %s" ,
+              order.getOrderNumber(),
+             order.getCustomerName(),
+              order.getState(),
+              order.getTaxRate(),
+              order.getProductType(),
+              order.getArea(),
+              order.getCostPerSquareFoot(),
+              order.getLaborCostPerSquareFoot(),
+              order.getMaterialCost(),
+              order.getLaborCost(),
+              order.getTax(),
+              order.getTotal());
+         io.print(orderInfo);
+        
+        String answer = io.readString("Place order Y/N");
+        return answer;
+    }
 }

@@ -97,28 +97,16 @@ public class FlooringOrderController {
 
         StateTaxRate taxRate = service.getStateTaxRate(state);
         newOrder.setTaxRate(taxRate.getStateTaxRate());
-        
-//        BigDecimal costPerSquareFoot = new BigDecimal(newOrder.getCostPerSquareFoot().toString()).setScale(2, RoundingMode.HALF_UP);
-//        BigDecimal projectArea = new BigDecimal(newOrder.getArea().toString()).setScale(2, RoundingMode.HALF_UP);
-////         newOrder.setOrderNumber(orderNumber);
-//        //then do calculations
-//        BigDecimal materialCost = projectArea.multiply(costPerSquareFoot).setScale(2, RoundingMode.HALF_UP);
-//        newOrder.setMaterialCost(materialCost);
-//
-//        BigDecimal laborCostPerSquareFoot = new BigDecimal(newOrder.getLaborCostPerSquareFoot().toString()).setScale(2, RoundingMode.HALF_UP);
-//        BigDecimal laborCost = area.multiply(laborCostPerSquareFoot).setScale(2, RoundingMode.HALF_UP);
-//        newOrder.setLaborCost(laborCost);
-//
-//        BigDecimal taxRateValue = new BigDecimal(newOrder.getTaxRate().toString()).setScale(2, RoundingMode.HALF_UP);
-//        BigDecimal percentage = new BigDecimal("100");
-//        BigDecimal taxRateCalc = taxRateValue.divide(percentage, 2, RoundingMode.HALF_UP);
-//        BigDecimal tax = materialCost.add(laborCost).multiply(taxRateCalc).setScale(2, RoundingMode.HALF_UP); //tax rates are stored as whole numbers
-//        newOrder.setTax(tax);
-//
-//        BigDecimal total = materialCost.add(laborCost).add(tax).setScale(2, RoundingMode.HALF_UP);
-//        newOrder.setTotal(total);
 
-        service.createOrder(service.getOrderNumber(date), newOrder, date);
+        service.calculateOrder(newOrder);
+        String placeOrder = view.orderSummary(newOrder);
+        if (placeOrder.equalsIgnoreCase("Y")) {
+            service.createOrder(newOrder.getOrderNumber(), newOrder, date);
+        }
+        if (placeOrder.equalsIgnoreCase("N")) {
+            getMenuSelection();
+        }
+
         view.displayCreateSuccessBanner();
 
     }
