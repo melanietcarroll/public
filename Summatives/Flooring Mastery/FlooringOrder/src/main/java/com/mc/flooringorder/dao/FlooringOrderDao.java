@@ -8,7 +8,7 @@ package com.mc.flooringorder.dao;
 import com.mc.flooringorder.dto.Order;
 import com.mc.flooringorder.dto.Product;
 import com.mc.flooringorder.dto.StateTaxRate;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +23,11 @@ public interface FlooringOrderDao {
      * 
      * @param order number with which order is to be associated
      * @param order to be added to the file
+     * @param date to be added to create file
      * @return the order object
      * @throws FlooringOrderPersistenceException
      */
-    Order addOrder(int orderNumber, Order order)throws FlooringOrderPersistenceException ;
+    Order addOrder(int orderNumber, Order order, String date)throws FlooringOrderPersistenceException ;
     // throws FlooringOrderPersistenceException;
 
     /**
@@ -35,7 +36,7 @@ public interface FlooringOrderDao {
      * @return Orders List containing all orders in the file for date selected.
      * @throws FlooringOrderPersistenceException
      */
-    List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException;
+    List<Order> displayOrders(String date) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
 
     /**
@@ -48,7 +49,7 @@ public interface FlooringOrderDao {
      * null if no such order exists
      * @throws FlooringOrderPersistenceException
      */
-    Order editOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order editOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
 
     /**
@@ -62,7 +63,7 @@ public interface FlooringOrderDao {
      * was associated with the given order date and order number
      * @throws FlooringOrderPersistenceException
      */
-    Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order removeOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
     
 //    int getOrderNumber() throws FlooringOrderPersistenceException;

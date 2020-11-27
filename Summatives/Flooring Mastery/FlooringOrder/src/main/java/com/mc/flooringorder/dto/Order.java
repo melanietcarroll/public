@@ -27,17 +27,17 @@ public class Order {
    private BigDecimal laborCost;
    private BigDecimal tax;
    private BigDecimal total;
-   private LocalDate orderDate;
+   private String orderDate;
    
    public Order(int orderNumber) {
         this.orderNumber = orderNumber;
     }
 
-    public LocalDate getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDate orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 

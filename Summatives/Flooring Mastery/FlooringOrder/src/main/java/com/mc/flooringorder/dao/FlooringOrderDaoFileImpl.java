@@ -15,12 +15,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * created 11/21/20
@@ -29,12 +31,13 @@ import java.util.Scanner;
  */
 public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     
-    private final String ORDER_FILE;
-    
-     public FlooringOrderDaoFileImpl(String orderTextFile) {
-        ORDER_FILE = orderTextFile;
-    }
+//    private final String ORDER_FILE;
+//    
+//     public FlooringOrderDaoFileImpl(String orderTextFile) {
+//        ORDER_FILE = orderTextFile;
+//    }
 
+//    public static final String ORDER_FILE = "Orders_" + date + ".txt";
     public static final String PRODUCTS_FILE = "products.txt";
     public static final String TAX_FILE = "taxfile.txt";
 //    public static final String ORDER_NUMBER = "odernumberfile.txt";
@@ -45,23 +48,23 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     private Map<String, Product> products = new HashMap<>();
 
     @Override
-    public List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException {
+    public List<Order> displayOrders(String date) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order editOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException {
+    public Order editOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException {
+    public Order removeOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order addOrder(int orderNumber, Order order) throws FlooringOrderPersistenceException {
-        loadOrders();
+    public Order addOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
+        loadOrders(date);
         loadProduct();
         loadTax();
 
@@ -71,7 +74,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //if user accepts order write order to file with order date Orders_MMDDYYYY.txt
 
 //        writeOrderNumber(orderNumber); //only if user saves order
-        writeOrderFile();
+        writeOrderFile(date);
         return prevOrder;
     }
 
@@ -307,11 +310,11 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         return orderFromFile;
     }
 
-    private void loadOrders() throws FlooringOrderPersistenceException {
+    private void loadOrders(String date) throws FlooringOrderPersistenceException {
         Scanner myScanner;
         try {
             //create scanner for reading the file
-            myScanner = new Scanner(new BufferedReader(new FileReader(ORDER_FILE)));//pull file with order date
+            myScanner = new Scanner(new BufferedReader(new FileReader("Orders_" + date + ".txt")));//pull file with order date
         } catch (FileNotFoundException e) {
             throw new FlooringOrderPersistenceException("-_- Could not load file data into memory.", e);
         }
@@ -343,7 +346,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
      * @throws FlooringOrderPersistenceException if an error occurs writing to
      * the file
      */
-    private void writeOrderFile() throws FlooringOrderPersistenceException {
+    private void writeOrderFile(String date) throws FlooringOrderPersistenceException {
         // We are not handling the IOException - but
         // we are translating it to an application specific exception and 
         // then simple throwing it (i.e. 'reporting' it) to the code that
@@ -353,15 +356,15 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //readDate format from user date = "MM/dd/yyyy"
         //format LocalDate into a String:
         //String formatted = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
-        //check to see if this orderdate file already exists in the folder
+  
         //Path path = Path.of("orders/currentOrderTextFile"); BUT WILL THIS WORK--currentOrderTextFile is not a String!!
         //boolean exists = Files.exists(path);
         //if exists != false, append order
         //if exists == false, create order file in orders folder
         //create file for order:
         //File currentOrderTextFile = newFile("Orders_" + formatted + ".txt");
-        //if order is edited, will have to check if order file exists and grab all orders from that date
-        //to re-write to file (don't want to append edited order to file with previous order)
+        //if order is edited grab list orders and re-write file
+        
         //if order is deleted will have to pull that order file and grab all orders from that date to 
         //re-write to the file
         //also have to write out the header file at the beginning of each new file
@@ -369,7 +372,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //currently have a date field in the Order object--
         PrintWriter out;
         try {
-            out = new PrintWriter(new FileWriter(ORDER_FILE));
+            out = new PrintWriter(new FileWriter("Orders_" + date + ".txt"));
         } catch (IOException e) {
             throw new FlooringOrderPersistenceException(
                     "Could not save order data.", e);
@@ -377,19 +380,30 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         }
         // Write out the Order objects to the file.
 
-        String OrderAsText;
-        List<Order> studentList = this.getAllStudents();
-        for (Student currentStudent : studentList) {
-            // turn a Student into a String
-            studentAsText = marshallStudent(currentStudent);
-            // write the Student object to the file
-            out.println(studentAsText);
-            // force PrintWriter to write line to the file
+        String orderAsText;
+        
+        Set<Integer> keys = orders.keySet();
+        for (int k : keys){
+            Order currentOrder = orders.get(k);
+            orderAsText = marshallOrder(currentOrder);
+            out.println(orderAsText);
             out.flush();
         }
-        // Clean up
         out.close();
     }
+//        LocalDate date = order.getDate();
+//        List<Order> orderList = this.displayOrders(date);
+//        for (Student currentStudent : studentList) {
+//            // turn a Student into a String
+//            studentAsText = marshallStudent(currentStudent);
+//            // write the Student object to the file
+//            out.println(studentAsText);
+//            // force PrintWriter to write line to the file
+//            out.flush();
+//        }
+//        // Clean up
+//        out.close();
+//    }
 //     private int unmarshallOrderNumber(String orderNumberAsText){
 //      
 //        String orderNumberToken = orderNumberAsText;

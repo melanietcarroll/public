@@ -8,6 +8,8 @@ package com.mc.flooringorder.ui;
 import com.mc.flooringorder.dto.Order;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -29,11 +31,12 @@ public class FlooringOrderView {
 
         return io.readInt("Please select from the above choices.", 1, 5);
     }
-
-    public LocalDate getOrderDate() {
+    
+    public String getOrderDate() {
         LocalDate max = LocalDate.now().plusMonths(6);
         LocalDate date = io.readDate("Please enter order date in the following format: MM/dd/yyyy", max);
-        return date;
+        String formatted = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
+        return formatted;
     }
 
     public String getOrderName() {
@@ -41,13 +44,13 @@ public class FlooringOrderView {
         return name;
     }
 
-    public String getOrderState() {
-        String state = io.readStringInput("Enter sate abbrevation.");
+    public String getOrderState(List<String> stateAbbreviations) {
+        String state = io.readString("Enter sate abbrevation.", stateAbbreviations);
         return state;
     }
 
-    public String getOrderProduct() {
-        String product = io.readStringInput("Enter the product type.");
+    public String getOrderProduct(List<String> productNames) {
+        String product = io.readString("Enter the product type.", productNames);
         return product;
     }
     

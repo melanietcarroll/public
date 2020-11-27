@@ -7,8 +7,13 @@ package com.mc.flooringorder.service;
 
 import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
 import com.mc.flooringorder.dto.Order;
+import com.mc.flooringorder.dto.Product;
+import com.mc.flooringorder.dto.StateTaxRate;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
 /**
  * created 11/22/20
@@ -24,5 +29,13 @@ public interface FlooringOrderServiceLayer {
     
     Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
     
-    int getOrderNumber() throws FlooringOrderPersistenceException;
+    int getOrderNumber(String date) throws FlooringOrderPersistenceException;
+    
+   ArrayList<String> getAllTaxRatesStateAbbreviations() throws FlooringOrderPersistenceException;
+    
+    ArrayList<String> getAllProductNames() throws FlooringOrderPersistenceException;
+    
+    StateTaxRate getStateTaxRate(String stateAbbreviation) throws FlooringOrderPersistenceException;
+    
+    Product getProduct(String productType) throws FlooringOrderPersistenceException;
 }
