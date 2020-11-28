@@ -32,19 +32,18 @@ public class UserIOConsoleImpl implements UserIO {
 
     @Override
     public String readStringInput(String prompt) {
-        boolean hasErrors = false;
+        boolean hasErrors = true;
         String read;
         do {
             System.out.println(prompt);
             read = myScanner.nextLine();
-            if (Pattern.matches("[\\w,.]", read)) {
+            if (Pattern.matches("^[a-zA-Z0-9,.]*$", read)) {
                 hasErrors = false;
             }
             if (read.trim().isEmpty()) {
                 hasErrors = true;
             }
         } while (hasErrors);
-
         return read;
     }
 
@@ -216,7 +215,7 @@ public class UserIOConsoleImpl implements UserIO {
     @Override
     public String readString(String prompt, List<String> list) {
 
-        boolean hasErrors = false;
+        boolean hasErrors = true;
         String read;
         do {
             System.out.println(prompt);

@@ -46,12 +46,12 @@ public class FlooringOrderView {
     }
 
     public String getOrderState(List<String> stateAbbreviations) {
-        String state = io.readString("Enter sate abbrevation.", stateAbbreviations);
+        String state = io.readString("Enter one of the following sate abbrevations: "+ stateAbbreviations, stateAbbreviations);
         return state;
     }
 
     public String getOrderProduct(List<String> productNames) {
-        String product = io.readString("Enter the product type.", productNames);
+        String product = io.readString("Enter one of the following product types: "+productNames, productNames);
         return product;
     }
     

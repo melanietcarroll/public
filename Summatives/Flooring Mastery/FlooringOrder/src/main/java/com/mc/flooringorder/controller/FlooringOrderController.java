@@ -73,15 +73,17 @@ public class FlooringOrderController {
 //       
         BigDecimal area = view.getOrderArea();
         String date = view.getOrderDate();//use date to create order file or append to existing order file
+
         String name = view.getOrderName();
 //        String product = view.getOrderProduct();//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
 //        String state = view.getOrderState();//read in state objects into a list and check for match then use statename and taxrate fields
 
-        List<String> stateAbbreviations = dao.getAllTaxRatesStateAbbreviations();
+        List<String> stateAbbreviations = service.getAllTaxRatesStateAbbreviations();
         String state = view.getOrderState(stateAbbreviations).toUpperCase();//read in state objects into a list and check for match then use statename and taxrate fields
 
 
-        List<String> productNames = dao.getAllProductNames();
+
+        List<String> productNames = service.getAllProductNames();
         String product = view.getOrderProduct(productNames).toUpperCase();//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
         
         //int orderNumber = service.getOrderNumber(date);
@@ -113,7 +115,6 @@ public class FlooringOrderController {
         if (placeOrder.equalsIgnoreCase("N")) {
             getMenuSelection();
         }
-
         view.displayCreateSuccessBanner();
 
     }
