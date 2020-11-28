@@ -63,7 +63,8 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     @Override
     public Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Order removedOrder = dao.removeOrder(orderDate, orderNumber);
+        return removedOrder;
     }
 
     @Override
@@ -121,5 +122,17 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
         return dao.checkIfFileExists(date);
     }
 
-    
+    @Override
+    public Order getOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
+         if (dao.getOrder(orderDate, orderNumber) == null) {
+            DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMddyyyy");
+            LocalDate ld = LocalDate.parse(orderDate, inFormatter);
+
+            DateTimeFormatter outFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            String formattedDate = outFormatter.format(ld);
+            throw new FlooringOrderNotFoundException(
+                    "ERROR: No orders found for " + formattedDate);
+         }
+     return dao.getOrder(orderDate, orderNumber);
+}
 }

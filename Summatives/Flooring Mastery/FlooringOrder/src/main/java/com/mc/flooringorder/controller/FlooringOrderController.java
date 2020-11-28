@@ -36,29 +36,29 @@ public class FlooringOrderController {
     public void run() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         boolean keepGoing = true;
         int menuSelection = 0;
-     
+
         try {
-        while (keepGoing) {
+            while (keepGoing) {
 
-            menuSelection = getMenuSelection();
+                menuSelection = getMenuSelection();
 
-            switch (menuSelection) {
-                case 1:
-                    displayOrders();
-                    break;
-                case 2:
-                    addOrder();
-                    break;
-                case 3:
-                    io.print("Edit an Order");
-                    break;
-                case 4:
-                    io.print("Remove an Order");
-                    break;
-                case 5:
-                    keepGoing = false;
-                    break;
-                default:
+                switch (menuSelection) {
+                    case 1:
+                        displayOrders();
+                        break;
+                    case 2:
+                        addOrder();
+                        break;
+                    case 3:
+                        io.print("Edit an Order");
+                        break;
+                    case 4:
+                        removeOrder();
+                        break;
+                    case 5:
+                        keepGoing = false;
+                        break;
+                    default:
                         unknownCommand();
                 }
             }
@@ -123,19 +123,34 @@ public class FlooringOrderController {
     private void displayOrders() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         String date = view.getOrderDate();
         try {
-           List<Order> orderList = service.displayOrders(date);
-             view.displayOrderList(orderList);
+            List<Order> orderList = service.displayOrders(date);
+            view.displayOrderList(orderList);
         } catch (FlooringOrderPersistenceException | FlooringOrderNotFoundException e) {
             view.displayErrorMessage(e.getMessage());
         }
     }
 
     private void unknownCommand() {
-          view.displayUnknownCommandBanner();
+        view.displayUnknownCommandBanner();
     }
 
     private void exitMessage() {
-       view.displayExitBanner();
+        view.displayExitBanner();
     }
- 
+
+    private void removeOrder() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
+        String date = view.getOrderDate();
+        int orderNumber = view.getOrderNumber();
+        try {
+            Order order = service.getOrder(date, orderNumber);
+            String confirmDeletion = view.displayOrder(order);
+            
+            if (confirmDeletion.equalsIgnoreCase("Y")) {
+                service.removeOrder(date, orderNumber);
+            }
+        } catch (FlooringOrderPersistenceException | FlooringOrderNotFoundException e) {
+            view.displayErrorMessage(e.getMessage());
+        }
+
+    }
 }

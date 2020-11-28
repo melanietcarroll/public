@@ -43,6 +43,8 @@ public interface FlooringOrderServiceLayer {
     
     Boolean checkIfFileExists(String date);
     
+    Order getOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException;
+    
     
     
     

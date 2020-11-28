@@ -124,4 +124,29 @@ public class FlooringOrderView {
     public void displayExitBanner() {
         io.print("Good Bye!!!");
     }
+
+    public int getOrderNumber() {
+        return io.readInt("Please enter order number.");
+    }
+
+    public String displayOrder(Order order) {
+        String orderInfo = String.format("Order #: %s Name: %s State: %s Tax Rate: %s Product: %s Area: %s Cost Per Square Foot: %s"
+                + " Labor Cost Per Square Foot: %s Material Cost: %s Labor Cost: %s Tax: %s Total: %s",
+                order.getOrderNumber(),
+                order.getCustomerName(),
+                order.getState(),
+                order.getTaxRate(),
+                order.getProductType(),
+                order.getArea(),
+                order.getCostPerSquareFoot(),
+                order.getLaborCostPerSquareFoot(),
+                order.getMaterialCost(),
+                order.getLaborCost(),
+                order.getTax(),
+                order.getTotal());
+        io.print(orderInfo);
+
+        String answer = io.readString("Are you sure you want to delete the order? Y/N");
+        return answer;
+    }
 }

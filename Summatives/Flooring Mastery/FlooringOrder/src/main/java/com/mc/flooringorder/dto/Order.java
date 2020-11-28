@@ -45,9 +45,9 @@ public class Order {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
-    }
+//    public void setOrderNumber(int orderNumber) {
+//        this.orderNumber = orderNumber;
+//    }
 
     public String getCustomerName() {
         return customerName;

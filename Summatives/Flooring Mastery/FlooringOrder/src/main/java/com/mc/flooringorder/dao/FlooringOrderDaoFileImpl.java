@@ -68,7 +68,10 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 
     @Override
     public Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        loadOrders(orderDate);
+        Order removedOrder = orders.remove(orderNumber);
+        writeOrderFile(orderDate);
+        return removedOrder;
     }
 
     @Override
@@ -516,6 +519,15 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         }
 
         return orderNum;
+    }
+
+    @Override
+    public Order getOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
+        if (this.checkIfFileExists(orderDate) == true) {
+            loadOrders(orderDate);
+            return orders.get(orderNumber);
+        }
+        return null;
     }
 
 }

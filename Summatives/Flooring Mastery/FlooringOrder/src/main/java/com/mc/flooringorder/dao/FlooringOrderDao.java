@@ -80,5 +80,7 @@ public interface FlooringOrderDao {
     Boolean checkIfFileExists(String date);
     
     int getOrderNumber(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException;
+    
+    Order getOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException;
             
 }
