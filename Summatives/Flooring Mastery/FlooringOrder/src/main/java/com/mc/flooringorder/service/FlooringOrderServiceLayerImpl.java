@@ -14,7 +14,9 @@ import com.mc.flooringorder.dto.Product;
 import com.mc.flooringorder.dto.StateTaxRate;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,22 +41,33 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
     
 
     @Override
-    public List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException {
+    public List<Order> displayOrders(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {  
+//        return dao.displayOrders(date);
+        
+         if (dao.displayOrders(date) == null) {
+            DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMddyyyy");
+            LocalDate ld = LocalDate.parse(date, inFormatter);
+
+            DateTimeFormatter outFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            String formattedDate = outFormatter.format(ld);
+            throw new FlooringOrderNotFoundException(
+                    "ERROR: No orders found for " + formattedDate);
+        }
+         return dao.displayOrders(date);
+    }
+
+    @Override
+    public Order editOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order editOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException {
+    public Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getOrderNumber(String date) throws FlooringOrderPersistenceException {
+    public int getOrderNumber(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         return dao.getOrderNumber(date);
     }
 

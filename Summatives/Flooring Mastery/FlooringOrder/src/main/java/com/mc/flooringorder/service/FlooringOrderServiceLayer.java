@@ -23,13 +23,13 @@ public interface FlooringOrderServiceLayer {
     
     Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException;
     
-    List<Order> displayOrders(LocalDateTime date) throws FlooringOrderPersistenceException;
+    List<Order> displayOrders(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException;
     
-    Order editOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order editOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException;
     
-    Order removeOrder(LocalDateTime orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException;
     
-    int getOrderNumber(String date) throws FlooringOrderPersistenceException;
+    int getOrderNumber(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException ;
     
    ArrayList<String> getAllTaxRatesStateAbbreviations() throws FlooringOrderPersistenceException;
     

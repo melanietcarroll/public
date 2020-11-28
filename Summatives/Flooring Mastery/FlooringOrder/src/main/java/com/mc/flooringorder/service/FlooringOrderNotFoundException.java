@@ -9,6 +9,12 @@ package com.mc.flooringorder.service;
  *
  * @author Shawn
  */
-public class FlooringOrderNotFoundException {
+public class FlooringOrderNotFoundException extends Exception{
+    public FlooringOrderNotFoundException(String message) {
+        super(message);
+    }
     
+    public FlooringOrderNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

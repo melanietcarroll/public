@@ -8,6 +8,7 @@ package com.mc.flooringorder.dao;
 import com.mc.flooringorder.dto.Order;
 import com.mc.flooringorder.dto.Product;
 import com.mc.flooringorder.dto.StateTaxRate;
+import com.mc.flooringorder.service.FlooringOrderNotFoundException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,18 +53,21 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     private Map<String, Product> products = new HashMap<>();
 
     @Override
-    public List<Order> displayOrders(String date) throws FlooringOrderPersistenceException {
-        loadOrders(date);
-        return new ArrayList(orders.values());
+    public List<Order> displayOrders(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
+        if (this.checkIfFileExists(date) == true) {
+            loadOrders(date);
+            return new ArrayList(orders.values());
+        }
+        return null;
     }
 
     @Override
-    public Order editOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException {
+    public Order editOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Order removeOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException {
+    public Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -500,7 +505,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     }
 
     @Override
-    public int getOrderNumber(String date) throws FlooringOrderPersistenceException {
+    public int getOrderNumber(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         int orderNum = 1;
 
         if (this.checkIfFileExists(date) == true) {

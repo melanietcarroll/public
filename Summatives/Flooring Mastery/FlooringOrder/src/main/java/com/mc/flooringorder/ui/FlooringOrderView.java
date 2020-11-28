@@ -31,7 +31,7 @@ public class FlooringOrderView {
 
         return io.readInt("Please select from the above choices.", 1, 5);
     }
-    
+
     public String getOrderDate() {
         LocalDate min = LocalDate.now().plusDays(1);
         LocalDate max = LocalDate.now().plusMonths(6);
@@ -46,45 +46,82 @@ public class FlooringOrderView {
     }
 
     public String getOrderState(List<String> stateAbbreviations) {
-        String state = io.readString("Enter one of the following sate abbrevations: "+ stateAbbreviations, stateAbbreviations);
+        String state = io.readString("Enter one of the following sate abbrevations: " + stateAbbreviations, stateAbbreviations);
         return state;
     }
 
     public String getOrderProduct(List<String> productNames) {
-        String product = io.readString("Enter one of the following product types: "+productNames, productNames);
+        String product = io.readString("Enter one of the following product types: " + productNames, productNames);
         return product;
     }
-    
+
     public BigDecimal getOrderArea() {
         BigDecimal area = io.readArea("Enter project area (minimum order size is 100 sq ft).");
         return area;
     }
-     public void displayCreateOrderBanner() {
-    io.print("=== Create Order ===");
-}
+
+    public void displayCreateOrderBanner() {
+        io.print("=== Create Order ===");
+    }
+
     public void displayCreateSuccessBanner() {
-    io.readString(
-            "Order successfully created.  Please hit enter to continue");
-}
+        io.readString(
+                "Order successfully created.  Please hit enter to continue");
+    }
 
     public String orderSummary(Order order) {
-         String orderInfo = String.format("Order #: %s Name: %s State: %s Tax Rate: %s Product: %s Area: %s Cost Per Square Foot: %s"
-                 + " Labor Cost Per Square Foot: %s Material Cost: %s Labor Cost: %s Tax: %s Total: %s" ,
-              order.getOrderNumber(),
-             order.getCustomerName(),
-              order.getState(),
-              order.getTaxRate(),
-              order.getProductType(),
-              order.getArea(),
-              order.getCostPerSquareFoot(),
-              order.getLaborCostPerSquareFoot(),
-              order.getMaterialCost(),
-              order.getLaborCost(),
-              order.getTax(),
-              order.getTotal());
-         io.print(orderInfo);
-        
+        String orderInfo = String.format("Order #: %s Name: %s State: %s Tax Rate: %s Product: %s Area: %s Cost Per Square Foot: %s"
+                + " Labor Cost Per Square Foot: %s Material Cost: %s Labor Cost: %s Tax: %s Total: %s",
+                order.getOrderNumber(),
+                order.getCustomerName(),
+                order.getState(),
+                order.getTaxRate(),
+                order.getProductType(),
+                order.getArea(),
+                order.getCostPerSquareFoot(),
+                order.getLaborCostPerSquareFoot(),
+                order.getMaterialCost(),
+                order.getLaborCost(),
+                order.getTax(),
+                order.getTotal());
+        io.print(orderInfo);
+
         String answer = io.readString("Place order Y/N");
         return answer;
+    }
+
+    public void displayOrderList(List<Order> orderList) {
+        for (Order currentOrder : orderList) {
+            String orderInfo = String.format("Order #: %s Name: %s State: %s Tax Rate: %s Product: %s Area: %s Cost Per Square Foot: %s"
+                    + " Labor Cost Per Square Foot: %s Material Cost: %s Labor Cost: %s Tax: %s Total: %s",
+                    currentOrder.getOrderNumber(),
+                    currentOrder.getCustomerName(),
+                    currentOrder.getState(),
+                    currentOrder.getTaxRate(),
+                    currentOrder.getProductType(),
+                    currentOrder.getArea(),
+                    currentOrder.getCostPerSquareFoot(),
+                    currentOrder.getLaborCostPerSquareFoot(),
+                    currentOrder.getMaterialCost(),
+                    currentOrder.getLaborCost(),
+                    currentOrder.getTax(),
+                    currentOrder.getTotal());
+
+            io.print(orderInfo);
+        }
+        io.readString("Please hit enter to continue.");
+    }
+
+    public void displayErrorMessage(String message) {
+        io.print("=== ERROR ===");
+        io.print(message);
+    }
+
+    public void displayUnknownCommandBanner() {
+         io.print("Unknown Command!!!");
+    }
+
+    public void displayExitBanner() {
+        io.print("Good Bye!!!");
     }
 }

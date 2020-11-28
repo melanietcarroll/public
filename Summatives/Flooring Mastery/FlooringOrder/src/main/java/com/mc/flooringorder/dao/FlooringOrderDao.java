@@ -8,6 +8,7 @@ package com.mc.flooringorder.dao;
 import com.mc.flooringorder.dto.Order;
 import com.mc.flooringorder.dto.Product;
 import com.mc.flooringorder.dto.StateTaxRate;
+import com.mc.flooringorder.service.FlooringOrderNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public interface FlooringOrderDao {
      * @return Orders List containing all orders in the file for date selected.
      * @throws FlooringOrderPersistenceException
      */
-    List<Order> displayOrders(String date) throws FlooringOrderPersistenceException;
+    List<Order> displayOrders(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException;
      //throws FlooringOrderPersistenceException;
 
     /**
@@ -49,7 +50,7 @@ public interface FlooringOrderDao {
      * null if no such order exists
      * @throws FlooringOrderPersistenceException
      */
-    Order editOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order editOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
 
     /**
@@ -63,7 +64,7 @@ public interface FlooringOrderDao {
      * was associated with the given order date and order number
      * @throws FlooringOrderPersistenceException
      */
-    Order removeOrder(LocalDate orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
     
 //    int getOrderNumber() throws FlooringOrderPersistenceException;
@@ -78,6 +79,6 @@ public interface FlooringOrderDao {
     
     Boolean checkIfFileExists(String date);
     
-    int getOrderNumber(String date) throws FlooringOrderPersistenceException;
+    int getOrderNumber(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException;
             
 }

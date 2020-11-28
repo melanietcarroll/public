@@ -7,13 +7,14 @@ package com.mc.flooringorder;
 
 import com.mc.flooringorder.controller.FlooringOrderController;
 import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
+import com.mc.flooringorder.service.FlooringOrderNotFoundException;
 
 /**
  * created 11/21/20
  * @author Melanie Carroll
  */
 public class App {
-    public static void main(String[] args) throws FlooringOrderPersistenceException {
+    public static void main(String[] args) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         FlooringOrderController controller = new FlooringOrderController();
         controller.run();
     }

@@ -11,6 +11,7 @@ import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
 import com.mc.flooringorder.dto.Order;
 import com.mc.flooringorder.dto.Product;
 import com.mc.flooringorder.dto.StateTaxRate;
+import com.mc.flooringorder.service.FlooringOrderNotFoundException;
 import com.mc.flooringorder.service.FlooringOrderServiceLayer;
 import com.mc.flooringorder.service.FlooringOrderServiceLayerImpl;
 import com.mc.flooringorder.ui.FlooringOrderView;
@@ -32,17 +33,18 @@ public class FlooringOrderController {
     private FlooringOrderDao dao = new FlooringOrderDaoFileImpl();
     private UserIO io = new UserIOConsoleImpl();
 
-    public void run() throws FlooringOrderPersistenceException {
+    public void run() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         boolean keepGoing = true;
         int menuSelection = 0;
-
+     
+        try {
         while (keepGoing) {
 
             menuSelection = getMenuSelection();
 
             switch (menuSelection) {
                 case 1:
-                    io.print("Display Orders");
+                    displayOrders();
                     break;
                 case 2:
                     addOrder();
@@ -57,22 +59,24 @@ public class FlooringOrderController {
                     keepGoing = false;
                     break;
                 default:
-                    io.print("UNKNOWN COMMAND");
+                        unknownCommand();
+                }
             }
-
+            exitMessage();
+        } catch (FlooringOrderPersistenceException e) {
+            view.displayErrorMessage(e.getMessage());
         }
-        io.print("Good Bye");
     }
 
     private int getMenuSelection() {
         return view.printMenuAndGetSelection();
     }
 
-    private void addOrder() throws FlooringOrderPersistenceException {
+    private void addOrder() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         view.displayCreateOrderBanner();
-//       
+
         BigDecimal area = view.getOrderArea();
-        String date = view.getOrderDate();//use date to create order file or append to existing order file
+        String date = view.getOrderDate();
 
         String name = view.getOrderName();
 //        String product = view.getOrderProduct();//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
@@ -81,16 +85,13 @@ public class FlooringOrderController {
         List<String> stateAbbreviations = service.getAllTaxRatesStateAbbreviations();
         String state = view.getOrderState(stateAbbreviations).toUpperCase();//read in state objects into a list and check for match then use statename and taxrate fields
 
-
-
         List<String> productNames = service.getAllProductNames();
         String product = view.getOrderProduct(productNames).toUpperCase();//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
-        
+
         //int orderNumber = service.getOrderNumber(date);
 //        if (orderNumber == null){
 //            return orderNumber = 1;
-
-       int orderNumber = service.getOrderNumber(date);
+        int orderNumber = service.getOrderNumber(date);
         Order newOrder = new Order(orderNumber);
 
 //        service.getOrderNumber(date);
@@ -119,4 +120,22 @@ public class FlooringOrderController {
 
     }
 
+    private void displayOrders() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
+        String date = view.getOrderDate();
+        try {
+           List<Order> orderList = service.displayOrders(date);
+             view.displayOrderList(orderList);
+        } catch (FlooringOrderPersistenceException | FlooringOrderNotFoundException e) {
+            view.displayErrorMessage(e.getMessage());
+        }
+    }
+
+    private void unknownCommand() {
+          view.displayUnknownCommandBanner();
+    }
+
+    private void exitMessage() {
+       view.displayExitBanner();
+    }
+ 
 }
