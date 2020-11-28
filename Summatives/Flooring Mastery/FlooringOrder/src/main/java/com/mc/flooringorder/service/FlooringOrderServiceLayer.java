@@ -41,5 +41,7 @@ public interface FlooringOrderServiceLayer {
     
     void calculateOrder(Order order);
     
+    Boolean checkIfFileExists(String date);
+    
     
 }

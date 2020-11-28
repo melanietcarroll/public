@@ -9,18 +9,22 @@ import com.mc.flooringorder.dto.Order;
 import com.mc.flooringorder.dto.Product;
 import com.mc.flooringorder.dto.StateTaxRate;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalInt;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -30,13 +34,12 @@ import java.util.Set;
  * @author Melanie Carroll
  */
 public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
-    
+
 //    private final String ORDER_FILE;
 //    
 //     public FlooringOrderDaoFileImpl(String orderTextFile) {
 //        ORDER_FILE = orderTextFile;
 //    }
-
 //    public static final String ORDER_FILE = "Orders_" + date + ".txt";
     public static final String PRODUCTS_FILE = "products.txt";
     public static final String TAX_FILE = "taxfile.txt";
@@ -65,7 +68,11 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 
     @Override
     public Order addOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
-        loadOrders(date);
+
+//        File f = new File("Orders_" + date + ".txt");
+        if (this.checkIfFileExists(date) == true) {
+            loadOrders(date);
+        }
 //        loadProduct();
 //        loadTax();
 
@@ -357,7 +364,6 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //readDate format from user date = "MM/dd/yyyy"
         //format LocalDate into a String:
         //String formatted = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
-  
         //Path path = Path.of("orders/"Orders_"+date+".txt"); BUT WILL THIS WORK--currentOrderTextFile is not a String!!
         //boolean exists = Files.exists(path);
         //if exists != false, append order
@@ -365,11 +371,10 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //create file for order:
         //File currentOrderTextFile = newFile("Orders_" + formatted + ".txt");
         //if order is edited grab list orders and re-write file
-        
         //if order is deleted will have to pull that order file and grab all orders from that date to 
         //re-write to the file
         //also have to write out the header file at the beginning of each new file
-        //System.out.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
+//        out.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
         //currently have a date field in the Order object--
         PrintWriter out;
         try {
@@ -380,11 +385,11 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 
         }
         // Write out the Order objects to the file.
-
+        out.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
         String orderAsText;
-        
+
         Set<Integer> keys = orders.keySet();
-        for (int k : keys){
+        for (int k : keys) {
             Order currentOrder = orders.get(k);
             orderAsText = marshallOrder(currentOrder);
             out.println(orderAsText);
@@ -459,7 +464,6 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 //        orderNumber += 1;
 //        return orderNumber;
 //    }
-
     @Override
     public ArrayList<String> getAllTaxRatesStateAbbreviations() throws FlooringOrderPersistenceException {
         loadTax();
@@ -482,6 +486,31 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     public Product getProduct(String productType) throws FlooringOrderPersistenceException {
         loadProduct();
         return products.get(productType);
+    }
+
+    @Override
+    public Boolean checkIfFileExists(String date) {
+        boolean exists = false;
+        File f = new File("Orders_" + date + ".txt");
+        if (f.exists() && f.isFile()) {
+            exists = true;
+            return exists;
+        }
+        return exists;
+    }
+
+    @Override
+    public int getOrderNumber(String date) throws FlooringOrderPersistenceException {
+        int orderNum = 1;
+
+        if (this.checkIfFileExists(date) == true) {
+            List<Order> orderDate = this.displayOrders(date);
+            OptionalInt orderNumber = orderDate.stream().mapToInt((p) -> p.getOrderNumber()).max();
+            orderNum = orderNumber.getAsInt() + 1;
+            return orderNum;
+        }
+
+        return orderNum;
     }
 
 }

@@ -87,7 +87,8 @@ public class FlooringOrderController {
         //int orderNumber = service.getOrderNumber(date);
 //        if (orderNumber == null){
 //            return orderNumber = 1;
-       int orderNumber = 1;
+
+       int orderNumber = service.getOrderNumber(date);
         Order newOrder = new Order(orderNumber);
 
 //        service.getOrderNumber(date);

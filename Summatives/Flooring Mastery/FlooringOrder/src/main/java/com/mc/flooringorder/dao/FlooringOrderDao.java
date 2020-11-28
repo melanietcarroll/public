@@ -77,5 +77,7 @@ public interface FlooringOrderDao {
     Product getProduct(String productType) throws FlooringOrderPersistenceException;
     
     Boolean checkIfFileExists(String date);
+    
+    int getOrderNumber(String date) throws FlooringOrderPersistenceException;
             
 }

@@ -55,17 +55,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     @Override
     public int getOrderNumber(String date) throws FlooringOrderPersistenceException {
-        int orderNum = 1;
-        
-        List<Order> orderDate = dao.displayOrders(date);
-        if (orderDate == null){
-            orderNum = 1;
-            return orderNum;
-        }
-        OptionalInt orderNumber = orderDate.stream().mapToInt((p) -> p.getOrderNumber()).max();
-        orderNum = orderNumber.getAsInt() + 1;
-       
-        return orderNum;
+        return dao.getOrderNumber(date);
     }
 
     @Override
@@ -111,6 +101,11 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
         BigDecimal total = materialCost.add(laborCost).add(tax).setScale(2, RoundingMode.HALF_UP);
         order.setTotal(total);
 
+    }
+
+    @Override
+    public Boolean checkIfFileExists(String date) {
+        return dao.checkIfFileExists(date);
     }
 
     
