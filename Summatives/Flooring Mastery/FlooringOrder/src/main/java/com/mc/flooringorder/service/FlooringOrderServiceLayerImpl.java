@@ -32,19 +32,16 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     private FlooringOrderAuditDao auditDao;
     FlooringOrderDao dao = new FlooringOrderDaoFileImpl();
-    
+
     @Override
-     public Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
-    return dao.addOrder(orderNumber, order, date);
+    public Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
+        return dao.addOrder(orderNumber, order, date);
     }
 
-    
-
     @Override
-    public List<Order> displayOrders(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {  
-//        return dao.displayOrders(date);
-        
-         if (dao.displayOrders(date) == null) {
+    public List<Order> displayOrders(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
+
+        if (dao.displayOrders(date) == null) {
             DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMddyyyy");
             LocalDate ld = LocalDate.parse(date, inFormatter);
 
@@ -53,7 +50,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
             throw new FlooringOrderNotFoundException(
                     "ERROR: No matching orders found for " + formattedDate);
         }
-         return dao.displayOrders(date);
+        return dao.displayOrders(date);
     }
 
     @Override
@@ -91,8 +88,9 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
     public Product getProduct(String productType) throws FlooringOrderPersistenceException {
         return dao.getProduct(productType);
     }
+
     @Override
-    public void calculateOrder(Order order){
+    public void calculateOrder(Order order) {
 
         BigDecimal costPerSquareFoot = new BigDecimal(order.getCostPerSquareFoot().toString());
         BigDecimal projectArea = new BigDecimal(order.getArea().toString());
@@ -108,7 +106,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
         BigDecimal taxRateValue = new BigDecimal(order.getTaxRate().toString());
         BigDecimal percentage = new BigDecimal("100");
         BigDecimal taxRateCalc = taxRateValue.divide(percentage, 2, RoundingMode.HALF_UP);//tax rates are stored as whole numbers
-        BigDecimal addMaterialCostAndLaborCost = materialCost.add(laborCost); 
+        BigDecimal addMaterialCostAndLaborCost = materialCost.add(laborCost);
         BigDecimal tax = addMaterialCostAndLaborCost.multiply(taxRateCalc).setScale(2, RoundingMode.HALF_UP);
         order.setTax(tax);
 
@@ -124,7 +122,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     @Override
     public Order getOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
-         if (dao.getOrder(orderDate, orderNumber) == null) {
+        if (dao.getOrder(orderDate, orderNumber) == null) {
             DateTimeFormatter inFormatter = DateTimeFormatter.ofPattern("MMddyyyy");
             LocalDate ld = LocalDate.parse(orderDate, inFormatter);
 
@@ -132,7 +130,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
             String formattedDate = outFormatter.format(ld);
             throw new FlooringOrderNotFoundException(
                     "ERROR: No matching orders found for " + formattedDate);
-         }
-     return dao.getOrder(orderDate, orderNumber);
-}
+        }
+        return dao.getOrder(orderDate, orderNumber);
+    }
 }

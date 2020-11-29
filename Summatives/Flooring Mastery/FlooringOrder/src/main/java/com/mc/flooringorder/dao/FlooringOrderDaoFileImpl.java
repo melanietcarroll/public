@@ -42,10 +42,9 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 //     public FlooringOrderDaoFileImpl(String orderTextFile) {
 //        ORDER_FILE = orderTextFile;
 //    }
-//    public static final String ORDER_FILE = "Orders_" + date + ".txt";
+
     public static final String PRODUCTS_FILE = "products.txt";
     public static final String TAX_FILE = "taxfile.txt";
-//    public static final String ORDER_NUMBER = "odernumberfile.txt";
     public static final String DELIMITER = "::";
 
     private Map<Integer, Order> orders = new HashMap<>();
@@ -63,7 +62,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 
     @Override
     public Order editOrder(String orderDate, int orderNumber, Order editedOrder) throws FlooringOrderPersistenceException {
-         if (this.checkIfFileExists(orderDate) == true) {
+        if (this.checkIfFileExists(orderDate) == true) {
             loadOrders(orderDate);
         }
         editedOrder = orders.put(orderNumber, editedOrder);
@@ -82,19 +81,11 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     @Override
     public Order addOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
 
-//        File f = new File("Orders_" + date + ".txt");
         if (this.checkIfFileExists(date) == true) {
             loadOrders(date);
         }
-//        loadProduct();
-//        loadTax();
-
-//        orderNumber = getOrderNumber();//do this in service to set order number?
-//        orderNumber += 1;  //incrementing in method
         Order prevOrder = orders.put(orderNumber, order);//putting the order from param into a map
         //if user accepts order write order to file with order date Orders_MMDDYYYY.txt
-
-//        writeOrderNumber(orderNumber); //only if user saves order
         writeOrderFile(date);
         return prevOrder;
     }
@@ -410,73 +401,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         }
         out.close();
     }
-//        LocalDate date = order.getDate();
-//        List<Order> orderList = this.displayOrders(date);
-//        for (Student currentStudent : studentList) {
-//            // turn a Student into a String
-//            studentAsText = marshallStudent(currentStudent);
-//            // write the Student object to the file
-//            out.println(studentAsText);
-//            // force PrintWriter to write line to the file
-//            out.flush();
-//        }
-//        // Clean up
-//        out.close();
-//    }
-//     private int unmarshallOrderNumber(String orderNumberAsText){
-//      
-//        String orderNumberToken = orderNumberAsText;
-//        int orderNumber = Integer.parseInt(orderNumberToken);
-//        
-//        return orderNumber;
-//    }
 
-//    private int loadOrderNumber() throws FlooringOrderPersistenceException {
-//        Scanner myScanner;
-//        try {
-//            //create scanner for reading the file
-//            myScanner = new Scanner(new BufferedReader(new FileReader(ORDER_NUMBER)));
-//        } catch (FileNotFoundException e) {
-//            throw new FlooringOrderPersistenceException("-_- Could not load file data into memory.", e);
-//        }
-//        //currentLine holds the most recent line read from the file
-//        String currentLine;
-//
-//        myScanner.hasNextLine();
-//
-//        //get the next line in the file
-//        currentLine = myScanner.nextLine();
-//        //parse line to Integer 
-//        int orderNumber = Integer.parseInt(currentLine);
-//        //close scanner
-//        myScanner.close();
-//        return orderNumber;
-//    }
-//    private void writeOrderNumber(int orderNum) throws FlooringOrderPersistenceException {
-//        // We are not handling the IOException - but
-//        // we are translating it to an application specific exception and 
-//        // then simple throwing it (i.e. 'reporting' it) to the code that
-//        // called us.  It is the responsibility of the calling code to 
-//        // handle any errors that occur.
-//        PrintWriter out;
-//        try {
-//            out = new PrintWriter(new FileWriter(ORDER_NUMBER));
-//        } catch (IOException e) {
-//            throw new FlooringOrderPersistenceException(
-//                    "Could not save order data.", e);
-//        }
-//        out.println(Integer.toString(orderNum));
-//        // force PrintWriter to write line to the file
-//        out.flush();
-//        // Clean up
-//        out.close();
-//    }
-//    @Override
-//    public int getOrderNumber() throws FlooringOrderPersistenceException {
-//        int orderNumber = loadOrderNumber();
-//        orderNumber += 1;
-//        return orderNumber;
-//    }
     @Override
     public ArrayList<String> getAllTaxRatesStateAbbreviations() throws FlooringOrderPersistenceException {
         loadTax();
