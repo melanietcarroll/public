@@ -36,12 +36,12 @@ public class UserIOConsoleImpl implements UserIO {
         String read;
         do {
             System.out.println(prompt);
-            read = myScanner.nextLine();
+            read = myScanner.next();
+//            if (read == "") {
+//                hasErrors = true;
+//            }
             if (Pattern.matches("^[a-zA-Z0-9,.]*$", read)) {
                 hasErrors = false;
-            }
-            if (read.trim().isEmpty()) {
-                hasErrors = true;
             }
         } while (hasErrors);
         return read;
@@ -226,7 +226,7 @@ public class UserIOConsoleImpl implements UserIO {
                     return read;
                 }
 
-                if (read.trim().isEmpty()) {
+                if (read.isEmpty()) {
                     hasErrors = true;
                 }
             }
@@ -243,16 +243,16 @@ public class UserIOConsoleImpl implements UserIO {
         do {
             System.out.println(prompt);
             read = myScanner.nextLine();
+            if (read.isEmpty()) {
+                hasErrors = false;
+                return prevValue;
+            }
             if (Pattern.matches("^[a-zA-Z0-9,.]*$", read)) {
                 hasErrors = false;
                 return read;
             }
-            if (read.trim().isEmpty()) {
-                hasErrors = false;
-                return prevValue;
-            }
         } while (hasErrors);
-        return read;
+        return prevValue;
     }
 
     @Override
@@ -295,7 +295,7 @@ public class UserIOConsoleImpl implements UserIO {
                     hasErrors = false;
                     return read;
                 }
-                if (read.trim().isEmpty()) {
+                if (read.isEmpty()) {
                     hasErrors = false;
                     return prevValue;
                 }

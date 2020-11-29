@@ -30,8 +30,8 @@ public class FlooringOrderController {
 
     private FlooringOrderView view = new FlooringOrderView();
     private FlooringOrderServiceLayer service = new FlooringOrderServiceLayerImpl();
-    private FlooringOrderDao dao = new FlooringOrderDaoFileImpl();
-    private UserIO io = new UserIOConsoleImpl();
+    
+   
 
     public void run() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         boolean keepGoing = true;
@@ -79,8 +79,6 @@ public class FlooringOrderController {
         String date = view.getOrderDate();
 
         String name = view.getOrderName();
-//        String product = view.getOrderProduct();//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
-//        String state = view.getOrderState();//read in state objects into a list and check for match then use statename and taxrate fields
 
         List<String> stateAbbreviations = service.getAllTaxRatesStateAbbreviations();
         String state = view.getOrderState(stateAbbreviations).toUpperCase();//read in state objects into a list and check for match then use statename and taxrate fields
@@ -88,13 +86,9 @@ public class FlooringOrderController {
         List<String> productNames = service.getAllProductNames();
         String product = view.getOrderProduct(productNames).toUpperCase();//read in product objects into a list and check for match then use costpersquarefoot and laborcostpersquarefoot fields
 
-        //int orderNumber = service.getOrderNumber(date);
-//        if (orderNumber == null){
-//            return orderNumber = 1;
         int orderNumber = service.getOrderNumber(date);
         Order newOrder = new Order(orderNumber);
 
-//        service.getOrderNumber(date);
         newOrder.setCustomerName(name);
         newOrder.setArea(area);
         newOrder.setOrderDate(date);
@@ -158,7 +152,6 @@ public class FlooringOrderController {
     private void editOrder() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         String date = view.getOrderDate();
         int orderNumber = view.getOrderNumber();
-//        Order order;
 
         try {
             Order order = service.getOrder(date, orderNumber);

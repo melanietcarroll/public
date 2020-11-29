@@ -51,7 +51,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
             DateTimeFormatter outFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             String formattedDate = outFormatter.format(ld);
             throw new FlooringOrderNotFoundException(
-                    "ERROR: No orders found for " + formattedDate);
+                    "ERROR: No matching orders found for " + formattedDate);
         }
          return dao.displayOrders(date);
     }
@@ -131,7 +131,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
             DateTimeFormatter outFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             String formattedDate = outFormatter.format(ld);
             throw new FlooringOrderNotFoundException(
-                    "ERROR: No orders found for " + formattedDate);
+                    "ERROR: No matching orders found for " + formattedDate);
          }
      return dao.getOrder(orderDate, orderNumber);
 }
