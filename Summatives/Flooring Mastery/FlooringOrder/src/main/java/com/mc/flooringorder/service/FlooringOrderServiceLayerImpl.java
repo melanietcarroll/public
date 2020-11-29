@@ -31,10 +31,16 @@ import java.util.OptionalInt;
 public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer {
 
     private FlooringOrderAuditDao auditDao;
-    FlooringOrderDao dao = new FlooringOrderDaoFileImpl();
+    FlooringOrderDao dao;
+
+    public FlooringOrderServiceLayerImpl(FlooringOrderDao dao, FlooringOrderAuditDao auditDao) {
+        this.dao = dao;
+        this.auditDao = auditDao;
+    }
 
     @Override
     public Order createOrder(int orderNumber, Order order, String date) throws FlooringOrderPersistenceException {
+        auditDao.writeAuditEntry("Order " + orderNumber + " for date " + date + " CREATED.");
         return dao.addOrder(orderNumber, order, date);
     }
 
@@ -55,12 +61,14 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
     @Override
     public Order editOrder(String orderDate, int orderNumber, Order editedOrder) throws FlooringOrderPersistenceException {
+        auditDao.writeAuditEntry("Order " + orderNumber + " for date " + orderDate + " EDITED.");
         return dao.editOrder(orderDate, orderNumber, editedOrder);
     }
 
     @Override
     public Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
         Order removedOrder = dao.removeOrder(orderDate, orderNumber);
+        auditDao.writeAuditEntry("Order " + orderNumber + " for date " + orderDate + " REMOVED.");
         return removedOrder;
     }
 

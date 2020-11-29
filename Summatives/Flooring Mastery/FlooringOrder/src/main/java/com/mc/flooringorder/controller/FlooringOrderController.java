@@ -28,10 +28,13 @@ import java.util.List;
  */
 public class FlooringOrderController {
 
-    private FlooringOrderView view = new FlooringOrderView();
-    private FlooringOrderServiceLayer service = new FlooringOrderServiceLayerImpl();
+    private FlooringOrderView view;
+    private FlooringOrderServiceLayer service;
     
-   
+   public FlooringOrderController(FlooringOrderServiceLayer service, FlooringOrderView view){
+       this.service = service;
+       this.view = view;
+   }
 
     public void run() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         boolean keepGoing = true;

@@ -36,12 +36,12 @@ public class UserIOConsoleImpl implements UserIO {
         String read;
         do {
             System.out.println(prompt);
-            read = myScanner.next();
-//            if (read == "") {
-//                hasErrors = true;
-//            }
+            read = myScanner.nextLine();
             if (Pattern.matches("^[a-zA-Z0-9,.]*$", read)) {
                 hasErrors = false;
+            }
+             if (read.isEmpty()|| read.equals("")) {
+                hasErrors = true;
             }
         } while (hasErrors);
         return read;

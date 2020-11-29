@@ -19,10 +19,14 @@ import java.util.regex.Pattern;
  */
 public class FlooringOrderView {
 
-    private UserIO io = new UserIOConsoleImpl();
+    private UserIO io;
+    
+    public FlooringOrderView(UserIO io){
+        this.io = io;
+    }
 
     public int printMenuAndGetSelection() {
-        io.print("Main Menu");
+        io.print("Flooring Program Main Menu");
         io.print("1. Display Orders");
         io.print("2. Add an Order");
         io.print("3. Edit an Order");
