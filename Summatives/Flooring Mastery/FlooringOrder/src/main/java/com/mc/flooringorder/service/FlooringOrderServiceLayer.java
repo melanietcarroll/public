@@ -25,7 +25,7 @@ public interface FlooringOrderServiceLayer {
     
     List<Order> displayOrders(String date) throws FlooringOrderPersistenceException, FlooringOrderNotFoundException;
     
-    Order editOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order editOrder(String orderDate, int orderNumber, Order editedOrder) throws FlooringOrderPersistenceException;
     
     Order removeOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException;
     

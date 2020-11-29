@@ -86,7 +86,7 @@ public class FlooringOrderView {
                 order.getTotal());
         io.print(orderInfo);
 
-        String answer = io.readString("Place order Y/N");
+        String answer = io.readString("Save order Y/N");
         return answer;
     }
 
@@ -148,5 +148,25 @@ public class FlooringOrderView {
 
         String answer = io.readString("Are you sure you want to delete the order? Y/N");
         return answer;
+    }
+
+    public String getEditedName(String currentName) {
+       String answer = io.readStringEditedOrder("Enter customer name (" + currentName +"):", currentName);
+       return answer;
+    }
+
+    public String getEditedState(String currentState, List<String> stateAbbreviations) {
+        String answer = io.readStringEditedStateOrProduct("Enter one of the following sate abbrevations: " + stateAbbreviations + ". Current state is (" + currentState + ")", stateAbbreviations, currentState);
+        return answer;
+    }
+
+    public String getEditedProduct(String currentProductType, List<String> productNames) {
+        String answer = io.readStringEditedStateOrProduct("Enter one of the following products: " + productNames + ". Current product is (" + currentProductType + ")", productNames, currentProductType);
+        return answer;
+    }
+
+    public BigDecimal getEditedOrderArea(BigDecimal currentArea) {
+         BigDecimal area = io.readAreaEditedOrder("Enter project area (minimum order size is 100 sq ft). Current area is "+ currentArea, currentArea);
+        return area;
     }
 }

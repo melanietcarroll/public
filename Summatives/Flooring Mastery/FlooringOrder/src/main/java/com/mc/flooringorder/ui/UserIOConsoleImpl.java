@@ -235,4 +235,72 @@ public class UserIOConsoleImpl implements UserIO {
         return read;
 
     }
+
+    @Override
+    public String readStringEditedOrder(String prompt, String prevValue) {
+        boolean hasErrors = true;
+        String read;
+        do {
+            System.out.println(prompt);
+            read = myScanner.nextLine();
+            if (Pattern.matches("^[a-zA-Z0-9,.]*$", read)) {
+                hasErrors = false;
+                return read;
+            }
+            if (read.trim().isEmpty()) {
+                hasErrors = false;
+                return prevValue;
+            }
+        } while (hasErrors);
+        return read;
+    }
+
+    @Override
+    public BigDecimal readAreaEditedOrder(String prompt, BigDecimal prevValue) {
+
+        boolean invalidInput = true;
+        BigDecimal num = new BigDecimal("0");
+        while (invalidInput) {
+            try {
+                // print the message msgPrompt (ex: asking for the # of cats!)
+                String stringValue = this.readString(prompt);
+                if (stringValue.isEmpty()) {
+                    return prevValue;
+                }
+                // Get the input line, and try and parse
+                num = new BigDecimal(stringValue); // if it's 'bob' it'll break
+                invalidInput = false; // or you can use 'break;'
+            } catch (NumberFormatException e) {
+                // If it explodes, it'll go here and do this.
+                this.print("Incorrect value. Enter a valid number.");
+            }
+
+            BigDecimal min = new BigDecimal("100");
+            while (num.compareTo(min) < 0) {
+                num = readBig(prompt);
+            }
+        }
+        return num;
+    }
+
+    @Override
+    public String readStringEditedStateOrProduct(String prompt, List<String> list, String prevValue) {
+        boolean hasErrors = true;
+        String read;
+        do {
+            System.out.println(prompt);
+            read = myScanner.nextLine();
+            for (String s : list) {
+                if (s.equalsIgnoreCase(read)) {
+                    hasErrors = false;
+                    return read;
+                }
+                if (read.trim().isEmpty()) {
+                    hasErrors = false;
+                    return prevValue;
+                }
+            }
+        } while (hasErrors);
+        return read;
+    }
 }

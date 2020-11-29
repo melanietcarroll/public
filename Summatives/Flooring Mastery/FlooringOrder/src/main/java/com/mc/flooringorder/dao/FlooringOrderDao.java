@@ -50,7 +50,7 @@ public interface FlooringOrderDao {
      * null if no such order exists
      * @throws FlooringOrderPersistenceException
      */
-    Order editOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException;
+    Order editOrder(String orderDate, int orderNumber, Order order) throws FlooringOrderPersistenceException;
      //throws FlooringOrderPersistenceException;
 
     /**

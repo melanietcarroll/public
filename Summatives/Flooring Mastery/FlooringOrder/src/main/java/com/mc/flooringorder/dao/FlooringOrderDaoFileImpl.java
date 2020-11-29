@@ -62,8 +62,13 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     }
 
     @Override
-    public Order editOrder(String orderDate, int orderNumber) throws FlooringOrderPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Order editOrder(String orderDate, int orderNumber, Order editedOrder) throws FlooringOrderPersistenceException {
+         if (this.checkIfFileExists(orderDate) == true) {
+            loadOrders(orderDate);
+        }
+        editedOrder = orders.put(orderNumber, editedOrder);
+        writeOrderFile(orderDate);
+        return editedOrder;
     }
 
     @Override

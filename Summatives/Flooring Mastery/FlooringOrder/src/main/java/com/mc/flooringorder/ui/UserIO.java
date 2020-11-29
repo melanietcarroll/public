@@ -45,4 +45,12 @@ public interface UserIO {
     String readString(String prompt);
     
     String readString(String prompt, List<String> list);
+    
+    String readStringEditedStateOrProduct(String prompt, List<String> list, String prevValue);
+    
+    String readStringEditedOrder(String prompt, String prevValue);
+    
+    BigDecimal readAreaEditedOrder(String prompt, BigDecimal prevValue);
+    
+    
 }

@@ -50,7 +50,7 @@ public class FlooringOrderController {
                         addOrder();
                         break;
                     case 3:
-                        io.print("Edit an Order");
+                        editOrder();
                         break;
                     case 4:
                         removeOrder();
@@ -141,12 +141,54 @@ public class FlooringOrderController {
     private void removeOrder() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         String date = view.getOrderDate();
         int orderNumber = view.getOrderNumber();
+
         try {
             Order order = service.getOrder(date, orderNumber);
             String confirmDeletion = view.displayOrder(order);
-            
+
             if (confirmDeletion.equalsIgnoreCase("Y")) {
                 service.removeOrder(date, orderNumber);
+            }
+        } catch (FlooringOrderPersistenceException | FlooringOrderNotFoundException e) {
+            view.displayErrorMessage(e.getMessage());
+        }
+
+    }
+
+    private void editOrder() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
+        String date = view.getOrderDate();
+        int orderNumber = view.getOrderNumber();
+//        Order order;
+
+        try {
+            Order order = service.getOrder(date, orderNumber);
+            String currentName = order.getCustomerName();
+            String currentState = order.getState();
+            String currentProductType = order.getProductType();
+            BigDecimal currentArea = order.getArea();
+
+            String editedName = view.getEditedName(currentName);
+            order.setCustomerName(editedName);
+
+            List<String> stateAbbreviations = service.getAllTaxRatesStateAbbreviations();
+            String editedState = view.getEditedState(currentState, stateAbbreviations).toUpperCase();
+            order.setState(editedState);
+
+            List<String> productNames = service.getAllProductNames();
+            String editedProduct = view.getEditedProduct(currentProductType, productNames).toUpperCase();
+            order.setProductType(editedProduct);
+
+            BigDecimal editedArea = view.getEditedOrderArea(currentArea);
+            order.setArea(editedArea);
+
+            service.calculateOrder(order);
+            String placeOrder = view.orderSummary(order);
+
+            if (placeOrder.equalsIgnoreCase("Y")) {
+                service.editOrder(date, order.getOrderNumber(), order);
+            }
+            if (placeOrder.equalsIgnoreCase("N")) {
+                getMenuSelection();
             }
         } catch (FlooringOrderPersistenceException | FlooringOrderNotFoundException e) {
             view.displayErrorMessage(e.getMessage());
