@@ -4,3 +4,4 @@ OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborC
 3::Acme.LLC::TX::4.45::TILE::700::3.50::4.15::2450.00::2905.00::214.20::5569.20
 4::DogsAtPlay::TX::4.45::TILE::650::3.50::4.15::2275.00::2697.50::198.90::5171.40
 5::Acme.LLC::TX::4.45::TILE::750::3.50::4.15::2625.00::3112.50::229.50::5967.00
+6::GoodEats::KY::6.00::LAMINATE::750::1.75::2.10::1312.50::1575.00::173.25::3060.75
