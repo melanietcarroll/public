@@ -1,5 +1,0 @@
-OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1::lula::CA::25.00::CARPET::500::2.25::2.10::1125.00::1050.00::543.75::2718.75
-2::Nina::KY::9.25::TILE::800::5.15::4.75::4120.00::3800.00::712.80::8632.80
-3::AudioScience::WA::9.25::WOOD::1000::5.15::4.75::5150.00::4750.00::891.00::10791.00
-4::DogsAtPlay::TX::4.45::TILE::650::3.50::4.15::2275.00::2697.50::198.90::5171.40

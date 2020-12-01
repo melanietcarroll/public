@@ -65,7 +65,7 @@ public class FlooringOrderDaoFileImplTest {
         BigDecimal laborCost = new BigDecimal("3800");
         BigDecimal tax = new BigDecimal("352.44");
         BigDecimal total = new BigDecimal("8272.44");
-        String orderDate = "12282020";
+        String orderDate = "12012020";
         
         // Create our method test inputs
         int orderNumber = 1;
@@ -138,7 +138,7 @@ public void testAddGetAllOrders() throws Exception {
         BigDecimal laborCost = new BigDecimal("3800");
         BigDecimal tax = new BigDecimal("352.44");
         BigDecimal total = new BigDecimal("8272.44");
-        String orderDate = "12292020";
+        String orderDate = "12022020";
         
         // Create our method test inputs
         int orderNumber = 1;
@@ -166,7 +166,7 @@ public void testAddGetAllOrders() throws Exception {
         BigDecimal laborCost2 = new BigDecimal("3087.5");
         BigDecimal tax2 = new BigDecimal("1608.75");
         BigDecimal total2 = new BigDecimal("8043.75");
-        String orderDate2 = "12292020";
+        String orderDate2 = "12022020";
         
         // Create our method test inputs
         int orderNumber2 = 2;
@@ -214,7 +214,7 @@ public void testRemoveOrder() throws Exception {
         BigDecimal laborCost = new BigDecimal("3800");
         BigDecimal tax = new BigDecimal("352.44");
         BigDecimal total = new BigDecimal("8272.44");
-        String orderDate = "12302020";
+        String orderDate = "12032020";
         
         // Create our method test inputs
         int orderNumber = 1;
@@ -242,7 +242,7 @@ public void testRemoveOrder() throws Exception {
         BigDecimal laborCost2 = new BigDecimal("3087.5");
         BigDecimal tax2 = new BigDecimal("1608.75");
         BigDecimal total2 = new BigDecimal("8043.75");
-        String orderDate2 = "12302020";
+        String orderDate2 = "12032020";
         
         // Create our method test inputs
         int orderNumber2 = 2;
@@ -300,4 +300,105 @@ public void testRemoveOrder() throws Exception {
     assertNull(retrievedOrder, "TurboTax was removed, should be null.");
 
 }
+ @Test
+    public void testEditOrder() throws Exception {
+        // Create our method test inputs
+        BigDecimal taxRate = new BigDecimal("4.45");
+        BigDecimal area = new BigDecimal("800");
+        BigDecimal costPerSquareFoot = new BigDecimal("5.15");
+        BigDecimal laborCostPerSquareFoot = new BigDecimal("4.75");
+        BigDecimal materialCost = new BigDecimal("4120");
+        BigDecimal laborCost = new BigDecimal("3800");
+        BigDecimal tax = new BigDecimal("352.44");
+        BigDecimal total = new BigDecimal("8272.44");
+        String orderDate = "12042020";
+        
+        // Create our method test inputs
+        int orderNumber = 1;
+        Order newOrder = new Order(orderNumber);
+        newOrder.setCustomerName("Acme");
+        newOrder.setState("TX");
+        newOrder.setTaxRate(taxRate);
+        newOrder.setProductType("Wood");
+        newOrder.setArea(area);
+        newOrder.setCostPerSquareFoot(costPerSquareFoot);
+        newOrder.setLaborCostPerSquareFoot(laborCostPerSquareFoot);
+        newOrder.setMaterialCost(materialCost);
+        newOrder.setLaborCost(laborCost);
+        newOrder.setTax(tax);
+        newOrder.setTotal(total);
+
+        //  Add the order to the DAO
+        testDao.addOrder(orderNumber, newOrder, orderDate);
+        // Get the item from the DAO
+        Order retrievedOrder = testDao.getOrder(orderDate, orderNumber);
+
+        //Edit the item
+        BigDecimal taxRate2 = new BigDecimal("25");
+        BigDecimal area2 = new BigDecimal("650");
+        BigDecimal costPerSquareFoot2 = new BigDecimal("5.15");
+        BigDecimal laborCostPerSquareFoot2 = new BigDecimal("4.75");
+        BigDecimal materialCost2 = new BigDecimal("3347.5");
+        BigDecimal laborCost2 = new BigDecimal("3087.5");
+        BigDecimal tax2 = new BigDecimal("1608.75");
+        BigDecimal total2 = new BigDecimal("8043.75");
+            
+        
+        retrievedOrder.setCustomerName("TurboTax");
+        retrievedOrder.setState("CA");
+        retrievedOrder.setTaxRate(taxRate2);
+        retrievedOrder.setProductType("Wood");
+        retrievedOrder.setArea(area2);
+        retrievedOrder.setCostPerSquareFoot(costPerSquareFoot2);
+        retrievedOrder.setLaborCostPerSquareFoot(laborCostPerSquareFoot2);
+        retrievedOrder.setMaterialCost(materialCost2);
+        retrievedOrder.setLaborCost(laborCost2);
+        retrievedOrder.setTax(tax2);
+        retrievedOrder.setTotal(total2);
+
+        //  Add the order to the DAO
+        testDao.addOrder(orderNumber, retrievedOrder, orderDate);
+        // Get the order from the DAO
+        Order retrievedEditedOrder = testDao.getOrder(orderDate, orderNumber);
+
+        // Check the data is equal
+        // Check the data is equal
+        assertEquals(retrievedOrder.getOrderNumber(),
+                retrievedEditedOrder.getOrderNumber(),
+                "Checking order number.");
+        assertEquals(retrievedOrder.getCustomerName(),
+                retrievedEditedOrder.getCustomerName(),
+                "Checking customer name.");
+        assertEquals(retrievedOrder.getState(),
+                retrievedEditedOrder.getState(),
+                "Checking state.");
+        assertEquals(retrievedOrder.getTaxRate(),
+                retrievedEditedOrder.getTaxRate(),
+                "Checking TaxRate.");
+        assertEquals(retrievedOrder.getProductType(),
+                retrievedEditedOrder.getProductType(),
+                "Checking ProductType.");
+        assertEquals(retrievedOrder.getArea(),
+                retrievedEditedOrder.getArea(),
+                "Checking Area.");
+        assertEquals(retrievedOrder.getCostPerSquareFoot(),
+                retrievedEditedOrder.getCostPerSquareFoot(),
+                "Checking CostPerSquareFoot.");
+        assertEquals(retrievedOrder.getLaborCostPerSquareFoot(),
+                retrievedEditedOrder.getLaborCostPerSquareFoot(),
+                "Checking LaborCostPerSquareFoot.");
+        assertEquals(retrievedOrder.getMaterialCost(),
+                retrievedEditedOrder.getMaterialCost(),
+                "Checking MaterialCost.");
+        assertEquals(retrievedOrder.getLaborCost(),
+                retrievedEditedOrder.getLaborCost(),
+                "Checking labor cost.");
+        assertEquals(retrievedOrder.getTax(),
+                retrievedEditedOrder.getTax(),
+                "Checking tax.");
+        assertEquals(retrievedOrder.getTotal(),
+                retrievedEditedOrder.getTotal(),
+                "Checking Total.");
+
+    }
 }

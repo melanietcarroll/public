@@ -1,2 +1,2 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1::Acme::TX::4.45::Wood::800::5.15::4.75::4120::3800::352.44::8272.44
+1::lula::TX::4.45::CARPET::800::2.25::2.10::1800.00::1680.00::139.20::3619.20
