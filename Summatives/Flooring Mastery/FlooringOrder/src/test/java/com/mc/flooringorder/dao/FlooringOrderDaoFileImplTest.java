@@ -33,14 +33,6 @@ public class FlooringOrderDaoFileImplTest {
     public FlooringOrderDaoFileImplTest() throws IOException {
     }
 
-    @BeforeAll
-    public static void setUpClass() {
-    }
-
-    @AfterAll
-    public static void tearDownClass() {
-    }
-
     @BeforeEach
     public void setUp() throws Exception {
        
@@ -48,10 +40,6 @@ public class FlooringOrderDaoFileImplTest {
 //        new FileWriter("test12202020.txt");
 //        PrintWriter out = new PrintWriter(new FileWriter("test12202020.txt"));
 //        out.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
-    }
-
-    @AfterEach
-    public void tearDown() {
     }
 
     @Test

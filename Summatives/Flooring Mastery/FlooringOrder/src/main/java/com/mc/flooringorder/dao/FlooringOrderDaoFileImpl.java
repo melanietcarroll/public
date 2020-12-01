@@ -326,7 +326,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         Scanner myScanner;
         try {
             //create scanner for reading the file
-            myScanner = new Scanner(new BufferedReader(new FileReader("src/test/testfiles/test_" + date + ".txt")));//pull file with order date
+            myScanner = new Scanner(new BufferedReader(new FileReader("src/orders/Orders_" + date + ".txt")));//pull file with order date
         } catch (FileNotFoundException e) {
             throw new FlooringOrderPersistenceException("-_- Could not load file data into memory.", e);
         }
@@ -382,7 +382,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         //currently have a date field in the Order object--
         PrintWriter out;
         try {
-            out = new PrintWriter(new FileWriter("src/test/testfiles/test_" + date + ".txt"));
+            out = new PrintWriter(new FileWriter("src/orders/Orders_" + date + ".txt"));
         } catch (IOException e) {
             throw new FlooringOrderPersistenceException(
                     "Could not save order data.", e);
@@ -429,7 +429,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
     @Override
     public Boolean checkIfFileExists(String date) {
         boolean exists = false;
-        File f = new File("src/test/testfiles/test_" + date + ".txt");
+        File f = new File("src/orders/Orders_" + date + ".txt");
         if (f.exists() && f.isFile()) {
             exists = true;
             return exists;
