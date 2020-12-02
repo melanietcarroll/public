@@ -40,7 +40,7 @@ public class UserIOConsoleImpl implements UserIO {
             if (Pattern.matches("^[a-zA-Z0-9,.]*$", read)) {
                 hasErrors = false;
             }
-             if (read.isEmpty()|| read.equals("")) {
+             if (read.isBlank()|| read.equals("")) {
                 hasErrors = true;
             }
         } while (hasErrors);
@@ -243,7 +243,7 @@ public class UserIOConsoleImpl implements UserIO {
         do {
             System.out.println(prompt);
             read = myScanner.nextLine();
-            if (read.isEmpty()) {
+            if (read.isBlank()) {
                 hasErrors = false;
                 return prevValue;
             }

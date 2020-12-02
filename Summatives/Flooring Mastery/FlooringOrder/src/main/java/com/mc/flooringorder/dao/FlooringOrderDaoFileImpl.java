@@ -37,12 +37,6 @@ import java.util.Set;
  */
 public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
 
-//    private final String ORDER_FILE;
-//   
-//    public FlooringOrderDaoFileImpl(String orderFile) {
-//        ORDER_FILE = orderFile;
-//    }
-
     public static final String PRODUCTS_FILE = "products.txt";
     public static final String TAX_FILE = "taxfile.txt";
     public static final String DELIMITER = "::";
@@ -365,21 +359,6 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
         // called us.  It is the responsibility of the calling code to 
         // handle any errors that occur.
 
-        //readDate format from user date = "MM/dd/yyyy"
-        //format LocalDate into a String:
-        //String formatted = date.format(DateTimeFormatter.ofPattern("MMddyyyy"));
-        //Path path = Path.of("orders/"Orders_"+date+".txt"); BUT WILL THIS WORK--currentOrderTextFile is not a String!!
-        //boolean exists = Files.exists(path);
-        //if exists != false, append order
-        //if exists == false, create order file in orders folder
-        //create file for order:
-        //File currentOrderTextFile = newFile("Orders_" + formatted + ".txt");
-        //if order is edited grab list orders and re-write file
-        //if order is deleted will have to pull that order file and grab all orders from that date to 
-        //re-write to the file
-        //also have to write out the header file at the beginning of each new file
-//        out.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
-        //currently have a date field in the Order object--
         PrintWriter out;
         try {
             out = new PrintWriter(new FileWriter("src/orders/Orders_" + date + ".txt"));
@@ -388,7 +367,7 @@ public class FlooringOrderDaoFileImpl implements FlooringOrderDao {
                     "Could not save order data.", e);
 
         }
-        // Write out the Order objects to the file.
+        // Write out the Order objects to the file with a header.
         out.println("OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total");
         String orderAsText;
 

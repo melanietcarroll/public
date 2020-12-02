@@ -102,8 +102,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
         BigDecimal costPerSquareFoot = new BigDecimal(order.getCostPerSquareFoot().toString());
         BigDecimal projectArea = new BigDecimal(order.getArea().toString());
-//         newOrder.setOrderNumber(orderNumber);
-        //then do calculations
+
         BigDecimal materialCost = projectArea.multiply(costPerSquareFoot).setScale(2, RoundingMode.HALF_UP);
         order.setMaterialCost(materialCost);
 
@@ -113,7 +112,7 @@ public class FlooringOrderServiceLayerImpl implements FlooringOrderServiceLayer 
 
         BigDecimal taxRateValue = new BigDecimal(order.getTaxRate().toString());
         BigDecimal percentage = new BigDecimal("100");
-        BigDecimal taxRateCalc = taxRateValue.divide(percentage, 2, RoundingMode.HALF_UP);//tax rates are stored as whole numbers
+        BigDecimal taxRateCalc = taxRateValue.divide(percentage, 2, RoundingMode.HALF_UP);
         BigDecimal addMaterialCostAndLaborCost = materialCost.add(laborCost);
         BigDecimal tax = addMaterialCostAndLaborCost.multiply(taxRateCalc).setScale(2, RoundingMode.HALF_UP);
         order.setTax(tax);

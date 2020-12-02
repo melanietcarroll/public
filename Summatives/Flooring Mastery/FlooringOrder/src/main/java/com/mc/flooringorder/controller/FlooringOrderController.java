@@ -109,11 +109,11 @@ public class FlooringOrderController {
         String placeOrder = view.orderSummary(newOrder);
         if (placeOrder.equalsIgnoreCase("Y")) {
             service.createOrder(newOrder.getOrderNumber(), newOrder, date);
+            view.displayCreateSuccessBanner();
         }
         if (placeOrder.equalsIgnoreCase("N")) {
-            getMenuSelection();
+            return;
         }
-        view.displayCreateSuccessBanner();
 
     }
 
@@ -184,7 +184,7 @@ public class FlooringOrderController {
                 service.editOrder(date, order.getOrderNumber(), order);
             }
             if (placeOrder.equalsIgnoreCase("N")) {
-                getMenuSelection();
+                return;
             }
         } catch (FlooringOrderPersistenceException | FlooringOrderNotFoundException e) {
             view.displayErrorMessage(e.getMessage());

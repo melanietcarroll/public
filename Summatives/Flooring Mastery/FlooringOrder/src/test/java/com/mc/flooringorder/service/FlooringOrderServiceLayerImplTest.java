@@ -5,33 +5,31 @@
  */
 package com.mc.flooringorder.service;
 
-import com.mc.flooringorder.dao.FlooringOrderAuditDao;
-import com.mc.flooringorder.dao.FlooringOrderDao;
 import com.mc.flooringorder.dao.FlooringOrderPersistenceException;
 import com.mc.flooringorder.dto.Order;
 import java.math.BigDecimal;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
- * @author Shawn
+ * @author Melanie Carroll
  */
 public class FlooringOrderServiceLayerImplTest {
 
     private FlooringOrderServiceLayer service;
 
     public FlooringOrderServiceLayerImplTest() {
-        FlooringOrderDao dao = new FlooringOrderDaoStubImpl();
-        FlooringOrderAuditDao auditDao = new FlooringOrderAuditDaoStubImpl();
-
-        service = new FlooringOrderServiceLayerImpl(dao, auditDao);
+//        FlooringOrderDao dao = new FlooringOrderDaoStubImpl();
+//        FlooringOrderAuditDao auditDao = new FlooringOrderAuditDaoStubImpl();
+//
+//        service = new FlooringOrderServiceLayerImpl(dao, auditDao);
+        ApplicationContext ctx
+                = new ClassPathXmlApplicationContext("applicationContext.xml");
+        service = ctx.getBean("serviceLayer", FlooringOrderServiceLayer.class);
     }
-
 
     @Test
     public void testCreateValidOrder() {
@@ -140,18 +138,21 @@ public class FlooringOrderServiceLayerImplTest {
         assertNotNull(shouldBeAcme, "Getting orderDate and orderNumber should be not null.");
         assertEquals(testClone, shouldBeAcme,
                 "Order stored under orderDate and orderNumber should be Acme.");
-  
+
         try {
-            Order shouldBeNull = service.getOrder("12312020", 16);
-            assertNull(shouldBeNull, "Getting 12312020 and 16 should be null.");
-        } catch (FlooringOrderNotFoundException | FlooringOrderPersistenceException e) {
+            service.getOrder("12312020", 16);
+            fail("Expected FlooringOrderNotFound Exception was not thrown.");
+        } catch (FlooringOrderPersistenceException e) {
             // ASSERT
-           fail("Order was invalid. Exception should have been thrown.");
+            fail("Incorrect exception was thrown.");
+        } catch (FlooringOrderNotFoundException e) {
+            return;
         }
     }
+
     @Test
-public void testRemoveOrder() throws Exception {
-     // ARRANGE
+    public void testRemoveOrder() throws Exception {
+        // ARRANGE
         BigDecimal taxRate = new BigDecimal("4.45");
         BigDecimal area = new BigDecimal("800");
         BigDecimal costPerSquareFoot = new BigDecimal("5.15");
@@ -178,16 +179,17 @@ public void testRemoveOrder() throws Exception {
         testClone.setTotal(total);
         testClone.setOrderDate(orderDate);
 
-    // ACT & ASSERT
-    Order shouldBeAcme = service.removeOrder("12012020",1 );
-    assertNotNull(shouldBeAcme, "Removing 12012020 & 1 should be not null.");
-    assertEquals(testClone, shouldBeAcme, "Order removed from 12012020 & 1 should be Ada.");
+        // ACT & ASSERT
+        Order shouldBeAcme = service.removeOrder("12012020", 1);
+        assertNotNull(shouldBeAcme, "Removing 12012020 & 1 should be not null.");
+        assertEquals(testClone, shouldBeAcme, "Order removed from 12012020 & 1 should be Ada.");
 
-    Order shouldBeNull = service.removeOrder("12312020", 14);    
-    assertNull(shouldBeNull, "Removing 12312020 & 14 should be null.");
+        Order shouldBeNull = service.removeOrder("12312020", 14);
+        assertNull(shouldBeNull, "Removing 12312020 & 14 should be null.");
 
-}
-@Test
+    }
+
+    @Test
     public void testEditOrder() throws Exception {
         // ARRANGE
         BigDecimal taxRate = new BigDecimal("4.45");
@@ -222,5 +224,6 @@ public void testRemoveOrder() throws Exception {
         assertEquals(testClone, shouldBeAcme,
                 "Order stored under orderDate and orderNumber should be Acme.");
 
-}
+    }
+
 }
