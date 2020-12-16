@@ -30,11 +30,11 @@ public class FlooringOrderController {
 
     private FlooringOrderView view;
     private FlooringOrderServiceLayer service;
-    
-   public FlooringOrderController(FlooringOrderServiceLayer service, FlooringOrderView view){
-       this.service = service;
-       this.view = view;
-   }
+
+    public FlooringOrderController(FlooringOrderServiceLayer service, FlooringOrderView view) {
+        this.service = service;
+        this.view = view;
+    }
 
     public void run() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         boolean keepGoing = true;
@@ -78,11 +78,11 @@ public class FlooringOrderController {
     private void addOrder() throws FlooringOrderPersistenceException, FlooringOrderNotFoundException {
         view.displayCreateOrderBanner();
 
+       
+        String name = view.getOrderName();
         BigDecimal area = view.getOrderArea();
         String date = view.getOrderDate();
-
-        String name = view.getOrderName();
-
+        
         List<String> stateAbbreviations = service.getAllTaxRatesStateAbbreviations();
         String state = view.getOrderState(stateAbbreviations).toUpperCase();//read in state objects into a list and check for match then use statename and taxrate fields
 
