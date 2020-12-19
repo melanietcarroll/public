@@ -166,3 +166,22 @@ VALUES (308, 1, 1, 0),
 (206, 22, 2, 0),
 (301, 22, 2, 2),
 (302, 23, 2, 0);
+
+SET SQL_SAFE_UPDATES = 0;
+
+DELETE FROM RoomReservation
+WHERE ReservationID = 8 and RoomNumber = 304;
+
+DELETE FROM Reservation
+WHERE ReservationID = 8;
+
+DELETE FROM Guest
+WHERE GuestID = 8;
+
+SET SQL_SAFE_UPDATES = 1;
+
+SELECT *
+FROM Guest;
+
+SELECT *
+FROM Room;
