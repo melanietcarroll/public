@@ -48,14 +48,13 @@ CREATE TABLE Guest (
     LastName VARCHAR(50) NOT NULL,
     Address VARCHAR(250) NOT NULL,
     City VARCHAR(100) NOT NULL,
+    StateAbbr CHAR(2) NOT NULL,
     PostalCode VARCHAR(10) NOT NULL,
     Phone VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE Reservation (
     ReservationID INT PRIMARY KEY AUTO_INCREMENT,
-    AdultOccupancy INT NOT NULL,
-    ChildOccupancy INT NOT NULL,
     StartDate DATE NOT NULL,
     EndDate DATE NOT NULL,
     GuestID INT NOT NULL,
@@ -69,6 +68,8 @@ CREATE TABLE Reservation (
 CREATE TABLE RoomReservation (
     RoomNumber CHAR(8) NOT NULL,
     ReservationID INT NOT NULL,
+    AdultOccupancy INT NOT NULL,
+	ChildOccupancy INT NOT NULL,
     PRIMARY KEY pk_RoomReservation (RoomNumber, ReservationID),
     FOREIGN KEY fk_RoomReservation_Room (RoomNumber)
         REFERENCES Room(RoomNumber),
