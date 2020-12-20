@@ -151,11 +151,46 @@ AND (Reservation.StartDate BETWEEN '2023-04-01' AND '2023-04-30') ;
 -- 401	2	2	4/23/2023	4/24/2023
 
 
-
-
 -- 6. Write a query that returns a list of all guest names and the number of reservations per guest, sorted starting
 -- with the guest with the most reservations and then by the guest's last name.
 
 
+SELECT
+    Guest.FirstName,
+    Guest.LastName,
+    COUNT(Reservation.ReservationID) ReservationCount
+FROM Guest
+LEFT OUTER JOIN Reservation ON Guest.GuestID = Reservation.GuestID
+GROUP BY Guest.GuestID
+ORDER BY COUNT(Reservation.ReservationID) DESC, Guest.LastName;
+
+--  FirstName	LastName	ReservationCount
+-- BettyAnn	Seery	3
+-- Mack	Simmer	3
+-- Melanie	Carroll	2
+-- Duane	Cullison	2
+-- Walter	Holaway	2
+-- Aurore	Lipton	2
+-- Maritza	Tilton	2
+-- Wilfred	Vise	2
+-- Karie	Yang	2
+-- Zachary	Luechtefeld	1
+-- Joleen	Tison	1
+
+
 -- 7. Write a query that displays the name, address, and phone number of a guest based on their phone number. 
 -- (Choose a phone number from the existing data.)
+
+SELECT 
+    LastName,
+    FirstName,
+    Address,
+    City,
+    StateAbbr,
+    PostalCode,
+    Phone
+FROM Guest
+WHERE Phone = '291-553-0508';
+
+-- LastName	FirstName	Address	   	         City        StateAbbr   PostalCode	        Phone
+-- Simmer	Mack	379 Old Shore Street	Council Bluffs	IA	      51501	       291-553-0508
