@@ -70,6 +70,7 @@ CREATE TABLE RoomReservation (
     ReservationID INT NOT NULL,
     AdultOccupancy INT NOT NULL,
 	ChildOccupancy INT NOT NULL,
+    TotalRoomCost DECIMAL (10,2) NOT NULL,
     PRIMARY KEY pk_RoomReservation (RoomNumber, ReservationID),
     FOREIGN KEY fk_RoomReservation_Room (RoomNumber)
         REFERENCES Room(RoomNumber),
