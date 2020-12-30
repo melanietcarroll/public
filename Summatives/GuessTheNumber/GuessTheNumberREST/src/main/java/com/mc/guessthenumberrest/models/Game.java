@@ -10,5 +10,32 @@ package com.mc.guessthenumberrest.models;
  * @author Melanie Carroll
  */
 public class Game {
-    
+     int id;
+     String gameAnswer;
+     Boolean finished;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getGameAnswer() {
+        return gameAnswer;
+    }
+
+    public void setGameAnswer(String gameAnswer) {
+        this.gameAnswer = gameAnswer;
+    }
+
+    public Boolean getFinished() {
+        return finished;
+    }
+
+    public void setFinished(Boolean finished) {
+        this.finished = finished;
+    }
+     
 }
