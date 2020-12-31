@@ -16,6 +16,13 @@ import java.util.Scanner;
  *
  * @author Melanie Carroll
  */
+//@SpringBootApplication
+//public class App {
+//
+//    public static void main(String[] args) {
+//        SpringApplication.run(App.class, args);
+//    }
+
 public class App {
 
     public static void main(String[] args) {

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Round {
     int id;
     String roundGuess;
-    LocalDateTime timeOfGuess;
+    LocalDateTime timeOfGuess = LocalDateTime.now();
     String resultOfGuess;
 
     public int getId() {

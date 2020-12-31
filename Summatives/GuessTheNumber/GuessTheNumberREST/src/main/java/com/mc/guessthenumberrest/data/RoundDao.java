@@ -21,4 +21,5 @@ public interface RoundDao {
 //    boolean updateRound(Round round);
      // true if item exists and is deleted
     boolean deleteRoundById(int id);
+    List<Round> getRoundsForGame(Game game);
 }

@@ -22,5 +22,5 @@ public interface GameDao {
      // true if item exists and is deleted
     boolean deleteGameById(int id);
     
-    List<Round> getRoundsForGame(Game game);
+    
 }
