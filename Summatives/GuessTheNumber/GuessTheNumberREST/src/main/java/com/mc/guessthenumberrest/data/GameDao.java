@@ -16,7 +16,7 @@ import java.util.List;
 public interface GameDao {
     Game addGame(Game game);
     List<Game> getAllGames();
-    Game getGameByid(int id);
+    Game getGameById(int id);
     // true if item exists and is updated
     boolean updateGame(Game game);
      // true if item exists and is deleted

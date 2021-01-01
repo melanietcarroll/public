@@ -72,7 +72,7 @@ public class GameDatabaseDao implements GameDao {
     }
 
     @Override
-    public Game getGameByid(int id) {
+    public Game getGameById(int id) {
           try {
         final String sql = "SELECT id, gameAnswer, finished "
                 + "FROM game WHERE id = ? AND finished = true;";

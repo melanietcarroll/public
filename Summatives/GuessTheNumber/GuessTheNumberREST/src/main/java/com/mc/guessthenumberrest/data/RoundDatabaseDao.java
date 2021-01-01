@@ -115,7 +115,7 @@ public class RoundDatabaseDao implements RoundDao{
     @Transactional
     public boolean updateRound(Round round) {
         final String UPDATE_ROUND = "UPDATE round "
-                + "SET roundGuess = ?, timeOfGuess = ?, resultOfGuess = ?, gameId = ? WHERE id = ?";
+                + "SET roundGuess = ?, timeOfGuess = ?, resultOfGuess = ?, gameId = ? WHERE id = ? ORDER BY timeOfGuess";
         return jdbcTemplate.update(UPDATE_ROUND,
                 round.getRoundGuess(),
                 Timestamp.valueOf(round.getTimeOfGuess()),

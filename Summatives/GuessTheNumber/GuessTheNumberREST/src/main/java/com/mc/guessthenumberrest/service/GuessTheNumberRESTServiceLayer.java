@@ -5,10 +5,33 @@
  */
 package com.mc.guessthenumberrest.service;
 
+import com.mc.guessthenumberrest.models.Game;
+import com.mc.guessthenumberrest.models.Round;
+import java.util.List;
+
 /**
  *
  * @author Melanie Carroll
  */
 public interface GuessTheNumberRESTServiceLayer {
+    Game addGame(Game game);
+    List<Game> getAllGames();
+    Game getGameById(int id);
+    // true if item exists and is updated
+    boolean updateGame(Game game);
+     // true if item exists and is deleted
+    boolean deleteGameById(int id);
     
+    Round addRound(Round round);
+//    List<Round> getAllRounds();
+    Round getRoundByid(int id);
+    // true if item exists and is updated
+    boolean updateRound(Round round);
+     // true if item exists and is deleted
+    boolean deleteRoundById(int id);
+    List<Round> getRoundsForGame(Game game);
+    
+    boolean hasDuplicateDigits(int num);
+    String createAnswer();
+    String playRound(String guess, int gameId);
 }
