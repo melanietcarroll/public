@@ -17,16 +17,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import com.mc.guessthenumberrest.data.GameDatabaseDao;
 import com.mc.guessthenumberrest.data.GameDatabaseDao.GameMapper;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 /**
  *
  * @author Melanie Carroll
  */
 @Repository
-public class RoundDatabaseDao implements RoundDao{
-    
+public class RoundDatabaseDao implements RoundDao {
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -37,59 +40,59 @@ public class RoundDatabaseDao implements RoundDao{
     @Override
     @Transactional
     public Round addRound(Round round) {
-        
-        final String INSERT_ROUND = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?)";
-        jdbcTemplate.update(INSERT_ROUND,
-                round.getRoundGuess(),
-                Timestamp.valueOf(round.getTimeOfGuess()),
-                round.getResultOfGuess(),
-                round.getGame().getId());
-        int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
-        round.setId(newId);
-        
-//        insertMeetingEmployee(meeting);
-        
+
+//        final String INSERT_ROUND = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?)";
+//        jdbcTemplate.update(INSERT_ROUND,
+//                round.getRoundGuess(),
+//                Timestamp.valueOf(round.getTimeOfGuess()),
+//                round.getResultOfGuess(),
+//                round.getGame().getId());
+//        int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+//        round.setId(newId);
+//        
+////        insertMeetingEmployee(meeting);
+//        
+//        return round;
+        final String sql = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?,?);";
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update((Connection conn) -> {
+
+            PreparedStatement statement = conn.prepareStatement(
+                    sql,
+                    Statement.RETURN_GENERATED_KEYS);
+
+            statement.setString(1, round.getRoundGuess());
+            Timestamp.valueOf(round.getTimeOfGuess());
+            statement.setString(3, round.getResultOfGuess());
+            statement.setInt(4, round.getGame().getId());
+
+            return statement;
+
+        }, keyHolder);
+
+        round.setId(keyHolder.getKey().intValue());
+
         return round;
-        
-//        final String sql = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?,?);";
-//        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-//
-//        jdbcTemplate.update((Connection conn) -> {
-//
-//            PreparedStatement statement = conn.prepareStatement(
-//                sql, 
-//                Statement.RETURN_GENERATED_KEYS);
-//
-//            statement.setString(1, round.getRoundGuess());
-//            Timestamp.valueOf(round.getTimeOfGuess());
-//            statement.setString(3, round.getResultOfGuess());
-//            
-//            return statement;
-//
-//        }, keyHolder);
-//
-//        game.setId(keyHolder.getKey().intValue());
-//
-//        return game;
     }
 
     @Override
     public Round getRoundByid(int id) {
         try {
             final String SELECT_ROUND_BY_ID = "SELECT * FROM round WHERE id = ?";
-            Round round = jdbcTemplate.queryForObject(SELECT_ROUND_BY_ID, 
+            Round round = jdbcTemplate.queryForObject(SELECT_ROUND_BY_ID,
                     new RoundMapper(), id);
             round.setGame(getGameForRound(round));
             return round;
-        } catch(DataAccessException ex) {
+        } catch (DataAccessException ex) {
             return null;
         }
     }
-    
+
     private Game getGameForRound(Round round) {
         final String SELECT_GAME_FOR_ROUND = "SELECT g.* FROM game g "
                 + "JOIN round r ON g.id = r.gameId WHERE r.id = ?";
-        return jdbcTemplate.queryForObject(SELECT_GAME_FOR_ROUND, new GameMapper(), 
+        return jdbcTemplate.queryForObject(SELECT_GAME_FOR_ROUND, new GameMapper(),
                 round.getId());
     }
 
@@ -98,17 +101,17 @@ public class RoundDatabaseDao implements RoundDao{
 //        final String DELETE_MEETING_EMPLOYEE = "DELETE FROM meeting_employee "
 //                + "WHERE meetingId = ?";
 //        jdbcTemplate.update(DELETE_MEETING_EMPLOYEE, id);
-        
+
         final String DELETE_ROUND = "DELETE FROM round WHERE id = ?";
         return jdbcTemplate.update(DELETE_ROUND, id) > 0;
     }
 
     @Override
     public List<Round> getRoundsForGame(Game game) {
-       
-       final String sql = "SELECT g.* FROM game g "
+
+        final String sql = "SELECT g.* FROM game g "
                 + "JOIN round r ON g.id = r.gameId WHERE g.id = ? AND finished = true";
-       return jdbcTemplate.query(sql, new RoundMapper());
+        return jdbcTemplate.query(sql, new RoundMapper());
     }
 
     @Override
@@ -120,21 +123,22 @@ public class RoundDatabaseDao implements RoundDao{
                 round.getRoundGuess(),
                 Timestamp.valueOf(round.getTimeOfGuess()),
                 round.getGame().getId(),
-                round.getId())>0;
-        
+                round.getId()) > 0;
+
     }
-    
+
     public static final class RoundMapper implements RowMapper<Round> {
 //not setting gameId since it is not part of the Round object?
+
         @Override
         public Round mapRow(ResultSet rs, int index) throws SQLException {
             Round round = new Round();
             round.setId(rs.getInt("id"));
             round.setRoundGuess(rs.getString("roundGuess"));
             round.setTimeOfGuess(rs.getTimestamp("timeOfGuess").toLocalDateTime());
-            round.setResultOfGuess(rs.getString ("resultOfGuess"));
+            round.setResultOfGuess(rs.getString("resultOfGuess"));
             return round;
         }
     }
-    
+
 }

@@ -8,6 +8,7 @@ package com.mc.guessthenumberrest.controllers;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,7 @@ public class GuessTheNumberRESTController {
     public ResponseEntity<Round> guess(String guess, int gameId) {
         
         HashMap <String, Boolean> roundResults = new HashMap();
+        Round currentRound = new Round();
         Game currentGame = new Game();
         currentGame = service.getGameById(gameId);//might not work? might have to pass in gameId instead of RequestBody param of Round
 //        String guess = round.getRoundGuess();
@@ -67,7 +69,12 @@ public class GuessTheNumberRESTController {
             roundResults = service.playRound(guess, currentGame.getGameAnswer());
         
     }
-        return round;
+        currentGame.setFinished(Boolean.parseBoolean(roundResults.values().toString()));
+        currentRound.setGame(currentGame);
+        currentRound.setRoundGuess(guess);
+        currentRound.setTimeOfGuess(LocalDateTime.now());
+        currentRound.setResultOfGuess(roundResults.keySet().toString());
+        return ResponseEntity.ok(currentRound);
     }
 
     @GetMapping("game/{id}")
