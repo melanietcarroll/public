@@ -8,6 +8,7 @@ package com.mc.guessthenumberrest.controllers;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,20 +76,25 @@ public class GuessTheNumberRESTController {
         return result;
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable int id, @RequestBody ToDo todo) {
-        ResponseEntity response = new ResponseEntity(HttpStatus.NOT_FOUND);
-        if (id != todo.getId()) {
-            response = new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-        } else if (dao.update(todo)) {
-            response = new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        return response;
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity update(@PathVariable int id, @RequestBody ToDo todo) {
+//        ResponseEntity response = new ResponseEntity(HttpStatus.NOT_FOUND);
+//        if (id != todo.getId()) {
+//            response = new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
+//        } else if (dao.update(todo)) {
+//            response = new ResponseEntity(HttpStatus.NO_CONTENT);
+//        }
+//        return response;
+//    }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable int id) {
-        if (dao.deleteById(id)) {
+    public ResponseEntity deleteGameById(@PathVariable int id) {
+        List<Round> RoundList = new ArrayList<Round>();
+        RoundList = service.getRoundsForGame(service.getGameById(id));
+        for (Round r: RoundList){
+            service.deleteRoundById(r.getId());
+        }
+        if (service.deleteGameById(id)) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
