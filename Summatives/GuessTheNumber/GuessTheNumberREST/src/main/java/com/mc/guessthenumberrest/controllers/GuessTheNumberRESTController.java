@@ -9,6 +9,7 @@ import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -56,8 +56,18 @@ public class GuessTheNumberRESTController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Round> guess(@RequestBody Round round) {
-        return dao.add(todo);
+    public ResponseEntity<Round> guess(String guess, int gameId) {
+        
+        HashMap <String, Boolean> roundResults = new HashMap();
+        Game currentGame = new Game();
+        currentGame = service.getGameById(gameId);//might not work? might have to pass in gameId instead of RequestBody param of Round
+//        String guess = round.getRoundGuess();
+        boolean duplicate = service.hasDuplicateDigits(Integer.parseInt(guess));
+        if (duplicate == false){
+            roundResults = service.playRound(guess, currentGame.getGameAnswer());
+        
+    }
+        return round;
     }
 
     @GetMapping("game/{id}")
