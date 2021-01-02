@@ -5,6 +5,8 @@
  */
 package com.mc.guessthenumberrest.controllers;
 
+import com.mc.guessthenumberrest.models.Game;
+import com.mc.guessthenumberrest.models.Round;
 import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
@@ -33,24 +36,43 @@ public class GuessTheNumberRESTController {
         this.service = service;
     }
 
-     @GetMapping
-    public List<ToDo> all() {
-        return dao.getAll();
+    @GetMapping
+    public List<Game> all() {
+        return service.getAllGames();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ToDo create(@RequestBody ToDo todo) {
+    public int begin(@RequestBody ToDo todo) {
+        return dao.add(todo);
+    }
+    
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public int guess(@RequestBody ToDo todo) {
         return dao.add(todo);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ToDo> findById(@PathVariable int id) {
-        ToDo result = dao.findById(id);
+    @GetMapping("game/{id}")
+    public ResponseEntity<Game> findGameById(@PathVariable int id) {
+        Game result = service.getGameById(id);
         if (result == null) {
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("rounds/{id}")
+    public List<Round> findRoundsForGameByGameId(@PathVariable int id) {
+//        Game game = service.getGameById(id);
+        List result = service.getRoundsForGame(service.getGameById(id));
+        if (result == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Id not found"
+            );
+//            return null;
+        }
+        return result;
     }
 
     @PutMapping("/{id}")
@@ -71,6 +93,5 @@ public class GuessTheNumberRESTController {
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
-    
-    
+
 }
