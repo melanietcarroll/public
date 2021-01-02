@@ -35,4 +35,5 @@ public interface GuessTheNumberRESTServiceLayer {
     boolean hasDuplicateDigits(int num);
     String createAnswer();
     HashMap <String, Boolean> playRound(String guess, String answer);
+    String containsFourDigits(String guess);
 }

@@ -54,50 +54,62 @@ public class GuessTheNumberRESTController {
         service.addGame(newGame);
         return newGame.getId();
     }
-    
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Round> guess(String guess, int gameId) {
-        
-        HashMap <String, Boolean> roundResults = new HashMap();
+
+        HashMap<String, Boolean> roundResults = new HashMap();
         Round currentRound = new Round();
         Game currentGame = new Game();
         currentGame = service.getGameById(gameId);//might not work? might have to pass in gameId instead of RequestBody param of Round
 //        String guess = round.getRoundGuess();
-        boolean duplicate = service.hasDuplicateDigits(Integer.parseInt(guess));
-        if (duplicate == false){
-            roundResults = service.playRound(guess, currentGame.getGameAnswer());
-        
-    }
-        currentGame.setFinished(Boolean.parseBoolean(roundResults.values().toString()));
-        currentRound.setGame(currentGame);
-        currentRound.setRoundGuess(guess);
-        currentRound.setTimeOfGuess(LocalDateTime.now());
-        currentRound.setResultOfGuess(roundResults.keySet().toString());
-        return ResponseEntity.ok(currentRound);
-    }
+        boolean containsCorrectDigits = service.containsFourDigits(guess);
 
-    @GetMapping("game/{id}")
-    public ResponseEntity<Game> findGameById(@PathVariable int id) {
-        Game result = service.getGameById(id);
-        if (result == null) {
+            boolean duplicate = service.hasDuplicateDigits(Integer.parseInt(guess));
+
+            if (duplicate == false && containsCorrectDigits == true) {
+                roundResults = service.playRound(guess, currentGame.getGameAnswer());
+
+                currentGame.setFinished(Boolean.parseBoolean(roundResults.values().toString()));
+                currentRound.setGame(currentGame);
+                currentRound.setRoundGuess(guess);
+                currentRound.setTimeOfGuess(LocalDateTime.now());
+                currentRound.setResultOfGuess(roundResults.keySet().toString());
+                return ResponseEntity.ok(currentRound);
+            }
             return new ResponseEntity(null, HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(result);
-    }
 
-    @GetMapping("rounds/{id}")
-    public List<Round> findRoundsForGameByGameId(@PathVariable int id) {
+        @GetMapping("game/{id}")
+        public ResponseEntity<Game> findGameById
+        (@PathVariable
+        int id
+        
+            ) {
+        Game result = service.getGameById(id);
+            if (result == null) {
+                return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(result);
+        }
+
+        @GetMapping("rounds/{id}")
+        public List<Round> findRoundsForGameByGameId
+        (@PathVariable
+        int id
+        
+            ) {
 //        Game game = service.getGameById(id);
         List result = service.getRoundsForGame(service.getGameById(id));
-        if (result == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Id not found"
-            );
+            if (result == null) {
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Id not found"
+                );
 //            return null;
+            }
+            return result;
         }
-        return result;
-    }
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity update(@PathVariable int id, @RequestBody ToDo todo) {
@@ -109,18 +121,21 @@ public class GuessTheNumberRESTController {
 //        }
 //        return response;
 //    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteGameById(@PathVariable int id) {
+        @DeleteMapping("/{id}")
+        public ResponseEntity deleteGameById
+        (@PathVariable
+        int id
+        
+            ) {
         List<Round> RoundList = new ArrayList<Round>();
-        RoundList = service.getRoundsForGame(service.getGameById(id));
-        for (Round r: RoundList){
-            service.deleteRoundById(r.getId());
+            RoundList = service.getRoundsForGame(service.getGameById(id));
+            for (Round r : RoundList) {
+                service.deleteRoundById(r.getId());
+            }
+            if (service.deleteGameById(id)) {
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if (service.deleteGameById(id)) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
-    }
 
-}
+    }

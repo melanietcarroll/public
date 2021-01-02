@@ -12,6 +12,7 @@ import com.mc.guessthenumberrest.data.RoundDatabaseDao;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -159,4 +160,19 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
         return results;
     }
 
+    @Override
+    public boolean containsFourDigits(String guess) {
+        boolean containsCorrectDigits = false;
+        char[] chars = guess.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (char c : chars) {
+            if (Character.isDigit(c)) {
+                sb.append(c);
+            }
+            if (chars.length == 4) {
+                return containsCorrectDigits = true;
+            }
+        }
+        return containsCorrectDigits;
+    }
 }
