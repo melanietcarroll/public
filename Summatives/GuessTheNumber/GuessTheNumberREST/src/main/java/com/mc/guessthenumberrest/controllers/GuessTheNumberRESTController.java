@@ -44,13 +44,19 @@ public class GuessTheNumberRESTController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public int begin(@RequestBody ToDo todo) {
-        return dao.add(todo);
+    public int begin() {
+        String answer = service.createAnswer();
+        Boolean finished = false;
+        Game newGame = new Game();
+        newGame.setGameAnswer(answer);
+        newGame.setFinished(finished);
+        service.addGame(newGame);
+        return newGame.getId();
     }
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public int guess(@RequestBody ToDo todo) {
+    public ResponseEntity<Round> guess(@RequestBody Round round) {
         return dao.add(todo);
     }
 
