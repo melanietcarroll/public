@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mc.guessthenumberrest.service;
+package com.mc.guessthenumberrest.data;
 
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
@@ -35,5 +35,5 @@ public interface GuessTheNumberRESTServiceLayer {
     boolean hasDuplicateDigits(int num);
     String createAnswer();
     HashMap <String, Boolean> playRound(String guess, String answer);
-    String containsFourDigits(String guess);
+    boolean containsFourDigits(String guess);
 }

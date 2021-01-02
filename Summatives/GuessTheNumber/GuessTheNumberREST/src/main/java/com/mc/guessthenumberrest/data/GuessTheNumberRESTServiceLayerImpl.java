@@ -3,31 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mc.guessthenumberrest.service;
+package com.mc.guessthenumberrest.data;
 
-import static com.mc.guessthenumberrest.App.createAnswer;
-import static com.mc.guessthenumberrest.App.hasDuplicateDigits;
-import com.mc.guessthenumberrest.data.GameDatabaseDao;
-import com.mc.guessthenumberrest.data.RoundDatabaseDao;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Melanie Carroll
  */
+@Service
 public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTServiceLayer {
 
     GameDatabaseDao gameDao;
     RoundDatabaseDao roundDao;
 
+    @Autowired
     public GuessTheNumberRESTServiceLayerImpl(GameDatabaseDao gameDao, RoundDatabaseDao roundDao) {
         this.gameDao = gameDao;
         this.roundDao = roundDao;

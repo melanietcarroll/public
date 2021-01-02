@@ -7,7 +7,7 @@ package com.mc.guessthenumberrest.controllers;
 
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
-import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
+import com.mc.guessthenumberrest.data.GuessTheNumberRESTServiceLayer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +42,7 @@ public class GuessTheNumberRESTController {
         return service.getAllGames();
     }
 
-    @PostMapping
+    @PostMapping("/begin")
     @ResponseStatus(HttpStatus.CREATED)
     public int begin() {
         String answer = service.createAnswer();
@@ -55,7 +54,7 @@ public class GuessTheNumberRESTController {
         return newGame.getId();
     }
 
-    @PostMapping
+    @PostMapping("/guess")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Round> guess(String guess, int gameId) {
 
