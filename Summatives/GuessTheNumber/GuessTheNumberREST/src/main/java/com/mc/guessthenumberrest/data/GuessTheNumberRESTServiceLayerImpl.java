@@ -172,4 +172,9 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
         }
         return containsCorrectDigits;
     }
+
+    @Override
+    public Game getCurrentGameById(int id) {
+        return gameDao.getCurrentGameById(id);
+    }
 }

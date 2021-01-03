@@ -18,6 +18,7 @@ public interface GuessTheNumberRESTServiceLayer {
     Game addGame(Game game);
     List<Game> getAllGames();
     Game getGameById(int id);
+    Game getCurrentGameById(int id);
     // true if item exists and is updated
     boolean updateGame(Game game);
      // true if item exists and is deleted

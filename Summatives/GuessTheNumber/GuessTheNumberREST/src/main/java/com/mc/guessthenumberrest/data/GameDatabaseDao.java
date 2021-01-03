@@ -93,18 +93,24 @@ public class GameDatabaseDao implements GameDao {
     }
 
     @Override
-    public boolean deleteGameById(int id) {
-        
+    public boolean deleteGameById(int id) { 
         
         final String DELETE_ROUND_BY_GAME = "DELETE FROM round WHERE gameId = ?";
         jdbcTemplate.update(DELETE_ROUND_BY_GAME, id);
         
         final String DELETE_GAME = "DELETE FROM game WHERE id = ?";
         return jdbcTemplate.update(DELETE_GAME, id) > 0;
-        
-        
-//        final String sql = "DELETE FROM game WHERE id = ?;";
-//        return jdbcTemplate.update(sql, id) > 0;
+    }
+
+    @Override
+    public Game getCurrentGameById(int id) {
+        try {
+        final String sql = "SELECT id, gameAnswer, finished "
+                + "FROM game WHERE id = ?;";
+         return jdbcTemplate.queryForObject(sql, new GameMapper(), id);
+        } catch(DataAccessException ex) {
+            return null;
+        }
     }
 
     

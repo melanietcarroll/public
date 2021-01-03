@@ -56,25 +56,27 @@ public class GuessTheNumberRESTController {
 
     @PostMapping("/guess")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Round> guess(String guess, int gameId) {
+    public ResponseEntity<Round> guess(String roundGuess, int gameId) {
 
         HashMap<String, Boolean> roundResults = new HashMap();
         Round currentRound = new Round();
-        Game currentGame = new Game();
-        currentGame = service.getGameById(gameId);//might not work? might have to pass in gameId instead of RequestBody param of Round
+        
+       Game currentGame = service.getCurrentGameById(gameId);
 //        String guess = round.getRoundGuess();
-        boolean containsCorrectDigits = service.containsFourDigits(guess);
+        boolean containsCorrectDigits = service.containsFourDigits(roundGuess);
 
-        boolean duplicate = service.hasDuplicateDigits(Integer.parseInt(guess));
+        boolean duplicate = service.hasDuplicateDigits(Integer.parseInt(roundGuess));
 
         if (duplicate == false && containsCorrectDigits == true) {
-            roundResults = service.playRound(guess, currentGame.getGameAnswer());
+            roundResults = service.playRound(roundGuess, currentGame.getGameAnswer());
 
             currentGame.setFinished(Boolean.parseBoolean(roundResults.values().toString()));
             currentRound.setGame(currentGame);
-            currentRound.setRoundGuess(guess);
+            currentRound.setRoundGuess(roundGuess);
             currentRound.setTimeOfGuess(LocalDateTime.now());
             currentRound.setResultOfGuess(roundResults.keySet().toString());
+            service.updateGame(currentGame);
+            service.updateRound(currentRound);
             return ResponseEntity.ok(currentRound);
         }
         return new ResponseEntity(null, HttpStatus.NOT_FOUND);
