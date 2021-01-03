@@ -90,7 +90,7 @@ public class GuessTheNumberRESTController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("rounds/{id}")  //works
+    @GetMapping("rounds/{id}")  //working
     public List<Round> findRoundsForGameByGameId(@PathVariable int id){
    
         Game game = service.getGameById(id);
@@ -114,12 +114,17 @@ public class GuessTheNumberRESTController {
 //        }
 //        return response;
 //    }
-    @DeleteMapping("/{id}") //code looks ok, mysql statements work 
+    @DeleteMapping("/{id}") //working 
     
-    public ResponseEntity deleteGameById(@PathVariable int id
-    ) {
+    public ResponseEntity deleteGameById(@PathVariable int id) {
         List<Round> RoundList = new ArrayList<Round>();
-        RoundList = service.getRoundsForGame(service.getGameById(id));
+        Game gameToDelete = service.getGameById(id);
+        if (gameToDelete == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Id not found"
+            );
+        }
+        RoundList = service.getRoundsForGame(gameToDelete);
         for (Round r : RoundList) {
             service.deleteRoundById(r.getId());
         }
