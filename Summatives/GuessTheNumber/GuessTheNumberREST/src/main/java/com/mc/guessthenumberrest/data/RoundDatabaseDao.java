@@ -111,7 +111,7 @@ public class RoundDatabaseDao implements RoundDao {
 
         final String sql = "SELECT g.* FROM game g "
                 + "JOIN round r ON g.id = r.gameId WHERE g.id = ? AND finished = true";
-        return jdbcTemplate.query(sql, new RoundMapper());
+        return jdbcTemplate.query(sql, new RoundMapper(), game.getId());
     }
 
     @Override
