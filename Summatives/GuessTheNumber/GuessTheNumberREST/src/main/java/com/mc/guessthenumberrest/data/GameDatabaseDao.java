@@ -67,7 +67,7 @@ public class GameDatabaseDao implements GameDao {
 
     @Override
     public List<Game> getAllGames() {
-         final String GET_ALL_GAMES = "SELECT * FROM game;";
+         final String GET_ALL_GAMES = "SELECT * FROM game;";//add WHERE finished = true
         return jdbcTemplate.query(GET_ALL_GAMES, new GameMapper());
     }
 

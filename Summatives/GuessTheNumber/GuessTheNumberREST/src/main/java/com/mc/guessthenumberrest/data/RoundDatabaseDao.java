@@ -82,14 +82,14 @@ public class RoundDatabaseDao implements RoundDao {
             final String SELECT_ROUND_BY_ID = "SELECT * FROM round WHERE id = ?";
             Round round = jdbcTemplate.queryForObject(SELECT_ROUND_BY_ID,
                     new RoundMapper(), id);
-            round.setGame(getGameForRound(round));
+            round.setGame(getGameForRound(round));//check this
             return round;
         } catch (DataAccessException ex) {
             return null;
         }
     }
 
-    private Game getGameForRound(Round round) {
+    public Game getGameForRound(Round round) {
         final String SELECT_GAME_FOR_ROUND = "SELECT g.* FROM game g "
                 + "JOIN round r ON g.id = r.gameId WHERE r.id = ?";
         return jdbcTemplate.queryForObject(SELECT_GAME_FOR_ROUND, new GameMapper(),
@@ -109,8 +109,7 @@ public class RoundDatabaseDao implements RoundDao {
     @Override
     public List<Round> getRoundsForGame(Game game) {
 
-        final String sql = "SELECT g.* FROM game g "
-                + "JOIN round r ON g.id = r.gameId WHERE g.id = ? AND finished = true";
+        final String sql = "SELECT r.* FROM round r JOIN game g ON g.id = r.gameId WHERE g.id = ? AND finished = true;";
         return jdbcTemplate.query(sql, new RoundMapper(), game.getId());
     }
 
@@ -132,12 +131,15 @@ public class RoundDatabaseDao implements RoundDao {
 
         @Override
         public Round mapRow(ResultSet rs, int index) throws SQLException {
-            Round round = new Round();
-            round.setId(rs.getInt("id"));
-            round.setRoundGuess(rs.getString("roundGuess"));
-            round.setTimeOfGuess(rs.getTimestamp("timeOfGuess").toLocalDateTime());
-            round.setResultOfGuess(rs.getString("resultOfGuess"));
-            return round;
+            Game game = new Game();
+            Round currentRound = new Round();
+            currentRound.setId(rs.getInt("id"));
+            currentRound.setRoundGuess(rs.getString("roundGuess"));
+            currentRound.setTimeOfGuess(rs.getTimestamp("timeOfGuess").toLocalDateTime());
+            currentRound.setResultOfGuess(rs.getString("resultOfGuess"));
+            game.setId(rs.getInt("gameId"));
+            currentRound.setGame(game);
+            return currentRound;
         }
     }
 
