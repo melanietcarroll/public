@@ -48,10 +48,9 @@ public class GuessTheNumberRESTController {
     @ResponseStatus(HttpStatus.CREATED)
     public int begin() {                //working
         String answer = service.createAnswer();
-        Boolean finished = false;
         Game newGame = new Game();
         newGame.setGameAnswer(answer);
-        newGame.setFinished(finished);
+        newGame.setStatus("active");
         service.addGame(newGame);
         return newGame.getId();
     }
@@ -60,7 +59,7 @@ public class GuessTheNumberRESTController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Round> guess(String roundGuess, int gameId) {
 
-        HashMap<String, Boolean> roundResults = new HashMap();
+        HashMap<String, String> roundResults = new HashMap();
         Round currentRound = new Round();
         
        Game currentGame = service.getCurrentGameById(gameId);
@@ -72,8 +71,9 @@ public class GuessTheNumberRESTController {
         if (duplicate == false && containsCorrectDigits == true) {
             roundResults = service.playRound(roundGuess, currentGame.getGameAnswer());
 
-            String resultFinished = roundResults.values().toString();
-            currentGame.setFinished(parseBoolean(resultFinished));
+            currentGame.setStatus(roundResults.values().toString());
+            currentGame.setId(gameId);
+            currentGame.setGameAnswer(currentGame.getGameAnswer());
             currentRound.setGame(currentGame);
             currentRound.setRoundGuess(roundGuess);
             currentRound.setTimeOfGuess(LocalDateTime.now());

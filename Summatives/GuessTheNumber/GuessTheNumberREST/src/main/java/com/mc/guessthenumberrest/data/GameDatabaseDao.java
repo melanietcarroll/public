@@ -35,15 +35,15 @@ public class GameDatabaseDao implements GameDao {
     public GameDatabaseDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @Override
     public Game addGame(Game game) {
-        final String ADD_GAME = "INSERT INTO game(gameAnswer, finished) VALUES(?,?);";
-        
-        jdbcTemplate.update(ADD_GAME, 
-                game.getGameAnswer(), 
-                game.getFinished());
-        
+        final String ADD_GAME = "INSERT INTO game(gameAnswer, status) VALUES(?,?);";
+
+        jdbcTemplate.update(ADD_GAME,
+                game.getGameAnswer(),
+                game.getStatus());
+
         int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         game.setId(newId);
         return game;
@@ -51,13 +51,13 @@ public class GameDatabaseDao implements GameDao {
 
     @Override
     public List<Game> getAllGames() {
-         final String GET_ALL_GAMES = "SELECT * FROM game;";
-        List<Game> gameList= jdbcTemplate.query(GET_ALL_GAMES, new GameMapper());
+        final String GET_ALL_GAMES = "SELECT * FROM game;";
+        List<Game> gameList = jdbcTemplate.query(GET_ALL_GAMES, new GameMapper());
         List<Game> filterResults = new ArrayList();
-        for (Game g: gameList){
+        for (Game g : gameList) {
             Game currentGame = new Game();
             currentGame.setId(g.getId());
-            currentGame.setFinished(g.getFinished());
+            currentGame.setStatus(g.getStatus());
             filterResults.add(currentGame);
         }
         return filterResults;
@@ -65,35 +65,35 @@ public class GameDatabaseDao implements GameDao {
 
     @Override
     public Game getGameById(int id) {
-          try {
-        final String sql = "SELECT id, gameAnswer, finished "
-                + "FROM game WHERE id = ?;";
-         Game retrievedGame= jdbcTemplate.queryForObject(sql, new GameMapper(), id);
-         Game filteredFieldsGame = new Game();
-         filteredFieldsGame.setId(retrievedGame.getId());
-         filteredFieldsGame.setFinished(retrievedGame.getFinished());
-         return filteredFieldsGame;
-        } catch(DataAccessException ex) {
+        try {
+            final String sql = "SELECT id, gameAnswer, status "
+                    + "FROM game WHERE id = ?;";
+            Game retrievedGame = jdbcTemplate.queryForObject(sql, new GameMapper(), id);
+            Game filteredFieldsGame = new Game();
+            filteredFieldsGame.setId(retrievedGame.getId());
+            filteredFieldsGame.setStatus(retrievedGame.getStatus());
+            return filteredFieldsGame;
+        } catch (DataAccessException ex) {
             return null;
         }
     }
 
     @Override
-    public boolean updateGame(Game game) {
-        final String UPDATE_GAME  = "UPDATE game SET gameAnswer = ?, finished = ? WHERE id = ?;";
+    public void updateGame(Game game) {
+        final String UPDATE_GAME = "UPDATE game SET gameAnswer = ?, status = ? WHERE id = ?;";
 
-        return jdbcTemplate.update(UPDATE_GAME,
+        jdbcTemplate.update(UPDATE_GAME,
                 game.getGameAnswer(),
-                game.getFinished(), //example isFinished?
-                game.getId()) > 0;
+                game.getStatus(), //example isFinished?
+                game.getId());
     }
 
     @Override
-    public boolean deleteGameById(int id) { 
-        
+    public boolean deleteGameById(int id) {
+
         final String DELETE_ROUND_BY_GAME = "DELETE FROM round WHERE gameId = ?";
         jdbcTemplate.update(DELETE_ROUND_BY_GAME, id);
-        
+
         final String DELETE_GAME = "DELETE FROM game WHERE id = ?";
         return jdbcTemplate.update(DELETE_GAME, id) > 0;
     }
@@ -101,15 +101,13 @@ public class GameDatabaseDao implements GameDao {
     @Override
     public Game getCurrentGameById(int id) {
         try {
-        final String sql = "SELECT id, gameAnswer, finished "
-                + "FROM game WHERE id = ?;";
-         return jdbcTemplate.queryForObject(sql, new GameMapper(), id);
-        } catch(DataAccessException ex) {
+            final String sql = "SELECT id, gameAnswer, status FROM game WHERE id = ?;";
+            return jdbcTemplate.queryForObject(sql, new GameMapper(), id);
+        } catch (DataAccessException ex) {
             return null;
         }
     }
 
-    
     public static final class GameMapper implements RowMapper<Game> {
 
         @Override
@@ -117,9 +115,9 @@ public class GameDatabaseDao implements GameDao {
             Game game = new Game();
             game.setId(rs.getInt("id"));
             game.setGameAnswer(rs.getString("gameAnswer"));
-            game.setFinished(rs.getBoolean("finished"));
+            game.setStatus(rs.getString("status"));
             return game;
         }
     }
-    
+
 }

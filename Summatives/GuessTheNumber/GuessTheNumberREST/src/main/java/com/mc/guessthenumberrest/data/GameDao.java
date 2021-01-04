@@ -20,7 +20,7 @@ public interface GameDao {
     Game getGameById(int id);
     Game getCurrentGameById(int id);
     // true if item exists and is updated
-    boolean updateGame(Game game);
+    void updateGame(Game game);
      // true if item exists and is deleted
     boolean deleteGameById(int id);
     

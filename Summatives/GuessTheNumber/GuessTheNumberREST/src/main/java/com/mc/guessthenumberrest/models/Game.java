@@ -12,7 +12,7 @@ package com.mc.guessthenumberrest.models;
 public class Game {
      int id;
      String gameAnswer;
-     Boolean finished;
+     String status;
 
     public int getId() {
         return id;
@@ -30,12 +30,12 @@ public class Game {
         this.gameAnswer = gameAnswer;
     }
 
-    public Boolean getFinished() {
-        return finished;
+    public String getStatus() {
+        return status;
     }
 
-    public void setFinished(Boolean finished) {
-        this.finished = finished;
+    public void setStatus(String status) {
+        this.status = status;
     }
      
 }

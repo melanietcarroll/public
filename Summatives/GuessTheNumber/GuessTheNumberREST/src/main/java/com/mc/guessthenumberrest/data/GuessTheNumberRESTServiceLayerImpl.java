@@ -46,8 +46,8 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
     }
 
     @Override
-    public boolean updateGame(Game game) {
-        return gameDao.updateGame(game);
+    public void updateGame(Game game) {
+        gameDao.updateGame(game);
     }
 
     @Override
@@ -111,9 +111,9 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
     }
 
     @Override
-    public HashMap<String, Boolean> playRound(String guess, String answer) {
-        HashMap<String, Boolean> results = new HashMap();
-        Boolean guessed = false;
+    public HashMap<String, String> playRound(String guess, String answer) {
+        HashMap<String, String> results = new HashMap();
+        String status = "active";
         int bulls = 0;
         int cows = 0;
 
@@ -125,11 +125,11 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
             }
         }
         if (bulls == 4) {
-            guessed = true;
+            status = "complete";
         }
 
         String bullsAndCows = "e: " + bulls + " : " + " p: " + cows;
-        results.put(bullsAndCows, guessed);
+        results.put(bullsAndCows, status);
 
         return results;
     }

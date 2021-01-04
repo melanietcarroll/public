@@ -20,7 +20,7 @@ public interface GuessTheNumberRESTServiceLayer {
     Game getGameById(int id);
     Game getCurrentGameById(int id);
     // true if item exists and is updated
-    boolean updateGame(Game game);
+    void updateGame(Game game);
      // true if item exists and is deleted
     boolean deleteGameById(int id);
     
@@ -35,6 +35,6 @@ public interface GuessTheNumberRESTServiceLayer {
     
     boolean hasDuplicateDigits(int num);
     String createAnswer();
-    HashMap <String, Boolean> playRound(String guess, String answer);
+    HashMap <String, String> playRound(String guess, String answer);
     boolean containsFourDigits(String guess);
 }

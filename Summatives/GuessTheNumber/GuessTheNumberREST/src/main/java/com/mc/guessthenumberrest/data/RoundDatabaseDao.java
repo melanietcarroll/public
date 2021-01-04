@@ -102,7 +102,7 @@ public class RoundDatabaseDao implements RoundDao {
 
     @Override
     public List<Round> getRoundsForGame(Game game) {
-        final String sql = "SELECT r.* FROM round r JOIN game g ON g.id = r.gameId WHERE g.id = ? AND finished = true ORDER BY timeOfGuess;";
+        final String sql = "SELECT r.* FROM round r JOIN game g ON g.id = r.gameId WHERE g.id = ? AND status = 'complete' ORDER BY timeOfGuess;";
         return jdbcTemplate.query(sql, new RoundMapper(), game.getId());
     }
 
