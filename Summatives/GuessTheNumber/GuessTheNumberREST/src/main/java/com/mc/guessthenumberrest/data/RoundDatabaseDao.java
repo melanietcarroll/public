@@ -41,7 +41,7 @@ public class RoundDatabaseDao implements RoundDao {
     @Transactional
     public Round addRound(Round round) {
 
-        final String INSERT_ROUND = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?)";
+        final String INSERT_ROUND = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?);";
         jdbcTemplate.update(INSERT_ROUND,
                 round.getRoundGuess(),
                 Timestamp.valueOf(round.getTimeOfGuess()),
@@ -51,7 +51,7 @@ public class RoundDatabaseDao implements RoundDao {
         round.setId(newId);
         
         return round;
-//        final String sql = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?,?);";
+//        final String sql = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?);";
 //        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 //
 //        jdbcTemplate.update((Connection conn) -> {
@@ -80,7 +80,7 @@ public class RoundDatabaseDao implements RoundDao {
             final String SELECT_ROUND_BY_ID = "SELECT * FROM round WHERE id = ?";
             Round round = jdbcTemplate.queryForObject(SELECT_ROUND_BY_ID,
                     new RoundMapper(), id);
-            round.setGame(getGameForRound(round));//check this
+            round.setGame(getGameForRound(round));
             return round;
         } catch (DataAccessException ex) {
             return null;
@@ -114,6 +114,7 @@ public class RoundDatabaseDao implements RoundDao {
         return jdbcTemplate.update(UPDATE_ROUND,
                 round.getRoundGuess(),
                 Timestamp.valueOf(round.getTimeOfGuess()),
+                round.getResultOfGuess(),
                 round.getGame().getId(),
                 round.getId()) > 0;
 

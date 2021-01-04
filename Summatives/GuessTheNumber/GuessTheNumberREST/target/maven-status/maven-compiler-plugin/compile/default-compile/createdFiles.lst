@@ -12,3 +12,4 @@ com\mc\guessthenumberrest\controllers\Error.class
 com\mc\guessthenumberrest\data\GameDatabaseDao$GameMapper.class
 com\mc\guessthenumberrest\data\GameDatabaseDao.class
 com\mc\guessthenumberrest\App.class
+.netbeans_automatic_build

@@ -57,7 +57,7 @@ public class GuessTheNumberRESTController {
 
     @PostMapping("/guess")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Round> guess(String roundGuess, int gameId) {
+    public ResponseEntity<Round> guess(String roundGuess,  int gameId) {
 
         HashMap<String, String> roundResults = new HashMap();
         Round currentRound = new Round();
@@ -78,7 +78,7 @@ public class GuessTheNumberRESTController {
             currentRound.setRoundGuess(roundGuess);
             currentRound.setTimeOfGuess(LocalDateTime.now());
             currentRound.setResultOfGuess(roundResults.keySet().toString());
-            currentRound.setId(5);
+
             service.updateGame(currentGame);
             service.addRound(currentRound);
             return ResponseEntity.ok(currentRound);
