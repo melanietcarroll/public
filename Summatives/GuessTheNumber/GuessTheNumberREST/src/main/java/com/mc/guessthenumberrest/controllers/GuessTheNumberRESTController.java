@@ -8,8 +8,10 @@ package com.mc.guessthenumberrest.controllers;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import com.mc.guessthenumberrest.data.GuessTheNumberRESTServiceLayer;
+import static java.lang.Boolean.parseBoolean;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -62,7 +64,7 @@ public class GuessTheNumberRESTController {
         Round currentRound = new Round();
         
        Game currentGame = service.getCurrentGameById(gameId);
-//        String guess = round.getRoundGuess();
+
         boolean containsCorrectDigits = service.containsFourDigits(roundGuess);
 
         boolean duplicate = service.hasDuplicateDigits(Integer.parseInt(roundGuess));
@@ -70,13 +72,14 @@ public class GuessTheNumberRESTController {
         if (duplicate == false && containsCorrectDigits == true) {
             roundResults = service.playRound(roundGuess, currentGame.getGameAnswer());
 
-            currentGame.setFinished(Boolean.parseBoolean(roundResults.values().toString()));
+            String resultFinished = roundResults.values().toString();
+            currentGame.setFinished(parseBoolean(resultFinished));
             currentRound.setGame(currentGame);
             currentRound.setRoundGuess(roundGuess);
             currentRound.setTimeOfGuess(LocalDateTime.now());
             currentRound.setResultOfGuess(roundResults.keySet().toString());
             service.updateGame(currentGame);
-            service.updateRound(currentRound);
+            service.addRound(currentRound);
             return ResponseEntity.ok(currentRound);
         }
         return new ResponseEntity(null, HttpStatus.NOT_FOUND);
@@ -96,26 +99,15 @@ public class GuessTheNumberRESTController {
     public List<Round> findRoundsForGameByGameId(@PathVariable int id){
    
         Game game = service.getGameById(id);
-//        List result = service.getRoundsForGame(game);
         if (game == null) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Id not found"
             );
         }
-        List result = service.getRoundsForGame(game);
+        List result = service.getRoundsForGame(game);//must sort by time
         return result;
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity update(@PathVariable int id, @RequestBody ToDo todo) {
-//        ResponseEntity response = new ResponseEntity(HttpStatus.NOT_FOUND);
-//        if (id != todo.getId()) {
-//            response = new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-//        } else if (dao.update(todo)) {
-//            response = new ResponseEntity(HttpStatus.NO_CONTENT);
-//        }
-//        return response;
-//    }
+    
     @DeleteMapping("/{id}") //working 
     
     public ResponseEntity deleteGameById(@PathVariable int id) {

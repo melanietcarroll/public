@@ -41,39 +41,37 @@ public class RoundDatabaseDao implements RoundDao {
     @Transactional
     public Round addRound(Round round) {
 
-//        final String INSERT_ROUND = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?)";
-//        jdbcTemplate.update(INSERT_ROUND,
-//                round.getRoundGuess(),
-//                Timestamp.valueOf(round.getTimeOfGuess()),
-//                round.getResultOfGuess(),
-//                round.getGame().getId());
-//        int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
-//        round.setId(newId);
-//        
-////        insertMeetingEmployee(meeting);
-//        
-//        return round;
-        final String sql = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?,?);";
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbcTemplate.update((Connection conn) -> {
-
-            PreparedStatement statement = conn.prepareStatement(
-                    sql,
-                    Statement.RETURN_GENERATED_KEYS);
-
-            statement.setString(1, round.getRoundGuess());
-            Timestamp.valueOf(round.getTimeOfGuess());
-            statement.setString(3, round.getResultOfGuess());
-            statement.setInt(4, round.getGame().getId());
-
-            return statement;
-
-        }, keyHolder);
-
-        round.setId(keyHolder.getKey().intValue());
-
+        final String INSERT_ROUND = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?)";
+        jdbcTemplate.update(INSERT_ROUND,
+                round.getRoundGuess(),
+                Timestamp.valueOf(round.getTimeOfGuess()),
+                round.getResultOfGuess(),
+                round.getGame().getId());
+        int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        round.setId(newId);
+        
         return round;
+//        final String sql = "INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) VALUES(?,?,?,?,?);";
+//        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+//
+//        jdbcTemplate.update((Connection conn) -> {
+//
+//            PreparedStatement statement = conn.prepareStatement(
+//                    sql,
+//                    Statement.RETURN_GENERATED_KEYS);
+//
+//            statement.setString(1, round.getRoundGuess());
+//            Timestamp.valueOf(round.getTimeOfGuess());
+//            statement.setString(3, round.getResultOfGuess());
+//            statement.setInt(4, round.getGame().getId());
+//
+//            return statement;
+//
+//        }, keyHolder);
+//
+//        round.setId(keyHolder.getKey().intValue());
+//
+//        return round;
     }
 
     @Override
@@ -98,18 +96,13 @@ public class RoundDatabaseDao implements RoundDao {
 
     @Override
     public boolean deleteRoundById(int id) {
-//        final String DELETE_MEETING_EMPLOYEE = "DELETE FROM meeting_employee "
-//                + "WHERE meetingId = ?";
-//        jdbcTemplate.update(DELETE_MEETING_EMPLOYEE, id);
-
         final String DELETE_ROUND = "DELETE FROM round WHERE id = ?";
         return jdbcTemplate.update(DELETE_ROUND, id) > 0;
     }
 
     @Override
     public List<Round> getRoundsForGame(Game game) {
-
-        final String sql = "SELECT r.* FROM round r JOIN game g ON g.id = r.gameId WHERE g.id = ? AND finished = true;";
+        final String sql = "SELECT r.* FROM round r JOIN game g ON g.id = r.gameId WHERE g.id = ? AND finished = true ORDER BY timeOfGuess;";
         return jdbcTemplate.query(sql, new RoundMapper(), game.getId());
     }
 
@@ -117,7 +110,7 @@ public class RoundDatabaseDao implements RoundDao {
     @Transactional
     public boolean updateRound(Round round) {
         final String UPDATE_ROUND = "UPDATE round "
-                + "SET roundGuess = ?, timeOfGuess = ?, resultOfGuess = ?, gameId = ? WHERE id = ? ORDER BY timeOfGuess";
+                + "SET roundGuess = ?, timeOfGuess = ?, resultOfGuess = ?, gameId = ? WHERE id = ?";
         return jdbcTemplate.update(UPDATE_ROUND,
                 round.getRoundGuess(),
                 Timestamp.valueOf(round.getTimeOfGuess()),
@@ -127,7 +120,6 @@ public class RoundDatabaseDao implements RoundDao {
     }
 
     public static final class RoundMapper implements RowMapper<Round> {
-//not setting gameId since it is not part of the Round object?
 
         @Override
         public Round mapRow(ResultSet rs, int index) throws SQLException {

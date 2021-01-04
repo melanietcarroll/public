@@ -112,30 +112,11 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
 
     @Override
     public HashMap<String, Boolean> playRound(String guess, String answer) {
-//            Random gen = new Random();
-//        String target = createAnswer();
-//        while (hasDupes(target = (gen.nextInt(9000) + 1000)));
-//        String targetStr = target + "";
         HashMap<String, Boolean> results = new HashMap();
-        boolean guessed = false;
-//        Scanner myScanner = new Scanner(System.in);
-//        int guesses = 0;
-//        do {
+        Boolean guessed = false;
         int bulls = 0;
         int cows = 0;
 
-//            System.out.println("Please enter a 4-digit number with no repeating digits: ");
-//            int guess;
-//            try {
-//                guess = myScanner.nextInt();
-//                if (hasDuplicateDigits(guess) || guess < 1000) {
-//                    continue;
-//                }
-//            } catch (InputMismatchException e) {
-//                continue;
-//            }
-//            guesses++;
-//            String guessString = Integer.toString(guess);
         for (int i = 0; i < 4; i++) {
             if (guess.charAt(i) == answer.charAt(i)) {
                 bulls++;
@@ -146,11 +127,7 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
         if (bulls == 4) {
             guessed = true;
         }
-//            } else {
-//                System.out.println(cows + " Cows and " + bulls + " Bulls.");
-//            }
-//        } while (!guessed);
-//        System.out.println("You won after " + guesses + " guesses!");
+
         String bullsAndCows = "e: " + bulls + " : " + " p: " + cows;
         results.put(bullsAndCows, guessed);
 
