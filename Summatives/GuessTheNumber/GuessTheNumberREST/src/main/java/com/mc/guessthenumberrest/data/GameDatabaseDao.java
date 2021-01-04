@@ -67,8 +67,12 @@ public class GameDatabaseDao implements GameDao {
     public Game getGameById(int id) {
           try {
         final String sql = "SELECT id, gameAnswer, finished "
-                + "FROM game WHERE id = ? AND finished = true;";
-         return jdbcTemplate.queryForObject(sql, new GameMapper(), id);
+                + "FROM game WHERE id = ?;";
+         Game retrievedGame= jdbcTemplate.queryForObject(sql, new GameMapper(), id);
+         Game filteredFieldsGame = new Game();
+         filteredFieldsGame.setId(retrievedGame.getId());
+         filteredFieldsGame.setFinished(retrievedGame.getFinished());
+         return filteredFieldsGame;
         } catch(DataAccessException ex) {
             return null;
         }
