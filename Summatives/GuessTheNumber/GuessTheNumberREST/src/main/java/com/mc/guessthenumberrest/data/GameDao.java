@@ -7,6 +7,7 @@ package com.mc.guessthenumberrest.data;
 
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
+import java.util.HashMap;
 import java.util.List;
 
 /**

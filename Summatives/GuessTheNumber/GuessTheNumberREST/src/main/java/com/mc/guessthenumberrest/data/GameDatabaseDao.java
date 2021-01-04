@@ -12,6 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -50,7 +52,15 @@ public class GameDatabaseDao implements GameDao {
     @Override
     public List<Game> getAllGames() {
          final String GET_ALL_GAMES = "SELECT * FROM game;";//add WHERE finished = true
-        return jdbcTemplate.query(GET_ALL_GAMES, new GameMapper());
+        List<Game> gameList= jdbcTemplate.query(GET_ALL_GAMES, new GameMapper());
+        List<Game> filterResults = new ArrayList();
+        for (Game g: gameList){
+            Game currentGame = new Game();
+            currentGame.setId(g.getId());
+            currentGame.setFinished(g.getFinished());
+            filterResults.add(currentGame);
+        }
+        return filterResults;
     }
 
     @Override
