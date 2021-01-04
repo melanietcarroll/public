@@ -78,6 +78,7 @@ public class GuessTheNumberRESTController {
             currentRound.setRoundGuess(roundGuess);
             currentRound.setTimeOfGuess(LocalDateTime.now());
             currentRound.setResultOfGuess(roundResults.keySet().toString());
+            currentRound.setId(5);
             service.updateGame(currentGame);
             service.addRound(currentRound);
             return ResponseEntity.ok(currentRound);
@@ -113,11 +114,6 @@ public class GuessTheNumberRESTController {
     public ResponseEntity deleteGameById(@PathVariable int id) {
         List<Round> RoundList = new ArrayList<Round>();
         Game gameToDelete = service.getGameById(id);
-//        if (gameToDelete == null) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "Id not found"
-//            );
-//        }
         RoundList = service.getRoundsForGame(gameToDelete);
         if (RoundList == null) {
             service.deleteGameById(id);
