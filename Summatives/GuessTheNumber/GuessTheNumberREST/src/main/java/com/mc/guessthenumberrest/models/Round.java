@@ -16,7 +16,11 @@ public class Round {
     String roundGuess;
     LocalDateTime timeOfGuess;
     String resultOfGuess;
-    Game game;
+    int gameId;
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
+    }
 
     public int getId() {
         return id;
@@ -49,12 +53,9 @@ public class Round {
     public void setResultOfGuess(String resultOfGuess) {
         this.resultOfGuess = resultOfGuess;
     }
-    
-    public Game getGame() {
-        return game;
-    }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public int getGameId() {
+        return gameId;
     }
+   
 }

@@ -15,11 +15,7 @@ import java.util.List;
  */
 public interface RoundDao {
     Round addRound(Round round);
-//    List<Round> getAllRounds();
-    Round getRoundByid(int id);
-    // true if item exists and is updated
-    boolean updateRound(Round round);
-     // true if item exists and is deleted
+//    Round getRoundByid(int id);
     boolean deleteRoundById(int id);
     List<Round> getRoundsForGame(Game game);
 }

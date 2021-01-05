@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mc.guessthenumberrest.data;
+package com.mc.guessthenumberrest.service;
 
+import com.mc.guessthenumberrest.data.GameDatabaseDao;
+import com.mc.guessthenumberrest.data.RoundDatabaseDao;
+import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import java.util.ArrayList;
@@ -60,15 +63,10 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
         return roundDao.addRound(round);
     }
 
-    @Override
-    public Round getRoundByid(int id) {
-        return roundDao.getRoundByid(id);
-    }
-
-    @Override
-    public boolean updateRound(Round round) {
-        return roundDao.updateRound(round);
-    }
+//    @Override
+//    public Round getRoundByid(int id) {
+//        return roundDao.getRoundByid(id);
+//    }
 
     @Override
     public boolean deleteRoundById(int id) {
