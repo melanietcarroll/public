@@ -63,11 +63,6 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
         return roundDao.addRound(round);
     }
 
-//    @Override
-//    public Round getRoundByid(int id) {
-//        return roundDao.getRoundByid(id);
-//    }
-
     @Override
     public boolean deleteRoundById(int id) {
         return roundDao.deleteRoundById(id);
@@ -105,7 +100,6 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
             result += numberList.get(i).toString();
         }
         return result;
-
     }
 
     @Override
@@ -125,7 +119,6 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
         if (bulls == 4) {
             status = "complete";
         }
-
         String bullsAndCows = "e: " + bulls + " : " + " p: " + cows;
         results.put(bullsAndCows, status);
 

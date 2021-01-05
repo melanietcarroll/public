@@ -103,14 +103,12 @@ public class GuessTheNumberRESTController {
                     HttpStatus.NOT_FOUND, "Id not found"
             );
         }
-//        List result = service.getRoundsForGame(game);//must sort by time
         return service.getRoundsForGame(game);//must sort by time
     }
 
     @DeleteMapping("/{id}")
 
     public ResponseEntity deleteGameById(@PathVariable int id) {
-//        List<Round> RoundList = new ArrayList<Round>();
         Game gameToDelete = service.getGameById(id);
         if (gameToDelete == null){
            return new ResponseEntity(HttpStatus.NOT_FOUND); 

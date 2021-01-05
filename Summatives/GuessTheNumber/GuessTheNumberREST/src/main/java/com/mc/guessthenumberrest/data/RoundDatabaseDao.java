@@ -53,19 +53,6 @@ public class RoundDatabaseDao implements RoundDao {
         return round;
     }
 
-//    @Override
-//    public Round getRoundByid(int id) { //is this used?
-//        try {
-//            final String SELECT_ROUND_BY_ID = "SELECT * FROM round WHERE id = ?";
-//            Round round = jdbcTemplate.queryForObject(SELECT_ROUND_BY_ID,
-//                    new RoundMapper(), id);
-//            round.setGameId(id);
-//            return round;
-//        } catch (DataAccessException ex) {
-//            return null;
-//        }
-//    }
-
     public Game getGameForRound(Round round) {
         final String SELECT_GAME_FOR_ROUND = "SELECT g.* FROM game g "
                 + "JOIN round r ON g.id = r.gameId WHERE r.id = ?";
@@ -85,7 +72,11 @@ public class RoundDatabaseDao implements RoundDao {
         return jdbcTemplate.query(sql, new RoundMapper(), game.getId());
     }
 
-
+    @Override
+    public List<Round> getAllRounds() {
+        final String GET_ALL_ROUNDS = "SELECT * FROM round;";
+        return jdbcTemplate.query(GET_ALL_ROUNDS, new RoundMapper());
+    }
 
     public static final class RoundMapper implements RowMapper<Round> {
 

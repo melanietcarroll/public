@@ -6,6 +6,7 @@
 package com.mc.guessthenumberrest.models;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  *
@@ -15,6 +16,49 @@ public class Round {
     int id;
     String roundGuess;
     LocalDateTime timeOfGuess;
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + this.id;
+        hash = 19 * hash + Objects.hashCode(this.roundGuess);
+        hash = 19 * hash + Objects.hashCode(this.timeOfGuess);
+        hash = 19 * hash + Objects.hashCode(this.resultOfGuess);
+        hash = 19 * hash + this.gameId;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Round other = (Round) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.gameId != other.gameId) {
+            return false;
+        }
+        if (!Objects.equals(this.roundGuess, other.roundGuess)) {
+            return false;
+        }
+        if (!Objects.equals(this.resultOfGuess, other.resultOfGuess)) {
+            return false;
+        }
+        if (!Objects.equals(this.timeOfGuess, other.timeOfGuess)) {
+            return false;
+        }
+        return true;
+    }
+
+    
     String resultOfGuess;
     int gameId;
 

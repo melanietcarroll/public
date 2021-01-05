@@ -14,8 +14,8 @@ import java.util.List;
  * @author Melanie Carroll
  */
 public interface RoundDao {
+    List<Round> getAllRounds();
     Round addRound(Round round);
-//    Round getRoundByid(int id);
     boolean deleteRoundById(int id);
     List<Round> getRoundsForGame(Game game);
 }
