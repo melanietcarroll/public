@@ -28,3 +28,4 @@ VALUES(1, "1234", '2018-01-01 14:00:00', "e:4:p:0",1),
 
 INSERT INTO round(roundGuess, timeOfGuess, resultOfGuess, gameId) 
 VALUES( "8513", '2019-01-03 10:00:00',  "e:2:p:1",3);
+

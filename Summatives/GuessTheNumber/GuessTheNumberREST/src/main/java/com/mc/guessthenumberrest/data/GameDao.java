@@ -23,6 +23,8 @@ public interface GameDao {
     void updateGame(Game game);
      // true if item exists and is deleted
     boolean deleteGameById(int id);
-    
+    void addRoundsToGame(List<Game> games);
+    List<Round> getRoundsForGame(Game games);
+   
     
 }

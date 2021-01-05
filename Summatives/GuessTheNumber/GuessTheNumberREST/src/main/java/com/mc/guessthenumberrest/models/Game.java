@@ -5,6 +5,7 @@
  */
 package com.mc.guessthenumberrest.models;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -15,6 +16,15 @@ public class Game {
      int id;
      String gameAnswer;
      String status;
+     List<Round> gameRounds;
+
+    public void setGameRounds(List<Round> gameRounds) {
+        this.gameRounds = gameRounds;
+    }
+
+    public List<Round> getGameRounds() {
+        return gameRounds;
+    }
 
     public int getId() {
         return id;

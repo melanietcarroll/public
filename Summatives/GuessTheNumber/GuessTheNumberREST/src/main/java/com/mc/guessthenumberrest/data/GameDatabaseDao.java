@@ -30,6 +30,7 @@ import org.springframework.stereotype.Repository;
 public class GameDatabaseDao implements GameDao {
 
     private final JdbcTemplate jdbcTemplate;
+    RoundDatabaseDao roundDao;
 
     @Autowired
     public GameDatabaseDao(JdbcTemplate jdbcTemplate) {
@@ -56,9 +57,10 @@ public class GameDatabaseDao implements GameDao {
         List<Game> filterResults = new ArrayList();
         for (Game g : gameList) {
             Game currentGame = new Game();
-            if (g.getStatus().equals("active")){
+            if (g.getStatus().equals("active") || g.getStatus().equals("[active]")){
                 currentGame.setId(g.getId());    
                 currentGame.setStatus(g.getStatus());
+                
                 filterResults.add(currentGame);
             }else{
             currentGame.setId(g.getId());
@@ -66,10 +68,11 @@ public class GameDatabaseDao implements GameDao {
             currentGame.setStatus(g.getStatus());
             filterResults.add(currentGame);
             }
+            addRoundsToGame(filterResults);
         }
         return filterResults;
     }
-
+    
     @Override
     public Game getGameById(int id) {
         try {
@@ -77,14 +80,17 @@ public class GameDatabaseDao implements GameDao {
                     + "FROM game WHERE id = ?;";
             Game retrievedGame = jdbcTemplate.queryForObject(sql, new GameMapper(), id);
             Game filteredFieldsGame = new Game();
-            if (retrievedGame.getStatus().equals("active")){
-                filteredFieldsGame.setId(retrievedGame.getId());    
+            if (retrievedGame.getStatus().equals("active")|| retrievedGame.getStatus().equals("[active]")){
+                filteredFieldsGame.setId(retrievedGame.getId());  
+                filteredFieldsGame.setGameRounds(getRoundsForGame(retrievedGame));
                 filteredFieldsGame.setStatus(retrievedGame.getStatus());
             }else{
             filteredFieldsGame.setId(retrievedGame.getId());
             filteredFieldsGame.setGameAnswer(retrievedGame.getGameAnswer());
+            filteredFieldsGame.setGameRounds(getRoundsForGame(retrievedGame));
             filteredFieldsGame.setStatus(retrievedGame.getStatus());
             }
+
             return filteredFieldsGame;
         } catch (DataAccessException ex) {
             return null;
@@ -121,6 +127,20 @@ public class GameDatabaseDao implements GameDao {
         }
     }
 
+    @Override
+    public void addRoundsToGame(List<Game> games) {
+        for (Game gf : games){
+                gf.setGameRounds(getRoundsForGame(gf));
+            }
+    }
+
+    @Override
+    public List<Round> getRoundsForGame(Game game) {
+        final String sql = "SELECT r.* FROM round r JOIN game g ON g.id = r.gameId WHERE g.id = ? ORDER BY timeOfGuess;";
+        return jdbcTemplate.query(sql, new RoundDatabaseDao.RoundMapper(), game.getId());
+    }
+
+   
     public static final class GameMapper implements RowMapper<Game> {
 
         @Override
