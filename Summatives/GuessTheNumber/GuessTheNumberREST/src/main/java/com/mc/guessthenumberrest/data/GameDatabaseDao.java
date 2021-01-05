@@ -56,9 +56,16 @@ public class GameDatabaseDao implements GameDao {
         List<Game> filterResults = new ArrayList();
         for (Game g : gameList) {
             Game currentGame = new Game();
+            if (g.getStatus().equals("active")){
+                currentGame.setId(g.getId());    
+                currentGame.setStatus(g.getStatus());
+                filterResults.add(currentGame);
+            }else{
             currentGame.setId(g.getId());
+            currentGame.setGameAnswer(g.getGameAnswer());
             currentGame.setStatus(g.getStatus());
             filterResults.add(currentGame);
+            }
         }
         return filterResults;
     }
@@ -70,8 +77,14 @@ public class GameDatabaseDao implements GameDao {
                     + "FROM game WHERE id = ?;";
             Game retrievedGame = jdbcTemplate.queryForObject(sql, new GameMapper(), id);
             Game filteredFieldsGame = new Game();
+            if (retrievedGame.getStatus().equals("active")){
+                filteredFieldsGame.setId(retrievedGame.getId());    
+                filteredFieldsGame.setStatus(retrievedGame.getStatus());
+            }else{
             filteredFieldsGame.setId(retrievedGame.getId());
+            filteredFieldsGame.setGameAnswer(retrievedGame.getGameAnswer());
             filteredFieldsGame.setStatus(retrievedGame.getStatus());
+            }
             return filteredFieldsGame;
         } catch (DataAccessException ex) {
             return null;

@@ -71,8 +71,8 @@ public class GameDatabaseDaoTest {
     @Test
     public void testAddGame() {
         Game game = new Game();
-        game.setGameAnswer(null);
-        game.setStatus("active");
+        game.setGameAnswer("1234");
+        game.setStatus("complete");
         game = gameDao.addGame(game);
 
         Game fromDao = gameDao.getGameById(game.getId());
@@ -86,8 +86,8 @@ public class GameDatabaseDaoTest {
     @Test
     public void testGetAllGames() {
         Game game = new Game();
-        game.setGameAnswer(null);
-        game.setStatus("active");
+        game.setGameAnswer("1234");
+        game.setStatus("complete");
         gameDao.addGame(game);
 
         Game game2 = new Game();
@@ -108,8 +108,8 @@ public class GameDatabaseDaoTest {
     @Test
     public void testGetGameById() {
         Game game = new Game();
-        game.setGameAnswer(null);
-        game.setStatus("active");
+        game.setGameAnswer("4567");
+        game.setStatus("complete");
         game = gameDao.addGame(game);
 
         Game fromDao = gameDao.getCurrentGameById(game.getId());

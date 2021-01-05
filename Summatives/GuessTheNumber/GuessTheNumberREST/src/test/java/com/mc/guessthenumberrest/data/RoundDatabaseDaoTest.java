@@ -70,7 +70,7 @@ public class RoundDatabaseDaoTest {
     @Test
     public void testAddRound() {
         Game game = new Game();
-        game.setGameAnswer(null);
+        game.setGameAnswer("1234");
         game.setStatus("active");
         gameDao.addGame(game);
 
@@ -92,7 +92,7 @@ public class RoundDatabaseDaoTest {
     @Test
     public void testGetGameForRound() {
         Game game = new Game();
-        game.setGameAnswer(null);
+        game.setGameAnswer("1234");
         game.setStatus("active");
         gameDao.addGame(game);
 
@@ -114,7 +114,7 @@ public class RoundDatabaseDaoTest {
     @Test
     public void testDeleteRoundById() {
         Game game = new Game();
-        game.setGameAnswer(null);
+        game.setGameAnswer("1234");
         game.setStatus("active");
         gameDao.addGame(game);
 
@@ -137,7 +137,7 @@ public class RoundDatabaseDaoTest {
     @Test
     public void testGetRoundsForGame() {
         Game game = new Game();
-        game.setGameAnswer(null);
+        game.setGameAnswer("4567");
         game.setStatus("active");
         gameDao.addGame(game);
 
@@ -166,7 +166,7 @@ public class RoundDatabaseDaoTest {
     @Test
     public void testGetAllRounds() {
         Game game = new Game();
-        game.setGameAnswer(null);
+        game.setGameAnswer("1234");
         game.setStatus("active");
         gameDao.addGame(game);
 
@@ -178,7 +178,7 @@ public class RoundDatabaseDaoTest {
         round = roundDao.addRound(round);
 
         Game game2 = new Game();
-        game2.setGameAnswer(null);
+        game2.setGameAnswer("5678");
         game2.setStatus("complete");
         gameDao.addGame(game2);
 
