@@ -5,9 +5,9 @@
  */
 package com.mc.guessthenumberrest.service;
 
+import com.mc.guessthenumberrest.data.GameAnswer;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -28,6 +28,6 @@ public interface GuessTheNumberRESTServiceLayer {
     
     boolean hasDuplicateDigits(int num);
     String createAnswer();
-    HashMap <String, String> playRound(String guess, String answer);
+    GameAnswer playRound(String guess, String answer);
     boolean containsFourDigits(String guess);
 }

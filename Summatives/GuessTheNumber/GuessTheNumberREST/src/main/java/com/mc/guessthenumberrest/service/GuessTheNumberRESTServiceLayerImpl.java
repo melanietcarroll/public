@@ -5,15 +5,16 @@
  */
 package com.mc.guessthenumberrest.service;
 
+import com.mc.guessthenumberrest.data.GameAnswer;
 import com.mc.guessthenumberrest.data.GameDatabaseDao;
 import com.mc.guessthenumberrest.data.RoundDatabaseDao;
-import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -103,8 +104,8 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
     }
 
     @Override
-    public HashMap<String, String> playRound(String guess, String answer) {
-        HashMap<String, String> results = new HashMap();
+    public GameAnswer playRound(String guess, String answer) {
+        GameAnswer roundResults = new GameAnswer();
         String status = "active";
         int bulls = 0;
         int cows = 0;
@@ -120,9 +121,10 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
             status = "complete";
         }
         String bullsAndCows = "e: " + bulls + " : " + " p: " + cows;
-        results.put(bullsAndCows, status);
-
-        return results;
+        roundResults.setRoundResult(bullsAndCows);
+        roundResults.setStatus(status);
+        
+        return roundResults;
     }
 
     @Override
@@ -130,6 +132,7 @@ public class GuessTheNumberRESTServiceLayerImpl implements GuessTheNumberRESTSer
         boolean containsCorrectDigits = false;
         char[] chars = guess.toCharArray();
         StringBuilder sb = new StringBuilder();
+        
         for (char c : chars) {
             if (Character.isDigit(c)) {
                 sb.append(c);

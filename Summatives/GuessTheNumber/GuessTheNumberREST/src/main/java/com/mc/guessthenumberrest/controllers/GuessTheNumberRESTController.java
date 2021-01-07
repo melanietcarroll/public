@@ -5,12 +5,11 @@
  */
 package com.mc.guessthenumberrest.controllers;
 
+import com.mc.guessthenumberrest.data.GameAnswer;
 import com.mc.guessthenumberrest.models.Game;
 import com.mc.guessthenumberrest.models.Round;
 import com.mc.guessthenumberrest.service.GuessTheNumberRESTServiceLayer;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,21 +67,21 @@ public class GuessTheNumberRESTController {
         boolean duplicate = service.hasDuplicateDigits(Integer.parseInt(round.getRoundGuess()));
 
         if (duplicate == false && containsCorrectDigits == true) {
-            HashMap<String, String> roundResults = service.playRound(round.getRoundGuess(), currentGame.getGameAnswer());
+            GameAnswer roundResults = service.playRound(round.getRoundGuess(), currentGame.getGameAnswer());
 
-            currentGame.setStatus(roundResults.values().toString());
+            currentGame.setStatus(roundResults.getStatus());
             currentGame.setId(currentGame.getId());
             currentGame.setGameAnswer(currentGame.getGameAnswer());
             currentRound.setGameId(round.getGameId());
             currentRound.setRoundGuess(round.getRoundGuess());
             currentRound.setTimeOfGuess(LocalDateTime.now());
-            currentRound.setResultOfGuess(roundResults.keySet().toString());
+            currentRound.setResultOfGuess(roundResults.getRoundResult());
 
             service.updateGame(currentGame);
             service.addRound(currentRound);
             return ResponseEntity.ok(currentRound);
         }
-        return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity("Error with game input", HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @GetMapping("game/{id}")
@@ -110,8 +109,8 @@ public class GuessTheNumberRESTController {
 
     public ResponseEntity deleteGameById(@PathVariable int id) {
         Game gameToDelete = service.getGameById(id);
-        if (gameToDelete == null){
-           return new ResponseEntity(HttpStatus.NOT_FOUND); 
+        if (gameToDelete == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         List<Round> RoundList = service.getRoundsForGame(gameToDelete);
         if (RoundList == null) {

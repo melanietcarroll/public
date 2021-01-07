@@ -57,7 +57,7 @@ public class GameDatabaseDao implements GameDao {
         List<Game> filterResults = new ArrayList();
         for (Game g : gameList) {
             Game currentGame = new Game();
-            if (g.getStatus().equals("active") || g.getStatus().equals("[active]")){
+            if (g.getStatus().equals("active")){
                 currentGame.setId(g.getId());    
                 currentGame.setStatus(g.getStatus());
                 
@@ -80,7 +80,7 @@ public class GameDatabaseDao implements GameDao {
                     + "FROM game WHERE id = ?;";
             Game retrievedGame = jdbcTemplate.queryForObject(sql, new GameMapper(), id);
             Game filteredFieldsGame = new Game();
-            if (retrievedGame.getStatus().equals("active")|| retrievedGame.getStatus().equals("[active]")){
+            if (retrievedGame.getStatus().equals("active")){
                 filteredFieldsGame.setId(retrievedGame.getId());  
                 filteredFieldsGame.setGameRounds(getRoundsForGame(retrievedGame));
                 filteredFieldsGame.setStatus(retrievedGame.getStatus());
@@ -103,7 +103,7 @@ public class GameDatabaseDao implements GameDao {
 
         jdbcTemplate.update(UPDATE_GAME,
                 game.getGameAnswer(),
-                game.getStatus(), //example isFinished?
+                game.getStatus(), 
                 game.getId());
     }
 
