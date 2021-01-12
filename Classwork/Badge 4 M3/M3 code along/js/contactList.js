@@ -21,7 +21,7 @@ function loadContacts() {
                     row += '<td>' + name + '</td>';
                     row += '<td>' + company + '</td>';
                     row += '<td><button type="button" class="btn btn-info" onclick="showEditForm(' + contactId + ')">Edit</button></td>';
-                    row += '<td><button type="button" class="btn btn-danger" >Delete</button></td>';
+                    row += '<td><button type="button" class="btn btn-danger"  onclick="deleteContact(' + contactId + ')">Delete</button></td>';
                     row += '</tr>';
                 
                 contentRows.append(row);
@@ -38,6 +38,11 @@ function loadContacts() {
 
 function addContact() {
     $('#addButton').click(function (event) {
+        var haveValidationErrors = checkAndDisplayValidationErrors($('#addForm').find('input'));
+        
+        if(haveValidationErrors) {
+            return false;
+        }
         $.ajax({
            type: 'POST',
            url: 'https://tsg-contactlist.herokuapp.com/contact',
@@ -118,6 +123,11 @@ function hideEditForm() {
 
 function updateContact(contactId) {
     $('#updateButton').click(function(event) {
+        var haveValidationErrors = checkAndDisplayValidationErrors($('#editForm').find('input'));
+        
+        if(haveValidationErrors) {
+            return false;
+        }
         $.ajax({
             type: 'PUT',
             url: 'https://tsg-contactlist.herokuapp.com/contact/' + $('#editContactId').val(),
@@ -147,4 +157,36 @@ function updateContact(contactId) {
             }
         })
     })
+}
+function deleteContact(contactId) {
+    $.ajax({
+        type: 'DELETE',
+        url: 'https://tsg-contactlist.herokuapp.com/contact/' + contactId,
+        success: function() {
+            loadContacts();
+        }
+    });
+}
+function checkAndDisplayValidationErrors(input) {
+    $('#errorMessages').empty();
+    
+    var errorMessages = [];
+    
+    input.each(function() {
+        if (!this.validity.valid) {
+            var errorField = $('label[for=' + this.id + ']').text();
+            errorMessages.push(errorField + ' ' + this.validationMessage);
+        }  
+    });
+    
+    if (errorMessages.length > 0){
+        $.each(errorMessages,function(index,message) {
+            $('#errorMessages').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
+        });
+        // return true, indicating that there were errors
+        return true;
+    } else {
+        // return false, indicating that there were no errors
+        return false;
+    }
 }
