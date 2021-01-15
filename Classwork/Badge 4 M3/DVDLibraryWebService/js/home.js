@@ -24,7 +24,7 @@ function loadDvds() {
                 row += '<td>' + director + '</td>';
                 row += '<td>' + rating + '</td>';
                 row += '<td><button type="button" class="btn btn-info" id="editButton" onclick="showEditDvdForm(' + dvdId + ')">Edit</button></td>';
-                row += '<td><button type="button" class="btn btn-danger" id="deleteButton" onclick="deleteDvd(' + dvdId + ')">Delete</button></td>';
+                row += '<td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete</button></td>';
                 row += '</tr>';
 
                 contentRows.append(row);
