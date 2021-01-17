@@ -70,7 +70,7 @@ function loadDvds() {
                 row += '<td>' + director + '</td>';
                 row += '<td>' + rating + '</td>';
                 row += '<td><button type="button" class="btn btn-info" id="editButton" onclick="showEditDvdForm(' + dvdId + ')">Edit</button></td>';
-                row += '<td><button type="button" class="btn btn-danger" onclick="deleteDvd(' + dvdId + ')">Delete</button></td>';
+                row += '<td><button type="button" class="btn btn-danger" id="deleteButton" onclick="deleteDvd(' + dvdId + ')">Delete</button></td>';
                 row += '</tr>';
 
                 contentRows.append(row);
@@ -90,6 +90,11 @@ function clearDvdTable() {
 }
 
 function addDvd() {
+     var haveValidationErrors = checkAndDisplayValidationErrors($('#addForm').find('input'));
+        
+        if(haveValidationErrors) {
+            return false;
+        }
     $('#createDVDButton').click(function(event) {
         $.ajax({
             type: 'POST',
@@ -186,12 +191,18 @@ function hideEditDvdForm() {
     $('#editDirector').val('');
     $('#editRating').val('G');
     $('#editNotes').val('This really is a great tale!');
+    $('#editDvdTitleInput').empty();
 
     
     $('#dvdTableInfo').show();
     $('#editDVD').hide();
 }
 function updateDvd(dvdId) {
+     var haveValidationErrors = checkAndDisplayValidationErrors($('#addForm').find('input'));
+        
+        if(haveValidationErrors) {
+            return false;
+        }
     $('#editButton').click(function(event) {
         $.ajax({
             type: 'PUT',
@@ -209,12 +220,12 @@ function updateDvd(dvdId) {
                 'Content-Type': 'application/json'
             },
             'dataType': 'json',
-            'success': function () {
-                $('#errorMessage').empty();
+            success: function () {
+                $('#errorMessages').empty();
                 hideEditDvdForm();
                 loadDvds();
             },
-            'error': function () {
+            error: function () {
                 $('#errorMessages')
                         .append($('<li>')
                                 .attr({class: 'list-group-item list-group-item-danger'})
@@ -295,4 +306,27 @@ function hideDvdDetailsPage() {
 
     $('#dvdTableInfo').show();
     $('#dvdDetails').hide();
+}
+function checkAndDisplayValidationErrors(input) {
+    $('#errorMessages').empty();
+    
+    var errorMessages = [];
+    
+    input.each(function() {
+        if (!this.validity.valid) {
+            var errorField = $('label[for=' + this.id + ']').text();
+            errorMessages.push(errorField + ' ' + this.validationMessage);
+        }  
+    });
+    
+    if (errorMessages.length > 0){
+        $.each(errorMessages,function(index,message) {
+            $('#errorMessages').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
+        });
+        // return true, indicating that there were errors
+        return true;
+    } else {
+        // return false, indicating that there were no errors
+        return false;
+    }
 }
