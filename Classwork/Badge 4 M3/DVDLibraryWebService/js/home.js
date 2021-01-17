@@ -2,7 +2,51 @@ $(document).ready(function () {
     loadDvds();
     addDvd();
     updateDvd();
+    deleteDvd();
+    findADvd()
 });
+
+function findADvd() {
+$('#search').click(function(event) {
+    clearDvdTable();
+    var contentRows = $('#contentRows');
+    $.ajax({
+        type: 'GET',
+        url: 'https://tsg-dvds.herokuapp.com/dvds/'+ $('#searchCategory').val() + '/' + $('#searchTerm').val(),
+        success: function (dvdArray) {
+            $.each(dvdArray, function (index, dvd) {
+                var title = dvd.title;
+                var releaseYear = dvd.releaseYear;
+                var director = dvd.director;
+                var rating = dvd.rating;
+                var notes = dvd.notes;
+                var dvdId = dvd.id;
+
+                var row = '<tr>';
+                row += '<td onclick="showDvdDetails(' + dvdId + ')" id="title">' + '<u>' + title + '<u>' + '</td>';
+                row += '<td>' + releaseYear + '</td>';
+                row += '<td>' + director + '</td>';
+                row += '<td>' + rating + '</td>';
+                row += '<td><button type="button" class="btn btn-info" id="editButton" onclick="showEditDvdForm(' + dvdId + ')">Edit</button></td>';
+                row += '<td><button type="button" class="btn btn-danger" onclick="deleteDvd(' + dvdId + ')">Delete</button></td>';
+                row += '</tr>';
+
+                contentRows.append(row);
+            });
+
+        },
+        error: function () {
+            $('#errorMessages')
+                    .append($('<li>')
+                            .attr({class: 'list-group-item list-group-item-danger'})
+                            .text('Error calling web service. Please try again later.'));
+        }
+    });
+    });
+}
+
+
+
 
 function loadDvds() {
     clearDvdTable()
@@ -20,8 +64,8 @@ function loadDvds() {
                 var notes = dvd.notes;
                 var dvdId = dvd.id;
 
-                var row = '<tr onclick="showDvdDetails(' + dvdId + ')">';
-                row += '<td id="title">' + '<u>' + title + '<u>' + '</td>';
+                var row = '<tr>';
+                row += '<td onclick="showDvdDetails(' + dvdId + ')" id="title">' + '<u>' + title + '<u>' + '</td>';
                 row += '<td>' + releaseYear + '</td>';
                 row += '<td>' + director + '</td>';
                 row += '<td>' + rating + '</td>';
@@ -46,7 +90,7 @@ function clearDvdTable() {
 }
 
 function addDvd() {
-    $('#createDVDButton').click(function (event) {
+    $('#createDVDButton').click(function(event) {
         $.ajax({
             type: 'POST',
             url: 'https://tsg-dvds.herokuapp.com/dvd',
@@ -68,7 +112,7 @@ function addDvd() {
                 $('#createReleaseYear').val('');
                 $('#createDirector').val('');
                 $('#createRating').val('G');
-                $('#createNotes').val('');
+                $('#createNotes').val('This really is a great tale!');
 
                 hideCreateDvdForm();
                 loadDvds();
@@ -115,7 +159,10 @@ function showEditDvdForm(dvdId) {
             $('#editDirector').val(data.director);
             $('#editRating').val(data.rating);
             $('#editNotes').val(data.notes);
-            
+
+            var title = '<h1>' + 'Edit Dvd: ' + data.title + '</h1>'
+            var dvdTitle = $('#editDvdTitleInput');
+            dvdTitle.append(title);
 
         },
         error: function () {
@@ -126,7 +173,7 @@ function showEditDvdForm(dvdId) {
         }
     })
 
-
+    
     $('#dvdTableInfo').hide();
     $('#editDVD').show();
 }
@@ -137,9 +184,10 @@ function hideEditDvdForm() {
     $('#editDvdTitle').val('');
     $('#editReleaseYear').val('');
     $('#editDirector').val('');
-    $('#editRating').val('');
-    $('#editNotes').val('');
+    $('#editRating').val('G');
+    $('#editNotes').val('This really is a great tale!');
 
+    
     $('#dvdTableInfo').show();
     $('#editDVD').hide();
 }
@@ -176,15 +224,15 @@ function updateDvd(dvdId) {
     });
 }
 function deleteDvd(dvdId) {
-  
-        $.ajax({
-            type: 'DELETE',
-            url: 'https://tsg-dvds.herokuapp.com/dvd/' + dvdId,
-            success: function () {
-                loadDvds();
-            }
-        });
-  
+
+    $.ajax({
+        type: 'DELETE',
+        url: 'https://tsg-dvds.herokuapp.com/dvd/' + dvdId,
+        success: function () {
+            loadDvds();
+        }
+    });
+
 }
 
 function showDvdDetails(dvdId) {
@@ -200,28 +248,28 @@ function showDvdDetails(dvdId) {
             $('#editDirector').val(data.director);
             $('#editRating').val(data.rating);
             $('#editNotes').val(data.notes);
-            
+
             var title = '<h1>' + data.title + '</h1>'
             var dvdTitle = $('#dvdDetailsTitle');
             dvdTitle.append(title);
-            
+
             var entry = '<p>' + data.releaseYear + '</p>';
             var releaseYear = $('#releaseYearDetails');
             releaseYear.append(entry);
-            
+
             var directorEntry = '<p>' + data.director + '</p>'
             var director = $('#directorDetails');
             director.append(directorEntry);
-            
+
             var ratingEntry = '<p>' + data.rating + '</p>'
             var ratingDetails = $('#ratingDetails');
             ratingDetails.append(ratingEntry);
-            
+
             var notesEntry = '<p>' + data.notes + '</p>'
             var notesDetails = $('#notesDetails');
             notesDetails.append(notesEntry);
-            
-    
+
+
 
         },
         error: function () {
@@ -238,6 +286,12 @@ function showDvdDetails(dvdId) {
 }
 function hideDvdDetailsPage() {
     $('#errorMessages').empty();
+
+    $('#dvdDetailsTitle').empty();
+    $('#releaseYearDetails').empty();
+    $('#directorDetails').empty();
+    $('#ratingDetails').empty();
+    $('#notesDetails').empty();
 
     $('#dvdTableInfo').show();
     $('#dvdDetails').hide();
