@@ -4,6 +4,7 @@ $(document).ready(function () {
     addDollar();
     addNickel();
     addDime();
+    changeReturn();
 });
 
 function loadItems() {
@@ -89,4 +90,40 @@ function addDime() {
         moneyField.val(totalMoney.toFixed(2));
 
     });
+}
+
+
+function makeChange() {
+
+    var change = $('#totalMoney').val();
+    var floatMoney = parseFloat(change);
+    var cents = floatMoney * 100;
+//    var stringCents = cents.toString();
+    var dollars = parseInt(cents / 100);
+    cents = cents % 100;
+    var quarters = parseInt(cents / 25);
+    cents = cents % 25;
+    var dimes = parseInt(cents / 10);
+    cents = cents % 10;
+    var nickels = parseInt(cents / 5);
+    cents = cents % 5;
+    var pennies = parseInt(cents / 1);
+    var stringDollars = dollars.toString();
+    var stringQuarters = quarters.toString();
+    var stringDimes = dimes.toString();
+    var stringNickels = nickels.toString();
+    var stringPennies = pennies.toString();
+
+   
+    $('#totalChange').val("D:" + stringDollars + "Q:" + stringQuarters + "D:" + stringDimes + "N:" + stringNickels + "P:" + stringPennies);
+}
+;
+function changeReturn() {
+    $('#changeReturn').click(function () {
+        makeChange();
+        resetMoney();
+    });
+}
+function resetChangeReturn() {
+    $('#totalChange').empty;
 }
