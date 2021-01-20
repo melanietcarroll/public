@@ -36,16 +36,13 @@ function loadItems() {
                 row += '<div class="col-md-1">';
                 row += '</div>';
 
-
                 itemsRow.append(row);
                 itemNumber++;
-            })
+            });
         },
-        error: function () {
-            $('#errorMessages')
-                    .append($('<li>')
-                            .attr({class: 'list-group-item list-group-item-danger'})
-                            .text('Error calling web service. Please try again later.'));
+        error: function ($xhr) {
+             var data = $xhr.responseJSON;
+                $('#vendingMessages').val(data.message);
         }
     });
 }
@@ -54,8 +51,6 @@ function resetMoney() {
     var floatReset = parseFloat(reset);
     $('#totalMoney').val(floatReset.toFixed(2));
 }
-
-
 
 function addQuarter() {
     $('#addQuarter').click(function () {
@@ -73,7 +68,6 @@ function addDollar() {
         var totalMoney = $('#totalMoney').val();
         totalMoney = parseFloat(totalMoney) + 1.00;
         moneyField.val(totalMoney.toFixed(2));
-
     });
 }
 function addNickel() {
@@ -82,22 +76,16 @@ function addNickel() {
         var totalMoney = $('#totalMoney').val();
         totalMoney = parseFloat(totalMoney) + 0.05;
         moneyField.val(totalMoney.toFixed(2));
-
     });
 }
 function addDime() {
     $('#addDime').click(function () {
         var moneyField = $('#totalMoney');
         var totalMoney = $('#totalMoney').val();
-        //var totalMoneyTwoDecimals = totalMoney.toFixed(2);
-        totalMoney = parseFloat(totalMoney) + 0.10;
-        totalMoneyTwoDecimals = totalMoney.toFixed(2);
-        moneyField.val(totalMoneyTwoDecimals);
-
+        totalMoney = parseFloat(totalMoney) + 0.10;  
+        moneyField.val(totalMoney.toFixed(2));
     });
 }
-
-
 function makeChange() {
     resetChangeReturn();
 
@@ -106,7 +94,7 @@ function makeChange() {
     var floatMoneyTwoDecimals = floatMoney.toFixed(2);
     var cents = floatMoneyTwoDecimals * 100;
     cents = cents.toFixed(0);
-//    var stringCents = cents.toString();
+
     var dollars = parseInt(cents / 100);
     cents = cents % 100;
     var quarters = parseInt(cents / 25);
@@ -164,99 +152,49 @@ function makeChange() {
         pennyStatement = stringPennies + " penny";
         statement.push(pennyStatement);
     }
-//    if (dollarStatement !== null) {
-//        statement = statement + dollarStatement;
-//    }
-//    if (quarterStatement !== null) {
-//        statement = statement + quarterStatement;
-//    }
-//    if (dimeStatement !== null) {
-//        statement = statement + dimeStatement;
-//    }
-//    if (nickelStatement !== null) {
-//        statement = statement + nickelStatement;
-//    }
-//    if (pennyStatement !== null) {
-//        statement = statement + pennyStatement;
-//    }
     var changeStatement = [];
     $.each(statement, function (index, value) {
         if (value !== null) {
             changeStatement.push(value);
         }
-
     });
     var changeStatementWithComma = changeStatement.join(", ");
-
     $('#totalChange').val(changeStatementWithComma);
-//    $('#totalChange').val("D: " + stringDollars + "Q: " + stringQuarters + "Di: " + stringDimes + "N: " + stringNickels + "P: " + stringPennies);
-//    $('#totalChange').val(stringCents);
 }
-
 function changeReturn() {
     $('#changeReturn').click(function () {
+        resetChangeReturn();
         makeChange();
         resetMoney();
         clearItems();
         loadItems();
-        $('#messages').val('');
-        $('#itemName').val('');
+        clearMessages();
+        deselectItem();      
     });
 }
+function clearMessages(){
+    $('#vendingMessages').val('');
+}
 function resetChangeReturn() {
-    $('#totalChange').empty();
+    $('#totalChange').val('');
 }
 function selectItem(itemNumber, itemId) {
     $('#selectedItemId').val(itemId);
-//       var itemNumber = $('#itemNumber').val();
     $('#itemName').val(itemNumber);
 
 }
-
+function deselectItem(){
+    $('#selectedItemId').val('');
+    $('#itemName').val('');
+}
 function vendItem() {
-//       var itemId = $('#selectedItemId').val();
-//       var amount = $('#totalMoney').val();
-//       var stringAmount = amount.toString();
-
     $('#purchase').click(function (event) {
         $.ajax({
             type: 'POST',
             url: 'http://tsg-vending.herokuapp.com/money/' + $('#totalMoney').val() + '/item/' + $('#selectedItemId').val(),
             success: function (data, status) {
-//               $('#errorMessages').empty();
-//                alert('SUCCESS!');
-//**ADD HTML? FOR CHANGE?**--or make a function to iterate over object fields and add string to array??
-//
-//Response Body (no errors): JSON representation of Change object:
-//{
-//  “quarters”: 1,
-//  “dimes”: 0,
-//  “nickels”: 0,
-//  “pennies”: 0
-//}
 
-
-//Response Body (no inventory): HTTP Status: 422 Unprocessable Entity
-//{
-//  "message": "SOLD OUT!!!"
-//}
-
-
-//Response Body (insufficient funds): HTTP Status: 422 Unprocessable Entity
-//{
-//  "message": "Please deposit: <amount short>"
-//}
-//
-//Response Body (invalid item): HTTP Status: 422 Unprocessable Entity
-//{ 
-//  "message": "Invalid item selected" 
-//} 
-
-                $('#changeQuarters').val(data.quarters);
-                $('#changeDimes').val(data.dimes);
-                $('#changeNickels').val(data.nickels);
-                $('#changePennies').val(data.pennies);
-                $('#messages').val("Thank you!!");
+                $('#vendingMessages').val("Thank you!!");
                 var statement = [];
 
                 if (data.quarters > 1) {
@@ -298,24 +236,15 @@ function vendItem() {
                     if (value !== null) {
                         changeStatement.push(value);
                     }
-
                 });
                 var changeStatementWithComma = changeStatement.join(", ");
 
                 $('#totalChange').val(changeStatementWithComma);
-
-
-
             },
             error: function ($xhr) {
                 var data = $xhr.responseJSON;
-                $('#messages').val(data.message);
-//               $('#errorMessages')
-//                .append($('<li>')
-//                .attr({class: 'list-group-item list-group-item-danger'})
-//                .text('Error calling web service. Please try again later.')); 
+                $('#vendingMessages').val(data.message); 
             }
-
         });
         clearItems();
         loadItems();
