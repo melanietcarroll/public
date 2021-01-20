@@ -5,6 +5,8 @@ $(document).ready(function () {
     addNickel();
     addDime();
     changeReturn();
+    selectItem();
+    vendItem();
 });
 
 function loadItems() {
@@ -23,11 +25,12 @@ function loadItems() {
 
                 var itemId = item.id;
 
-                var row = '<div class="col-md-3 border border-primary my-2">';
+                var row = '<div onclick="selectItem(' + itemNumber + ', ' + itemId + ' )" class="col-md-3 border border-primary my-2">';
                 row += '<p>' + itemNumber + '</p>';
                 row += '<p class="text-center">' + itemName + '</p>';
-                row += '<p class="text-center">' + itemPrice + '</p>';
+                row += '<p class="text-center" type="number">' + itemPrice + '</p>';
                 row += '<p class="text-center">Quantity Left: ' + itemQuantity + '</p>';
+                row += '<p hidden>' + itemId + '</p>';
                 row += '</div>';
 
                 row += '<div class="col-md-1">';
@@ -96,7 +99,7 @@ function addDime() {
 
 
 function makeChange() {
-     resetChangeReturn();
+    resetChangeReturn();
 
     var change = $('#totalMoney').val();
     var floatMoney = parseFloat(change);
@@ -178,13 +181,12 @@ function makeChange() {
 //    }
     var changeStatement = [];
     $.each(statement, function (index, value) {
-//    var changeStatement="";
         if (value !== null) {
             changeStatement.push(value);
         }
-        
+
     });
-    var changeStatementWithComma = changeStatement.join(", "); 
+    var changeStatementWithComma = changeStatement.join(", ");
 
     $('#totalChange').val(changeStatementWithComma);
 //    $('#totalChange').val("D: " + stringDollars + "Q: " + stringQuarters + "Di: " + stringDimes + "N: " + stringNickels + "P: " + stringPennies);
@@ -200,3 +202,74 @@ function changeReturn() {
 function resetChangeReturn() {
     $('#totalChange').empty;
 }
+function selectItem(itemNumber, itemId) {
+    $('#selectedItemId').val(itemId);
+//       var itemNumber = $('#itemNumber').val();
+    $('#itemName').val(itemNumber);
+
+}
+
+function vendItem() {
+//       var itemId = $('#selectedItemId').val();
+//       var amount = $('#totalMoney').val();
+//       var stringAmount = amount.toString();
+
+    $('#purchase').click(function (event) {
+        $.ajax({
+            type: 'POST',
+            url: 'http://tsg-vending.herokuapp.com/money/' + $('#totalMoney').val() + '/item/' + $('#selectedItemId').val(),
+            success: function (data, status) {
+//               $('#errorMessages').empty();
+//                alert('SUCCESS!');
+//**ADD HTML? FOR CHANGE?**--or make a function to iterate over object fields and add string to array??
+//
+//Response Body (no errors): JSON representation of Change object:
+//{
+//  “quarters”: 1,
+//  “dimes”: 0,
+//  “nickels”: 0,
+//  “pennies”: 0
+//}
+
+
+//Response Body (no inventory): HTTP Status: 422 Unprocessable Entity
+//{
+//  "message": "SOLD OUT!!!"
+//}
+
+
+//Response Body (insufficient funds): HTTP Status: 422 Unprocessable Entity
+//{
+//  "message": "Please deposit: <amount short>"
+//}
+//
+//Response Body (invalid item): HTTP Status: 422 Unprocessable Entity
+//{ 
+//  "message": "Invalid item selected" 
+//} 
+
+                $('#changeQuarters').val(data.quarters);
+                $('#changeDimes').val(data.dimes);
+                $('#changeNickels').val(data.nickels);
+                $('#changePennies').val(data.pennies);
+                $('#messages').val("Thank you!!");
+
+            },
+            error: function ($xhr) {
+                var data = $xhr.responseJSON;
+                $('#messages').val(data.message);
+//               $('#errorMessages')
+//                .append($('<li>')
+//                .attr({class: 'list-group-item list-group-item-danger'})
+//                .text('Error calling web service. Please try again later.')); 
+            }
+           
+        });
+        clearItems();
+        loadItems();
+    });
+}
+function clearItems(){
+    $('#itemsRow').empty();
+}
+    

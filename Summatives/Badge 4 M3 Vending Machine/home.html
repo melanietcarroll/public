@@ -67,12 +67,12 @@
 <!--messages form-->
 <p class="h2 text-center">Messages</p>
 <form class="gx-3 gy-2 align-items-center">   
-    <input type="text" class="form-control text-center" id="totalMoney" readonly>
+    <input type="text" class="form-control text-center" id="messages" readonly>
 </form>
 
-<form class="form-horizontal" role="form" id="addForm">
+<form class="form-horizontal" role="form">
         <div class="form-group row">
-            <label for="addFirstName" class="col-md-4 control-label my-3 text-center">
+            <label for="item" class="col-md-4 control-label my-3 text-center">
                 Item:
             </label>
 
@@ -81,6 +81,7 @@
                        class="form-control text-center"
                        id="itemName" readonly>                      
             </div>
+            <input  id="selectedItemId" type="hidden">
         </div>
 
     </form>
@@ -88,7 +89,7 @@
 <div class="col-md-3">
 </div>
 <div class="col-md-6 text-center">
-<button type="button" class="btn btn-outline-secondary">Make Purchase</button>
+<button type="button" class="btn btn-outline-secondary" id="purchase">Make Purchase</button>
 </div>
 <div class="col-md-3">
 </div>
@@ -99,6 +100,10 @@
 <p class="h2 text-center">Change</p>
 <form class="gx-3 gy-2 align-items-center">   
     <input type="text" class="form-control text-center" id="totalChange" readonly>
+    <input  id="changeQuarters">
+    <input  id="changeDimes">
+    <input  id="changeNickels">
+    <input  id="changePennies">
 </form>
 
 
