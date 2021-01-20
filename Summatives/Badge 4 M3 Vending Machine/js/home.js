@@ -41,8 +41,8 @@ function loadItems() {
             });
         },
         error: function ($xhr) {
-             var data = $xhr.responseJSON;
-                $('#vendingMessages').val(data.message);
+            var data = $xhr.responseJSON;
+            $('#vendingMessages').val(data.message);
         }
     });
 }
@@ -82,7 +82,7 @@ function addDime() {
     $('#addDime').click(function () {
         var moneyField = $('#totalMoney');
         var totalMoney = $('#totalMoney').val();
-        totalMoney = parseFloat(totalMoney) + 0.10;  
+        totalMoney = parseFloat(totalMoney) + 0.10;
         moneyField.val(totalMoney.toFixed(2));
     });
 }
@@ -107,6 +107,7 @@ function makeChange() {
     var stringDimes = dimes.toString();
     var stringNickels = nickels.toString();
     var stringPennies = pennies.toString();
+
     var statement = [];
 
     if (quarters > 1) {
@@ -153,10 +154,10 @@ function changeReturn() {
         clearItems();
         loadItems();
         clearMessages();
-        deselectItem();      
+        deselectItem();
     });
 }
-function clearMessages(){
+function clearMessages() {
     $('#vendingMessages').val('');
 }
 function resetChangeReturn() {
@@ -166,7 +167,7 @@ function selectItem(itemNumber, itemId) {
     $('#selectedItemId').val(itemId);
     $('#itemName').val(itemNumber);
 }
-function deselectItem(){
+function deselectItem() {
     $('#selectedItemId').val('');
     $('#itemName').val('');
 }
@@ -216,9 +217,9 @@ function vendItem() {
                 var changeStatementWithComma = statement.join(", ");
                 $('#totalChange').val(changeStatementWithComma);
             },
-            error: function ($xhr) {
-                var data = $xhr.responseJSON;
-                $('#vendingMessages').val(data.message); 
+            error: function (errorResponse) {
+                var data = errorResponse.responseJSON;
+                $('#vendingMessages').val(data.message);
             }
         });
         clearItems();
@@ -228,4 +229,3 @@ function vendItem() {
 function clearItems() {
     $('#itemsRow').empty();
 }
-    
