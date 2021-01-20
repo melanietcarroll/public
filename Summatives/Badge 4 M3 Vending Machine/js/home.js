@@ -152,13 +152,7 @@ function makeChange() {
         pennyStatement = stringPennies + " penny";
         statement.push(pennyStatement);
     }
-    var changeStatement = [];
-    $.each(statement, function (index, value) {
-        if (value !== null) {
-            changeStatement.push(value);
-        }
-    });
-    var changeStatementWithComma = changeStatement.join(", ");
+    var changeStatementWithComma = statement.join(", ");
     $('#totalChange').val(changeStatementWithComma);
 }
 function changeReturn() {
@@ -230,14 +224,7 @@ function vendItem() {
                     pennyStatement = data.pennies.toString() + " penny";
                     statement.push(pennyStatement);
                 }
-
-                var changeStatement = [];
-                $.each(statement, function (index, value) {
-                    if (value !== null) {
-                        changeStatement.push(value);
-                    }
-                });
-                var changeStatementWithComma = changeStatement.join(", ");
+                var changeStatementWithComma = statement.join(", ");
 
                 $('#totalChange').val(changeStatementWithComma);
             },

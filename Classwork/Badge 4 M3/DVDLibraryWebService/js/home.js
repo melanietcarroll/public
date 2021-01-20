@@ -330,3 +330,9 @@ function checkAndDisplayValidationErrors(input) {
         return false;
     }
 }
+// var changeStatement = [];
+//                $.each(statement, function (index, value) {
+//                    if (value !== null) {
+//                        changeStatement.push(value);
+//                    }
+//                });
