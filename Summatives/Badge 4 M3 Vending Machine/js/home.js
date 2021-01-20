@@ -28,7 +28,7 @@ function loadItems() {
                 var row = '<div onclick="selectItem(' + itemNumber + ', ' + itemId + ' )" class="col-md-3 border border-primary my-2">';
                 row += '<p>' + itemNumber + '</p>';
                 row += '<p class="text-center">' + itemName + '</p>';
-                row += '<p class="text-center" type="number">' + itemPrice + '</p>';
+                row += '<p class="text-center" type="number">'+'$' + itemPrice + '</p>';
                 row += '<p class="text-center">Quantity Left: ' + itemQuantity + '</p>';
                 row += '<p hidden>' + itemId + '</p>';
                 row += '</div>';
