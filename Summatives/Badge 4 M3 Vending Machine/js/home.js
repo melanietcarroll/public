@@ -196,11 +196,15 @@ function makeChange() {
 function changeReturn() {
     $('#changeReturn').click(function () {
         makeChange();
-        //resetMoney();
+        resetMoney();
+        clearItems();
+        loadItems();
+        $('#messages').val('');
+        $('#itemName').val('');
     });
 }
 function resetChangeReturn() {
-    $('#totalChange').empty;
+    $('#totalChange').empty();
 }
 function selectItem(itemNumber, itemId) {
     $('#selectedItemId').val(itemId);
@@ -253,6 +257,54 @@ function vendItem() {
                 $('#changeNickels').val(data.nickels);
                 $('#changePennies').val(data.pennies);
                 $('#messages').val("Thank you!!");
+                var statement = [];
+
+                if (data.quarters > 1) {
+                    var quarterStatement = data.quarters.toString() + " quarters";
+                    statement.push(quarterStatement);
+                }
+                if (data.quarters === 1) {
+                    quarterStatement = data.quarters.toString() + " quarter";
+                    statement.push(quarterStatement);
+                }
+                if (data.dimes > 1) {
+                    var dimeStatement = data.dimes.toString() + " dimes";
+                    statement.push(dimeStatement);
+                }
+                if (data.dimes === 1) {
+                    dimeStatement = data.dimes.toString() + " dime";
+                    statement.push(dimeStatement);
+                }
+                if (data.nickels > 1) {
+                    var nickelStatement = data.nickels.toString() + " nickels";
+                    statement.push(nickelStatement);
+                }
+                if (data.nickels === 1) {
+                    nickelStatement = data.nickels.toString() + " nickel";
+                    statement.push(nickelStatement);
+                }
+
+                if (data.pennies > 1) {
+                    var pennyStatement = data.pennies.toString() + " pennies";
+                    statement.push(pennyStatement);
+                }
+                if (data.pennies === 1) {
+                    pennyStatement = data.pennies.toString() + " penny";
+                    statement.push(pennyStatement);
+                }
+
+                var changeStatement = [];
+                $.each(statement, function (index, value) {
+                    if (value !== null) {
+                        changeStatement.push(value);
+                    }
+
+                });
+                var changeStatementWithComma = changeStatement.join(", ");
+
+                $('#totalChange').val(changeStatementWithComma);
+
+
 
             },
             error: function ($xhr) {
@@ -263,13 +315,13 @@ function vendItem() {
 //                .attr({class: 'list-group-item list-group-item-danger'})
 //                .text('Error calling web service. Please try again later.')); 
             }
-           
+
         });
         clearItems();
         loadItems();
     });
 }
-function clearItems(){
+function clearItems() {
     $('#itemsRow').empty();
 }
     
