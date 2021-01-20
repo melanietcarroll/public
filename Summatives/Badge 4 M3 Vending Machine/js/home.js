@@ -95,8 +95,6 @@ function makeChange() {
     var cents = floatMoneyTwoDecimals * 100;
     cents = cents.toFixed(0);
 
-    var dollars = parseInt(cents / 100);
-    cents = cents % 100;
     var quarters = parseInt(cents / 25);
     cents = cents % 25;
     var dimes = parseInt(cents / 10);
@@ -104,21 +102,13 @@ function makeChange() {
     var nickels = parseInt(cents / 5);
     cents = cents % 5;
     var pennies = parseInt(cents / 1);
-    var stringDollars = dollars.toString();
+
     var stringQuarters = quarters.toString();
     var stringDimes = dimes.toString();
     var stringNickels = nickels.toString();
     var stringPennies = pennies.toString();
     var statement = [];
 
-    if (dollars > 1) {
-        var dollarStatement = stringDollars + " dollars";
-        statement.push(dollarStatement);
-    }
-    if (dollars === 1) {
-        dollarStatement = stringDollars + " dollar";
-        statement.push(dollarStatement);
-    }
     if (quarters > 1) {
         var quarterStatement = stringQuarters + " quarters";
         statement.push(quarterStatement);
@@ -175,7 +165,6 @@ function resetChangeReturn() {
 function selectItem(itemNumber, itemId) {
     $('#selectedItemId').val(itemId);
     $('#itemName').val(itemNumber);
-
 }
 function deselectItem(){
     $('#selectedItemId').val('');
@@ -225,7 +214,6 @@ function vendItem() {
                     statement.push(pennyStatement);
                 }
                 var changeStatementWithComma = statement.join(", ");
-
                 $('#totalChange').val(changeStatementWithComma);
             },
             error: function ($xhr) {
