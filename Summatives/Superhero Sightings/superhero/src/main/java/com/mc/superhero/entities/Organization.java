@@ -3,29 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.sg.classroster.entities;
+package com.mc.superhero.entities;
 
 import java.util.List;
 import java.util.Objects;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 /**
- *
+ * created 1/24/21
  * @author Melanie Carroll
  */
-public class Course {
-
+public class Organization {
     private int id;
-
-    @NotBlank(message = "Name must not be blank")
-    @Size(max = 50, message = "Name must be fewer than 50 characters")
     private String name;
-
-    @Size(max = 255, message = "Description must be fewer than 255 characters")
     private String description;
-    private Teacher teacher;
-    private List<Student> students;
+    private String address;
+    private List<Superhero> superheros;
 
     public int getId() {
         return id;
@@ -51,30 +43,30 @@ public class Course {
         this.description = description;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public String getAddress() {
+        return address;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public List<Superhero> getSuperheros() {
+        return superheros;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setSuperheros(List<Superhero> superheros) {
+        this.superheros = superheros;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 53 * hash + this.id;
-        hash = 53 * hash + Objects.hashCode(this.name);
-        hash = 53 * hash + Objects.hashCode(this.description);
-        hash = 53 * hash + Objects.hashCode(this.teacher);
-        hash = 53 * hash + Objects.hashCode(this.students);
+        hash = 47 * hash + this.id;
+        hash = 47 * hash + Objects.hashCode(this.name);
+        hash = 47 * hash + Objects.hashCode(this.description);
+        hash = 47 * hash + Objects.hashCode(this.address);
+        hash = 47 * hash + Objects.hashCode(this.superheros);
         return hash;
     }
 
@@ -89,7 +81,7 @@ public class Course {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Course other = (Course) obj;
+        final Organization other = (Organization) obj;
         if (this.id != other.id) {
             return false;
         }
@@ -99,13 +91,13 @@ public class Course {
         if (!Objects.equals(this.description, other.description)) {
             return false;
         }
-        if (!Objects.equals(this.teacher, other.teacher)) {
+        if (!Objects.equals(this.address, other.address)) {
             return false;
         }
-        if (!Objects.equals(this.students, other.students)) {
+        if (!Objects.equals(this.superheros, other.superheros)) {
             return false;
         }
         return true;
     }
-
+    
 }

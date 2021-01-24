@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS superheroSighting;
-CREATE DATABASE superheroSighting;
+DROP DATABASE IF EXISTS superheroSightingTest;
+CREATE DATABASE superheroSightingTest;
 
-USE superheroSighting;
+USE superheroSightingTest;
 
 CREATE TABLE Superhero(
     id INT PRIMARY KEY AUTO_INCREMENT,

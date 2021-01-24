@@ -8,11 +8,11 @@
 		<version>2.4.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.sg</groupId>
-	<artifactId>classroster</artifactId>
+	<groupId>com.mc</groupId>
+	<artifactId>superhero</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>classroster</name>
-	<description>Class Roster Project</description>
+	<name>superhero</name>
+	<description>Superhero Sightings Project</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -46,19 +46,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	 <dependency>
-	  <groupId>junit</groupId>
-	  <artifactId>junit</artifactId>
-	  <version>4.12</version>
-	  <scope>test</scope>
-	  <type>jar</type>
-	 </dependency>
-	 <dependency>
-	  <groupId>javax.validation</groupId>
-	  <artifactId>validation-api</artifactId>
-	  <version>2.0.1.Final</version>
-	  <type>jar</type>
-	 </dependency>
 	</dependencies>
 
 	<build>
