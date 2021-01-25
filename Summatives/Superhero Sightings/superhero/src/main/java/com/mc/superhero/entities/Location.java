@@ -18,8 +18,8 @@ public class Location {
     private String name;
     private String description;
     private String address;
-    private double latitude;
-    private double longitude;
+    private float latitude;
+    private float longitude;
 
     public int getId() {
         return id;
@@ -57,7 +57,7 @@ public class Location {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
@@ -65,7 +65,7 @@ public class Location {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 

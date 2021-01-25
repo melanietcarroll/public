@@ -6,6 +6,7 @@
 package com.mc.superhero.entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
@@ -16,9 +17,10 @@ import java.util.Objects;
  */
 public class Sighting {
     private int id;
-    private LocalDate date;
-    private LocalTime time;
-    private List<Location> locations;
+    private LocalDateTime date;
+    private LocalDateTime time;
+    private Location location;
+    private Superhero superhero;
 
     public int getId() {
         return id;
@@ -28,28 +30,36 @@ public class Sighting {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
-    public List<Location> getLocations() {
-        return locations;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Superhero getSuperhero() {
+        return superhero;
+    }
+
+    public void setSuperhero(Superhero superhero) {
+        this.superhero = superhero;
     }
 
     @Override
@@ -58,7 +68,7 @@ public class Sighting {
         hash = 97 * hash + this.id;
         hash = 97 * hash + Objects.hashCode(this.date);
         hash = 97 * hash + Objects.hashCode(this.time);
-        hash = 97 * hash + Objects.hashCode(this.locations);
+        hash = 97 * hash + Objects.hashCode(this.location);
         return hash;
     }
 
@@ -83,7 +93,7 @@ public class Sighting {
         if (!Objects.equals(this.time, other.time)) {
             return false;
         }
-        if (!Objects.equals(this.locations, other.locations)) {
+        if (!Objects.equals(this.location, other.location)) {
             return false;
         }
         return true;
