@@ -18,6 +18,7 @@ public class Superhero {
     private String description;
     private List<Superpower> superpowers;
     private List<Sighting> sightings;
+    private List<Organization> organizations;
 
     public int getId() {
         return id;
@@ -59,14 +60,23 @@ public class Superhero {
         this.sightings = sightings;
     }
 
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
+    public void setOrganizations(List<Organization> organizations) {
+        this.organizations = organizations;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 47 * hash + this.id;
-        hash = 47 * hash + Objects.hashCode(this.name);
-        hash = 47 * hash + Objects.hashCode(this.description);
-        hash = 47 * hash + Objects.hashCode(this.superpowers);
-        hash = 47 * hash + Objects.hashCode(this.sightings);
+        int hash = 7;
+        hash = 19 * hash + this.id;
+        hash = 19 * hash + Objects.hashCode(this.name);
+        hash = 19 * hash + Objects.hashCode(this.description);
+        hash = 19 * hash + Objects.hashCode(this.superpowers);
+        hash = 19 * hash + Objects.hashCode(this.sightings);
+        hash = 19 * hash + Objects.hashCode(this.organizations);
         return hash;
     }
 
@@ -97,7 +107,10 @@ public class Superhero {
         if (!Objects.equals(this.sightings, other.sightings)) {
             return false;
         }
+        if (!Objects.equals(this.organizations, other.organizations)) {
+            return false;
+        }
         return true;
     }
-    
+
 }

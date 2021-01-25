@@ -8,6 +8,7 @@ package com.mc.superhero.dao;
 import com.mc.superhero.entities.Location;
 import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -23,4 +24,5 @@ public interface SightingDao {
     
     Location getLocationForSighting(int id);
     Superhero getSuperheroForSighting(int id);
+    List<Sighting> getSightingsForSuperheroAndLocationByDate(LocalDateTime date);
 }

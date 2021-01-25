@@ -5,6 +5,8 @@
  */
 package com.mc.superhero.dao;
 
+import com.mc.superhero.entities.Organization;
+import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import com.mc.superhero.entities.Superpower;
 import java.util.List;
@@ -20,6 +22,8 @@ public interface SuperheroDao {
     void updateSuperhero(Superhero superhero);
     void deleteSuperheroById(int id);
     
-    List<Superpower> getSuperpowerForSuperhero(Superhero superhero);
+    List<Superpower> getSuperpowersForSuperhero(int id);
+    List<Sighting> getSightingsForSuperhero(int id);
+    List<Organization> getOrganizationsForSuperhero(int id);
     
 }

@@ -6,11 +6,13 @@
 package com.mc.superhero.dao;
 
 import com.mc.superhero.dao.LocationDaoDB.LocationMapper;
+import com.mc.superhero.dao.SuperheroDaoDB.SuperheroMapper;
 import com.mc.superhero.entities.Location;
 import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -104,6 +106,13 @@ public class SightingDaoDB implements SightingDao {
         final String SELECT_SUPERHERO_FOR_SIGHTING = "SELECT sup.* FROM Superhero sup "
                 + "JOIN Sighting s ON s.superheroId = sup.id WHERE s.id = ?";
         return jdbc.queryForObject(SELECT_SUPERHERO_FOR_SIGHTING, new SuperheroMapper(), id);
+    }
+
+    @Override
+    public List<Sighting> getSightingsForSuperheroAndLocationByDate(LocalDateTime date) {
+        final String SELECT_SIGHTING_FOR_SUPERHERO_AND_LOCATION = "SELECT * FROM Sighting "
+                + "WHERE date = ?";
+        return jdbc.query(SELECT_SIGHTING_FOR_SUPERHERO_AND_LOCATION, new SightingMapper(), date);
     }
 
     public static final class SightingMapper implements RowMapper<Sighting> {

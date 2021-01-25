@@ -5,6 +5,7 @@
  */
 package com.mc.superhero.dao;
 
+import com.mc.superhero.dao.SuperheroDaoDB.SuperheroMapper;
 import com.mc.superhero.entities.Organization;
 import com.mc.superhero.entities.Superhero;
 import java.sql.ResultSet;

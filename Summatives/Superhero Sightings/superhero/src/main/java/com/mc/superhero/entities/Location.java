@@ -18,8 +18,8 @@ public class Location {
     private String name;
     private String description;
     private String address;
-    private float latitude;
-    private float longitude;
+    private String latitude;
+    private String longitude;
 
     public int getId() {
         return id;
@@ -53,31 +53,31 @@ public class Location {
         this.address = address;
     }
 
-    public double getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 83 * hash + this.id;
-        hash = 83 * hash + Objects.hashCode(this.name);
-        hash = 83 * hash + Objects.hashCode(this.description);
-        hash = 83 * hash + Objects.hashCode(this.address);
-        hash = 83 * hash + (int) (Double.doubleToLongBits(this.latitude) ^ (Double.doubleToLongBits(this.latitude) >>> 32));
-        hash = 83 * hash + (int) (Double.doubleToLongBits(this.longitude) ^ (Double.doubleToLongBits(this.longitude) >>> 32));
+        hash = 97 * hash + this.id;
+        hash = 97 * hash + Objects.hashCode(this.name);
+        hash = 97 * hash + Objects.hashCode(this.description);
+        hash = 97 * hash + Objects.hashCode(this.address);
+        hash = 97 * hash + Objects.hashCode(this.latitude);
+        hash = 97 * hash + Objects.hashCode(this.longitude);
         return hash;
     }
 
@@ -96,12 +96,6 @@ public class Location {
         if (this.id != other.id) {
             return false;
         }
-        if (Double.doubleToLongBits(this.latitude) != Double.doubleToLongBits(other.latitude)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.longitude) != Double.doubleToLongBits(other.longitude)) {
-            return false;
-        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -111,8 +105,16 @@ public class Location {
         if (!Objects.equals(this.address, other.address)) {
             return false;
         }
+        if (!Objects.equals(this.latitude, other.latitude)) {
+            return false;
+        }
+        if (!Objects.equals(this.longitude, other.longitude)) {
+            return false;
+        }
         return true;
     }
+
+   
     
     
 }
