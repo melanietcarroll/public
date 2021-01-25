@@ -5,6 +5,7 @@
  */
 package com.mc.superhero.dao;
 
+import com.mc.superhero.entities.Location;
 import com.mc.superhero.entities.Organization;
 import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
@@ -25,5 +26,7 @@ public interface SuperheroDao {
     List<Superpower> getSuperpowersForSuperhero(int id);
     List<Sighting> getSightingsForSuperhero(int id);
     List<Organization> getOrganizationsForSuperhero(int id);
+    List<Location> getLocationsForSuperhero(int id);
+    List<Superhero>getSuperherosForLocation(int id);
     
 }

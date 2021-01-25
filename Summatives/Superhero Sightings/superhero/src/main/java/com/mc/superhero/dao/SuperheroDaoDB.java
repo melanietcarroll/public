@@ -5,9 +5,11 @@
  */
 package com.mc.superhero.dao;
 
+import com.mc.superhero.dao.LocationDaoDB.LocationMapper;
 import com.mc.superhero.dao.OrganizationDaoDB.OrganizationMapper;
 import com.mc.superhero.dao.SightingDaoDB.SightingMapper;
 import com.mc.superhero.dao.SuperpowerDaoDB.SuperpowerMapper;
+import com.mc.superhero.entities.Location;
 import com.mc.superhero.entities.Organization;
 import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
@@ -20,25 +22,30 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * created 1/25/21
+ *
  * @author Melanie Carroll
  */
 @Repository
-public class SuperheroDaoDB implements SuperheroDao{
+public class SuperheroDaoDB implements SuperheroDao {
+
     @Autowired
-   JdbcTemplate jdbc;
+    JdbcTemplate jdbc;
 
     @Override
     public Superhero getSuperheroById(int id) {
         try {
             final String SELECT_SUPERHERO_BY_ID = "SELECT * FROM Superhero WHERE id = ?";
             Superhero superhero = jdbc.queryForObject(SELECT_SUPERHERO_BY_ID, new SuperheroMapper(), id);
-            course.setTeacher(getTeacherForCourse(id));
-            course.setStudents(getStudentsForCourse(id));
-            return course;
-        } catch(DataAccessException ex) {
+            superhero.setSuperpowers(getSuperpowersForSuperhero(id));
+            superhero.setSightings(getSightingsForSuperhero(id));
+            superhero.setOrganizations(getOrganizationsForSuperhero(id));
+            
+            return superhero;
+        } catch (DataAccessException ex) {
             return null;
         }
     }
@@ -50,11 +57,12 @@ public class SuperheroDaoDB implements SuperheroDao{
     }
 
     public List<Sighting> getSightingsForSuperhero(int id) {
-         final String SELECT_SIGHTING_FOR_SUPERHERO = "SELECT s.* FROM Sighting s "
+        final String SELECT_SIGHTING_FOR_SUPERHERO = "SELECT s.* FROM Sighting s "
                 + "JOIN Superhero sup ON s.superheroId = sup.id WHERE sup.id = ?";
         return jdbc.query(SELECT_SIGHTING_FOR_SUPERHERO, new SightingMapper(), id);
     }
-    public List<Organization> getOrganizationsForSuperhero(int id){
+
+    public List<Organization> getOrganizationsForSuperhero(int id) {
         final String SELECT_ORGANIZATIONS_FOR_SUPERHERO = "SELECT org.* FROM Organization org "
                 + "JOIN Superhero_Organization so ON so.organizationId = org.id WHERE so.superheroId = ?";
         return jdbc.query(SELECT_ORGANIZATIONS_FOR_SUPERHERO, new OrganizationMapper(), id);
@@ -62,28 +70,98 @@ public class SuperheroDaoDB implements SuperheroDao{
 
     @Override
     public List<Superhero> getAllSuperheros() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       final String SELECT_ALL_SUPERHEROS = "SELECT * FROM Superhero";
+        List<Superhero> superheros = jdbc.query(SELECT_ALL_SUPERHEROS, new SuperheroMapper());
+        associateOrganizationsAndSuperpowersAndSightings(superheros);
+        
+        return superheros;
+    }
+
+    private void associateOrganizationsAndSuperpowersAndSightings(List<Superhero> superheros) {
+        for (Superhero superhero : superheros) {
+            superhero.setOrganizations(getOrganizationsForSuperhero(superhero.getId()));
+            superhero.setSightings(getSightingsForSuperhero(superhero.getId()));
+            superhero.setSuperpowers(getSuperpowersForSuperhero(superhero.getId()));
+        }
     }
 
     @Override
+    @Transactional
     public Superhero addSuperhero(Superhero superhero) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       final String INSERT_SUPERHERO = "INSERT INTO Superhero(name, description) "
+                + "VALUES(?,?)";
+        jdbc.update(INSERT_SUPERHERO,
+                superhero.getName(),
+                superhero.getDescription());
+               
+        int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        superhero.setId(newId);
+        insertSuperheroSuperpower(superhero);
+        return superhero;
+    }
+
+    private void insertSuperheroSuperpower(Superhero superhero) {
+        final String INSERT_SUPERHERO_SUPERPOWER = "INSERT INTO "
+                + "Superhero_Superpower(superheroId, superpowerId) VALUES(?,?)";
+        for(Superpower superpower : superhero.getSuperpowers()) {
+            jdbc.update(INSERT_SUPERHERO_SUPERPOWER, 
+                    superhero.getId(),
+                    superpower.getId());
+        }
     }
 
     @Override
+    @Transactional
     public void updateSuperhero(Superhero superhero) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         final String UPDATE_SUPERHERO = "UPDATE Superhero SET name = ?, description = ?, "
+                + "WHERE id = ?";
+        jdbc.update(UPDATE_SUPERHERO, 
+                superhero.getName(), 
+                superhero.getDescription(),
+                superhero.getId());
+        
+        final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superheroId = ?";
+        jdbc.update(DELETE_SUPERHERO_SUPERPOWER, superhero.getId());
+        insertSuperheroSuperpower(superhero);
     }
 
     @Override
+    @Transactional
     public void deleteSuperheroById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superheroId = ?";
+        jdbc.update(DELETE_SUPERHERO_SUPERPOWER, id);
+        
+        final String DELETE_SUPERHERO_ORGANIZATION = "DELETE FROM Superhero_Organization WHERE superheroId = ?";
+        jdbc.update(DELETE_SUPERHERO_ORGANIZATION, id);
+        
+        final String DELETE_SUPERHERO_SIGHTING = "DELETE FROM Sighting "
+                + "WHERE supeheroId = ?";
+        jdbc.update(DELETE_SUPERHERO_SIGHTING, id);
+        
+        final String DELETE_SUPERHERO = "DELETE FROM Superhero WHERE id = ?";
+        jdbc.update(DELETE_SUPERHERO, id);
     }
 
-   
+    @Override
+    public List<Location> getLocationsForSuperhero(int id) {
+        final String SELECT_LOCATIONS_FOR_SUPERHERO = "SELECT l.* FROM Location l "
+                + "JOIN Sighting s ON s.locationId = l.id "
+                + "JOIN Superhero ON s.superheroId = Superhero.id "
+                + "WHERE Superhero.id = ?";
+        return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new LocationMapper(), id);
+    }
 
-    
-     public static final class SuperheroMapper implements RowMapper<Superhero> {
+    @Override
+    public List<Superhero> getSuperherosForLocation(int id) {
+        final String SELECT_LOCATIONS_FOR_SUPERHERO = "SELECT sup.* FROM Superhero sup "
+                + "JOIN Sighting s ON s.superheroId = sup.id "
+                + "JOIN Location ON s.locationId = Location.id"
+                + "WHERE Location.id = ?";
+               
+        return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new SuperheroMapper(), id);
+    }
+
+    public static final class SuperheroMapper implements RowMapper<Superhero> {
 
         @Override
         public Superhero mapRow(ResultSet rs, int index) throws SQLException {
@@ -91,7 +169,7 @@ public class SuperheroDaoDB implements SuperheroDao{
             superhero.setId(rs.getInt("id"));
             superhero.setName(rs.getString("name"));
             superhero.setDescription(rs.getString("description"));
-            
+
             return superhero;
         }
     }

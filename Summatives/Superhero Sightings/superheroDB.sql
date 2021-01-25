@@ -125,3 +125,18 @@ FROM Sighting
 INNER JOIN Superhero ON Sighting.superheroId = Superhero.id
 INNER JOIN Location ON Sighting.locationId = Location.id
 WHERE date = '2020-12-25';
+
+SELECT * FROM Sighting
+WHERE date = '2020-12-25';
+
+-- report all locations a superhero has been seen
+SELECT l.* FROM Location l
+JOIN Sighting s ON s.locationId = l.id
+JOIN Superhero ON s.superheroId = Superhero.id
+WHERE Superhero.id = 1;
+
+-- report all superheros by location
+SELECT sup.* FROM Superhero sup
+JOIN Sighting s ON s.superheroId = sup.id
+JOIN Location ON s.locationId = Location.id
+WHERE Location.id = 1;
