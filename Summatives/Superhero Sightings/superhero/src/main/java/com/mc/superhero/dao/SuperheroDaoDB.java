@@ -128,7 +128,7 @@ public class SuperheroDaoDB implements SuperheroDao {
     @Override
     @Transactional
     public void updateSuperhero(Superhero superhero) {
-         final String UPDATE_SUPERHERO = "UPDATE Superhero SET name = ?, description = ?, "
+         final String UPDATE_SUPERHERO = "UPDATE Superhero SET name = ?, description = ? "
                 + "WHERE id = ?";
         jdbc.update(UPDATE_SUPERHERO, 
                 superhero.getName(), 
@@ -137,6 +137,8 @@ public class SuperheroDaoDB implements SuperheroDao {
         
         final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_SUPERPOWER, superhero.getId());
+        final String DELETE_SUPERHERO_ORGANIZATION = "DELETE FROM Superhero_Organization WHERE superheroId = ?";
+        jdbc.update(DELETE_SUPERHERO_ORGANIZATION, superhero.getId());
         insertSuperheroSuperpower(superhero);
         if (superhero.getOrganizations() != null){    
         insertSuperheroOrganization(superhero);

@@ -20,6 +20,8 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 //import org.junit.Test;
@@ -249,15 +251,21 @@ public class SuperheroDaoDBTest {
         sighting = sightingDao.addSighting(sighting);
         int sightingId = sighting.getId();
         List<Sighting> listSightings = new ArrayList();
-        sightings.add(sighting);
+        listSightings.add(sighting);
         superhero.setSightings(listSightings);
         superhero2.setSightings(listSightings);
         
         List<Superhero> listSuperheros = superheroDao.getAllSuperheros();
+        for (Superhero superheroTest : listSuperheros){
+            superheroTest.setSightings(listSightings);
+            superheroTest.setOrganizations(orgs);
+            superheroTest.setSuperpowers(listSuperpowers);
+        }
+        
         
         assertEquals(2, listSuperheros.size());
-//        assertTrue(listSuperheros.contains(superhero));
-//        assertTrue(listSuperheros.contains(superhero2));
+        assertTrue(listSuperheros.contains(superhero));
+        assertTrue(listSuperheros.contains(superhero2));
         
     }
 
@@ -274,6 +282,70 @@ public class SuperheroDaoDBTest {
      */
     @Test
     public void testUpdateSuperhero() {
+        LocalDate date = LocalDate.parse("2020-01-08"); 
+        LocalTime time = LocalTime.parse("12:32:22", 
+            DateTimeFormatter.ISO_TIME);
+
+        
+        Location location = new Location();
+        location.setName("Test Name");
+        location.setDescription("Test Description");
+        location.setAddress("Test Address");
+        location.setLatitude("TestLat");
+        location.setLongitude("TestLong");
+        location = locationDao.addLocation(location);
+        
+        Organization organization = new Organization();
+        organization.setName("Test Name");
+        organization.setDescription("Test Description");
+        organization.setAddress("Test Address");
+//        organization.setSuperheros(superheroDao.getAllSuperheros());
+        organization = organizationDao.addOrganization(organization);
+        List<Organization> orgs = organizationDao.getAllOrganizations();
+        
+        Superpower superpower = new Superpower();
+        superpower.setName("fast");
+        superpower = superpowerDao.addSuperpower(superpower);
+        List<Superpower> listSuperpowers = superpowerDao.getAllSuperpowers();
+        
+        Superhero superhero = new Superhero();
+        superhero.setName("Test");
+        superhero.setDescription("very fast");
+        superhero.setSuperpowers(listSuperpowers);
+        superhero.setOrganizations(orgs);
+        superhero = superheroDao.addSuperhero(superhero);
+        
+        
+        Sighting sighting = new Sighting();
+        sighting.setDate(date);
+        sighting.setTime(time);
+        sighting.setLocation(location);
+        sighting.setSuperhero(superhero);
+        sighting = sightingDao.addSighting(sighting);
+        int sightingId = sighting.getId();
+        List<Sighting> listSightings = new ArrayList();
+        listSightings.add(sighting);
+        superhero.setSightings(listSightings);
+        
+        
+        Superhero fromDao = superheroDao.getSuperheroById(superhero.getId());
+        fromDao.setOrganizations(orgs);
+        fromDao.setSightings(listSightings);
+        fromDao.setSuperpowers(listSuperpowers);
+        assertEquals(superhero, fromDao);
+        
+        superhero.setName("New Test First");
+        superheroDao.updateSuperhero(superhero);
+        
+        assertNotEquals(superhero, fromDao);
+        
+        fromDao = superheroDao.getSuperheroById(superhero.getId());
+        fromDao.setOrganizations(orgs);
+        fromDao.setSightings(listSightings);
+        fromDao.setSuperpowers(listSuperpowers);
+        
+        assertEquals(superhero, fromDao);
+        
     }
 
     /**
@@ -281,6 +353,62 @@ public class SuperheroDaoDBTest {
      */
     @Test
     public void testDeleteSuperheroById() {
+        LocalDate date = LocalDate.parse("2020-01-08"); 
+        LocalTime time = LocalTime.parse("12:32:22", 
+            DateTimeFormatter.ISO_TIME);
+
+        
+        Location location = new Location();
+        location.setName("Test Name");
+        location.setDescription("Test Description");
+        location.setAddress("Test Address");
+        location.setLatitude("TestLat");
+        location.setLongitude("TestLong");
+        location = locationDao.addLocation(location);
+        
+        Organization organization = new Organization();
+        organization.setName("Test Name");
+        organization.setDescription("Test Description");
+        organization.setAddress("Test Address");
+//        organization.setSuperheros(superheroDao.getAllSuperheros());
+        organization = organizationDao.addOrganization(organization);
+        List<Organization> orgs = organizationDao.getAllOrganizations();
+        
+        Superpower superpower = new Superpower();
+        superpower.setName("fast");
+        superpower = superpowerDao.addSuperpower(superpower);
+        List<Superpower> listSuperpowers = superpowerDao.getAllSuperpowers();
+        
+        Superhero superhero = new Superhero();
+        superhero.setName("Test");
+        superhero.setDescription("very fast");
+        superhero.setSuperpowers(listSuperpowers);
+        superhero.setOrganizations(orgs);
+        superhero = superheroDao.addSuperhero(superhero);
+        
+        
+        Sighting sighting = new Sighting();
+        sighting.setDate(date);
+        sighting.setTime(time);
+        sighting.setLocation(location);
+        sighting.setSuperhero(superhero);
+        sighting = sightingDao.addSighting(sighting);
+        int sightingId = sighting.getId();
+        List<Sighting> listSightings = new ArrayList();
+        listSightings.add(sighting);
+        superhero.setSightings(listSightings);
+        
+        
+         Superhero fromDao = superheroDao.getSuperheroById(superhero.getId());
+         fromDao.setOrganizations(orgs);
+        fromDao.setSightings(listSightings);
+        fromDao.setSuperpowers(listSuperpowers);
+        assertEquals(superhero, fromDao);
+        
+        superheroDao.deleteSuperheroById(superhero.getId());
+        
+        fromDao = superheroDao.getSuperheroById(location.getId());
+        assertNull(fromDao);
     }
 
     /**
