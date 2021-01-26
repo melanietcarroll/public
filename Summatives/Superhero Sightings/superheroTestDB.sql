@@ -26,8 +26,8 @@ CREATE TABLE Location(
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
     address VARCHAR(50),
-    latitude float,
-    longitude float
+    latitude VARCHAR(15),
+    longitude VARCHAR(15)
 );
 
 
@@ -45,9 +45,7 @@ CREATE TABLE Organization(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
-    address VARCHAR(50),
-    superheroId INT NOT NULL,
-    FOREIGN KEY (superheroId) REFERENCES Superhero(id)
+    address VARCHAR(50)
 );
 CREATE TABLE Superhero_Organization(
     superheroId INT NOT NULL,

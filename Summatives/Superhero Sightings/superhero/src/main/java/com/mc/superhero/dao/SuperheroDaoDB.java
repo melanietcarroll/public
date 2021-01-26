@@ -52,7 +52,7 @@ public class SuperheroDaoDB implements SuperheroDao {
 
     public List<Superpower> getSuperpowersForSuperhero(int id) {
         final String SELECT_SUPERPOWERS_FOR_SUPERHERO = "SELECT pow.* FROM Superpower pow "
-                + "JOIN Superhero_Superpower ss ON ss.superpowerId = pow.id WHERE ss.superpowerId = ?";
+                + "JOIN Superhero_Superpower ss ON ss.superpowerId = pow.id WHERE ss.superheroId = ?";
         return jdbc.query(SELECT_SUPERPOWERS_FOR_SUPERHERO, new SuperpowerMapper(), id);
     }
 
@@ -135,7 +135,7 @@ public class SuperheroDaoDB implements SuperheroDao {
         jdbc.update(DELETE_SUPERHERO_ORGANIZATION, id);
         
         final String DELETE_SUPERHERO_SIGHTING = "DELETE FROM Sighting "
-                + "WHERE supeheroId = ?";
+                + "WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_SIGHTING, id);
         
         final String DELETE_SUPERHERO = "DELETE FROM Superhero WHERE id = ?";

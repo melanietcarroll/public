@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface OrganizationDao {
     Organization getOrganizationById(int id);
-    List<Organization> getallOrganizations();
+    List<Organization> getAllOrganizations();
     Organization addOrganization(Organization organization);
     void updateOrganization(Organization organization);
     void deleteOrganizationById(int id);

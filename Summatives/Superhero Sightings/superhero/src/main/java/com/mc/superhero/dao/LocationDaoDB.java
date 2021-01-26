@@ -46,7 +46,7 @@ public class LocationDaoDB implements LocationDao {
     @Transactional
     public Location addLocation(Location location) {
          final String INSERT_LOCATION  = "INSERT INTO Location(name, description, address, latitude, longitude) " +
-                "VALUES(?,?,?,?,?,?)";
+                "VALUES(?,?,?,?,?)";
         jdbc.update(INSERT_LOCATION,
                 location.getName(),
                 location.getDescription(),

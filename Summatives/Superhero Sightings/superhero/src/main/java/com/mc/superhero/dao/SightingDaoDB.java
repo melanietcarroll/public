@@ -68,8 +68,8 @@ public class SightingDaoDB implements SightingDao {
         jdbc.update(INSERT_SIGHTING,
                 sighting.getDate(),
                 sighting.getTime(),
-                sighting.getLocation().getId(),
-                sighting.getSuperhero().getId());
+                sighting.getSuperhero().getId(),
+                sighting.getLocation().getId());
         
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         sighting.setId(newId);
@@ -79,12 +79,12 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public void updateSighting(Sighting sighting) {
        final String UPDATE_SIGHTING = "UPDATE Sighting SET date = ?, time = ?, "
-                + "locationId = ?, superheroId = ? WHERE id = ?";
+                + "superheroId = ?, locationId = ? WHERE id = ?";
         jdbc.update(UPDATE_SIGHTING, 
                 sighting.getDate(), 
                 sighting.getTime(), 
-                sighting.getLocation().getId(),
                 sighting.getSuperhero().getId(),
+                sighting.getLocation().getId(),
                 sighting.getId());
     }
 

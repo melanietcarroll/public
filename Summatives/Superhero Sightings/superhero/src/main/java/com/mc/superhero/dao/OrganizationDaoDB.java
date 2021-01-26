@@ -40,7 +40,7 @@ public class OrganizationDaoDB implements OrganizationDao {
     }
 
     @Override
-    public List<Organization> getallOrganizations() {
+    public List<Organization> getAllOrganizations() {
         final String SELECT_ALL_ORGANIZATIONS = "SELECT * FROM Organization";
         List<Organization> organizations = jdbc.query(SELECT_ALL_ORGANIZATIONS, new OrganizationMapper());
         associateSuperheros(organizations);

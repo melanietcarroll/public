@@ -140,3 +140,29 @@ SELECT sup.* FROM Superhero sup
 JOIN Sighting s ON s.superheroId = sup.id
 JOIN Location ON s.locationId = Location.id
 WHERE Location.id = 1;
+
+-- select superheros for organization
+SELECT sup.* FROM Superhero sup 
+JOIN Superhero_Organization so ON so.superheroId = sup.id WHERE so.organizationId = 1;
+
+-- select location for sighting
+SELECT l.* FROM Location l 
+		JOIN Sighting s ON s.locationId = l.id WHERE s.id = 1;
+-- select superhero for sighting
+SELECT sup.* FROM Superhero sup 
+JOIN Sighting s ON s.superheroId = sup.id WHERE s.id = 1;
+
+-- get superpowers for superhero
+SELECT pow.* FROM Superpower pow 
+JOIN Superhero_Superpower ss ON ss.superpowerId = pow.id WHERE ss.superheroId = 1;
+
+-- get sightings for super hero
+SELECT s.* FROM Sighting s 
+JOIN Superhero sup ON s.superheroId = sup.id WHERE sup.id = 1;
+
+-- get organizations for superhero
+SELECT org.* FROM Organization org 
+JOIN Superhero_Organization so ON so.organizationId = org.id WHERE so.superheroId = 1;
+
+INSERT INTO Superhero(name, description) 
+                VALUES("Captain America","patriotic");
