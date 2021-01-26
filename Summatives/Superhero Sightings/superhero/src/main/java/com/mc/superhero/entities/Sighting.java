@@ -17,8 +17,8 @@ import java.util.Objects;
  */
 public class Sighting {
     private int id;
-    private LocalDateTime date;
-    private LocalDateTime time;
+    private LocalDate date;
+    private LocalTime time;
     private Location location;
     private Superhero superhero;
 
@@ -30,19 +30,19 @@ public class Sighting {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public LocalDateTime getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
@@ -64,11 +64,12 @@ public class Sighting {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.id;
-        hash = 97 * hash + Objects.hashCode(this.date);
-        hash = 97 * hash + Objects.hashCode(this.time);
-        hash = 97 * hash + Objects.hashCode(this.location);
+        int hash = 7;
+        hash = 29 * hash + this.id;
+        hash = 29 * hash + Objects.hashCode(this.date);
+        hash = 29 * hash + Objects.hashCode(this.time);
+        hash = 29 * hash + Objects.hashCode(this.location);
+        hash = 29 * hash + Objects.hashCode(this.superhero);
         return hash;
     }
 
@@ -96,7 +97,14 @@ public class Sighting {
         if (!Objects.equals(this.location, other.location)) {
             return false;
         }
+        if (!Objects.equals(this.superhero, other.superhero)) {
+            return false;
+        }
         return true;
     }
+
+    
+   
+
     
 }

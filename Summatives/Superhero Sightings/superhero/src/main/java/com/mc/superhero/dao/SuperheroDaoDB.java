@@ -97,9 +97,24 @@ public class SuperheroDaoDB implements SuperheroDao {
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         superhero.setId(newId);
         insertSuperheroSuperpower(superhero);
+        if (superhero.getOrganizations() != null){
+            
+        insertSuperheroOrganization(superhero);
+                }
+        
         return superhero;
     }
 
+    public void insertSuperheroOrganization(Superhero superhero) {
+        final String INSERT_SUPERHERO_ORGANIZATION = "INSERT INTO "
+                + "Superhero_Organization(superheroId, organizationId) VALUES(?,?)";
+        for(Organization organization : superhero.getOrganizations()) {
+            jdbc.update(INSERT_SUPERHERO_ORGANIZATION, 
+                    superhero.getId(),
+                    organization.getId());
+        }
+    }
+    
     private void insertSuperheroSuperpower(Superhero superhero) {
         final String INSERT_SUPERHERO_SUPERPOWER = "INSERT INTO "
                 + "Superhero_Superpower(superheroId, superpowerId) VALUES(?,?)";
@@ -123,6 +138,9 @@ public class SuperheroDaoDB implements SuperheroDao {
         final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_SUPERPOWER, superhero.getId());
         insertSuperheroSuperpower(superhero);
+        if (superhero.getOrganizations() != null){    
+        insertSuperheroOrganization(superhero);
+                }
     }
 
     @Override

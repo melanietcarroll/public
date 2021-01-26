@@ -35,7 +35,7 @@ public class SightingDaoDB implements SightingDao {
     @Override
     public Sighting getSightingById(int id) {
         try {
-            final String SELECT_SIGHTING_BY_ID = "SELECT * FROM Sighting WHERE id = ?";
+            final String SELECT_SIGHTING_BY_ID = "SELECT * FROM Sighting WHERE id = ?;";
             Sighting sighting = jdbc.queryForObject(SELECT_SIGHTING_BY_ID, new SightingMapper(), id);
             sighting.setLocation(getLocationForSighting(id));
             sighting.setSuperhero(getSuperheroForSighting(id));
@@ -121,8 +121,9 @@ public class SightingDaoDB implements SightingDao {
         public Sighting mapRow(ResultSet rs, int index) throws SQLException {
             Sighting sighting = new Sighting();
             sighting.setId(rs.getInt("id"));
-            sighting.setDate(rs.getTimestamp("date").toLocalDateTime());
-            sighting.setTime(rs.getTimestamp("time").toLocalDateTime());
+            sighting.setDate(rs.getTimestamp("date").toLocalDateTime().toLocalDate());
+           
+            sighting.setTime(rs.getTimestamp("time").toLocalDateTime().toLocalTime());
 
             return sighting;
         }

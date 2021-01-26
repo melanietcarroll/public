@@ -63,19 +63,19 @@ public class OrganizationDaoDB implements OrganizationDao {
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         organization.setId(newId);
-        insertSuperheroOrganization(organization);
+//        insertSuperheroOrganization(organization);
         return organization;
     }
 
-    private void insertSuperheroOrganization(Organization organization) {
-        final String INSERT_SUPERHERO_ORGANIZATION = "INSERT INTO "
-                + "Superhero_Organization(superheroId, organizationId) VALUES(?,?)";
-        for(Superhero superhero : organization.getSuperheros()) {
-            jdbc.update(INSERT_SUPERHERO_ORGANIZATION, 
-                    superhero.getId(),
-                    organization.getId());
-        }
-    }
+//    public void insertSuperheroOrganization(Organization organization) {
+//        final String INSERT_SUPERHERO_ORGANIZATION = "INSERT INTO "
+//                + "Superhero_Organization(superheroId, organizationId) VALUES(?,?)";
+//        for(Superhero superhero : organization.getSuperheros()) {
+//            jdbc.update(INSERT_SUPERHERO_ORGANIZATION, 
+//                    superhero.getId(),
+//                    organization.getId());
+//        }
+//    }
 
     @Override
     @Transactional
@@ -90,7 +90,7 @@ public class OrganizationDaoDB implements OrganizationDao {
         
         final String DELETE_SUPERHERO_ORGANIZATION = "DELETE FROM Superhero_Organization WHERE organizationId = ?";
         jdbc.update(DELETE_SUPERHERO_ORGANIZATION, organization.getId());
-        insertSuperheroOrganization(organization);
+//        insertSuperheroOrganization(organization);
     }
 
     @Override

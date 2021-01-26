@@ -10,8 +10,7 @@ import com.mc.superhero.entities.Location;
 import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import com.mc.superhero.entities.Superpower;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import org.junit.jupiter.api.AfterEach;
@@ -174,7 +173,7 @@ public class LocationDaoDBTest {
      */
     @Test
     public void testDeleteLocationById() {
-        LocalDateTime date= LocalDateTime.now();
+        LocalDate date = LocalDate.parse("2020-01-08"); 
         
         Location location = new Location();
         location.setName("Test Name");
