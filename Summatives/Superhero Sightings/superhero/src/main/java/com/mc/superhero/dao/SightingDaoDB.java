@@ -12,7 +12,7 @@ import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -109,7 +109,7 @@ public class SightingDaoDB implements SightingDao {
     }
 
     @Override
-    public List<Sighting> getSightingsForSuperheroAndLocationByDate(LocalDateTime date) {
+    public List<Sighting> getSightingsForSuperheroAndLocationByDate(LocalDate date) {
         final String SELECT_SIGHTING_FOR_SUPERHERO_AND_LOCATION = "SELECT * FROM Sighting "
                 + "WHERE date = ?";
         return jdbc.query(SELECT_SIGHTING_FOR_SUPERHERO_AND_LOCATION, new SightingMapper(), date);

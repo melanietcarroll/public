@@ -262,14 +262,12 @@ public class SuperheroDaoDBTest {
             superheroTest.setSuperpowers(listSuperpowers);
         }
         
-        
         assertEquals(2, listSuperheros.size());
         assertTrue(listSuperheros.contains(superhero));
         assertTrue(listSuperheros.contains(superhero2));
         
     }
 
-    
     /**
      * Test of insertSuperheroOrganization method, of class SuperheroDaoDB.
      */
@@ -344,10 +342,8 @@ public class SuperheroDaoDBTest {
         fromDao.setSightings(listSightings);
         fromDao.setSuperpowers(listSuperpowers);
         
-        assertEquals(superhero, fromDao);
-        
+        assertEquals(superhero, fromDao);  
     }
-
     /**
      * Test of deleteSuperheroById method, of class SuperheroDaoDB.
      */
