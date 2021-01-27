@@ -43,7 +43,7 @@ public class SuperheroDaoDB implements SuperheroDao {
             superhero.setSuperpowers(getSuperpowersForSuperhero(id));
             superhero.setSightings(getSightingsForSuperhero(id));
             superhero.setOrganizations(getOrganizationsForSuperhero(id));
-            
+
             return superhero;
         } catch (DataAccessException ex) {
             return null;
@@ -70,10 +70,10 @@ public class SuperheroDaoDB implements SuperheroDao {
 
     @Override
     public List<Superhero> getAllSuperheros() {
-       final String SELECT_ALL_SUPERHEROS = "SELECT * FROM Superhero";
+        final String SELECT_ALL_SUPERHEROS = "SELECT * FROM Superhero";
         List<Superhero> superheros = jdbc.query(SELECT_ALL_SUPERHEROS, new SuperheroMapper());
         associateOrganizationsAndSuperpowersAndSightings(superheros);
-        
+
         return superheros;
     }
 
@@ -88,38 +88,38 @@ public class SuperheroDaoDB implements SuperheroDao {
     @Override
     @Transactional
     public Superhero addSuperhero(Superhero superhero) {
-       final String INSERT_SUPERHERO = "INSERT INTO Superhero(name, description) "
+        final String INSERT_SUPERHERO = "INSERT INTO Superhero(name, description) "
                 + "VALUES(?,?)";
         jdbc.update(INSERT_SUPERHERO,
                 superhero.getName(),
                 superhero.getDescription());
-               
+
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         superhero.setId(newId);
         insertSuperheroSuperpower(superhero);
-        if (superhero.getOrganizations() != null){
-            
-        insertSuperheroOrganization(superhero);
-                }
-        
+        if (superhero.getOrganizations() != null) {
+
+            insertSuperheroOrganization(superhero);
+        }
+
         return superhero;
     }
 
     public void insertSuperheroOrganization(Superhero superhero) {
         final String INSERT_SUPERHERO_ORGANIZATION = "INSERT INTO "
                 + "Superhero_Organization(superheroId, organizationId) VALUES(?,?)";
-        for(Organization organization : superhero.getOrganizations()) {
-            jdbc.update(INSERT_SUPERHERO_ORGANIZATION, 
+        for (Organization organization : superhero.getOrganizations()) {
+            jdbc.update(INSERT_SUPERHERO_ORGANIZATION,
                     superhero.getId(),
                     organization.getId());
         }
     }
-    
+
     private void insertSuperheroSuperpower(Superhero superhero) {
         final String INSERT_SUPERHERO_SUPERPOWER = "INSERT INTO "
                 + "Superhero_Superpower(superheroId, superpowerId) VALUES(?,?)";
-        for(Superpower superpower : superhero.getSuperpowers()) {
-            jdbc.update(INSERT_SUPERHERO_SUPERPOWER, 
+        for (Superpower superpower : superhero.getSuperpowers()) {
+            jdbc.update(INSERT_SUPERHERO_SUPERPOWER,
                     superhero.getId(),
                     superpower.getId());
         }
@@ -128,36 +128,36 @@ public class SuperheroDaoDB implements SuperheroDao {
     @Override
     @Transactional
     public void updateSuperhero(Superhero superhero) {
-         final String UPDATE_SUPERHERO = "UPDATE Superhero SET name = ?, description = ? "
+        final String UPDATE_SUPERHERO = "UPDATE Superhero SET name = ?, description = ? "
                 + "WHERE id = ?";
-        jdbc.update(UPDATE_SUPERHERO, 
-                superhero.getName(), 
+        jdbc.update(UPDATE_SUPERHERO,
+                superhero.getName(),
                 superhero.getDescription(),
                 superhero.getId());
-        
+
         final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_SUPERPOWER, superhero.getId());
         final String DELETE_SUPERHERO_ORGANIZATION = "DELETE FROM Superhero_Organization WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_ORGANIZATION, superhero.getId());
         insertSuperheroSuperpower(superhero);
-        if (superhero.getOrganizations() != null){    
-        insertSuperheroOrganization(superhero);
-                }
+        if (superhero.getOrganizations() != null) {
+            insertSuperheroOrganization(superhero);
+        }
     }
 
     @Override
     @Transactional
     public void deleteSuperheroById(int id) {
-          final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superheroId = ?";
+        final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_SUPERPOWER, id);
-        
+
         final String DELETE_SUPERHERO_ORGANIZATION = "DELETE FROM Superhero_Organization WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_ORGANIZATION, id);
-        
+
         final String DELETE_SUPERHERO_SIGHTING = "DELETE FROM Sighting "
                 + "WHERE superheroId = ?";
         jdbc.update(DELETE_SUPERHERO_SIGHTING, id);
-        
+
         final String DELETE_SUPERHERO = "DELETE FROM Superhero WHERE id = ?";
         jdbc.update(DELETE_SUPERHERO, id);
     }
@@ -177,7 +177,7 @@ public class SuperheroDaoDB implements SuperheroDao {
                 + "JOIN Sighting s ON s.superheroId = sup.id "
                 + "JOIN Location ON s.locationId = Location.id "
                 + "WHERE Location.id = ?";
-               
+
         return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new SuperheroMapper(), id);
     }
 

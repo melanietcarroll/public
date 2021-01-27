@@ -47,30 +47,30 @@ public class SightingDaoDB implements SightingDao {
 
     @Override
     public List<Sighting> getAllSightings() {
-         final String SELECT_ALL_SIGHTINGS = "SELECT * FROM Sighting";
+        final String SELECT_ALL_SIGHTINGS = "SELECT * FROM Sighting";
         List<Sighting> sightings = jdbc.query(SELECT_ALL_SIGHTINGS, new SightingMapper());
         associateLocationAndSuperhero(sightings);
         return sightings;
     }
 
-     private void associateLocationAndSuperhero(List<Sighting> sightings) {
+    private void associateLocationAndSuperhero(List<Sighting> sightings) {
         for (Sighting sighting : sightings) {
             sighting.setLocation(getLocationForSighting(sighting.getId()));
             sighting.setSuperhero(getSuperheroForSighting(sighting.getId()));
         }
-     }
-    
+    }
+
     @Override
     @Transactional
     public Sighting addSighting(Sighting sighting) {
-       final String INSERT_SIGHTING = "INSERT INTO Sighting(date, time, superheroId, locationId) "
+        final String INSERT_SIGHTING = "INSERT INTO Sighting(date, time, superheroId, locationId) "
                 + "VALUES(?,?,?,?)";
         jdbc.update(INSERT_SIGHTING,
                 sighting.getDate(),
                 sighting.getTime(),
                 sighting.getSuperhero().getId(),
                 sighting.getLocation().getId());
-        
+
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         sighting.setId(newId);
         return sighting;
@@ -78,11 +78,11 @@ public class SightingDaoDB implements SightingDao {
 
     @Override
     public void updateSighting(Sighting sighting) {
-       final String UPDATE_SIGHTING = "UPDATE Sighting SET date = ?, time = ?, "
+        final String UPDATE_SIGHTING = "UPDATE Sighting SET date = ?, time = ?, "
                 + "superheroId = ?, locationId = ? WHERE id = ?";
-        jdbc.update(UPDATE_SIGHTING, 
-                sighting.getDate(), 
-                sighting.getTime(), 
+        jdbc.update(UPDATE_SIGHTING,
+                sighting.getDate(),
+                sighting.getTime(),
                 sighting.getSuperhero().getId(),
                 sighting.getLocation().getId(),
                 sighting.getId());
@@ -122,7 +122,7 @@ public class SightingDaoDB implements SightingDao {
             Sighting sighting = new Sighting();
             sighting.setId(rs.getInt("id"));
             sighting.setDate(rs.getTimestamp("date").toLocalDateTime().toLocalDate());
-           
+
             sighting.setTime(rs.getTimestamp("time").toLocalDateTime().toLocalTime());
 
             return sighting;

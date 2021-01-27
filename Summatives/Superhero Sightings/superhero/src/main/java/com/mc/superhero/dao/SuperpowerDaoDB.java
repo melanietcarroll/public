@@ -17,18 +17,19 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *  created 1/25/21
+ * created 1/25/21
+ *
  * @author Melanie Carroll
  */
 @Repository
-public class SuperpowerDaoDB implements SuperpowerDao{
-    
+public class SuperpowerDaoDB implements SuperpowerDao {
+
     @Autowired
-   JdbcTemplate jdbc;
+    JdbcTemplate jdbc;
 
     @Override
     public Superpower getSuperpowerById(int id) {
-          try {
+        try {
             final String SELECT_SUPERPOWER_BY_ID = "SELECT * FROM Superpower WHERE id = ?";
             return jdbc.queryForObject(SELECT_SUPERPOWER_BY_ID, new SuperpowerMapper(), id);
         } catch (DataAccessException ex) {
@@ -47,8 +48,8 @@ public class SuperpowerDaoDB implements SuperpowerDao{
         final String INSERT_SUPERPOWER = "INSERT INTO Superpower(name) "
                 + "VALUES(?)";
         jdbc.update(INSERT_SUPERPOWER,
-                superpower.getName());   
-        
+                superpower.getName());
+
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         superpower.setId(newId);
         return superpower;
@@ -66,13 +67,14 @@ public class SuperpowerDaoDB implements SuperpowerDao{
     @Override
     @Transactional
     public void deleteSuperpowerById(int id) {
-         final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superpowerId = ?";
+        final String DELETE_SUPERHERO_SUPERPOWER = "DELETE FROM Superhero_Superpower WHERE superpowerId = ?";
         jdbc.update(DELETE_SUPERHERO_SUPERPOWER, id);
-        
+
         final String DELETE_SUPERPOWER = "DELETE FROM Superpower WHERE id = ?";
         jdbc.update(DELETE_SUPERPOWER, id);
     }
-   public static final class SuperpowerMapper implements RowMapper<Superpower> {
+
+    public static final class SuperpowerMapper implements RowMapper<Superpower> {
 
         @Override
         public Superpower mapRow(ResultSet rs, int index) throws SQLException {
@@ -82,5 +84,5 @@ public class SuperpowerDaoDB implements SuperpowerDao{
 
             return superpower;
         }
-    } 
+    }
 }

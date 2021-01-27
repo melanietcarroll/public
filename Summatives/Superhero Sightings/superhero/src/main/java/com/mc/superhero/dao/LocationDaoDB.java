@@ -18,20 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * created 1/24/21
+ *
  * @author Melanie Carroll
  */
 @Repository
 public class LocationDaoDB implements LocationDao {
-    
-     @Autowired
-   JdbcTemplate jdbc;
+
+    @Autowired
+    JdbcTemplate jdbc;
 
     @Override
     public Location getLocationById(int id) {
-         try {
+        try {
             final String GET_LOCATION_BY_ID = "SELECT * FROM Location WHERE id = ?";
             return jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), id);
-        } catch(DataAccessException ex) {
+        } catch (DataAccessException ex) {
             return null;
         }
     }
@@ -45,15 +46,15 @@ public class LocationDaoDB implements LocationDao {
     @Override
     @Transactional
     public Location addLocation(Location location) {
-         final String INSERT_LOCATION  = "INSERT INTO Location(name, description, address, latitude, longitude) " +
-                "VALUES(?,?,?,?,?)";
+        final String INSERT_LOCATION = "INSERT INTO Location(name, description, address, latitude, longitude) "
+                + "VALUES(?,?,?,?,?)";
         jdbc.update(INSERT_LOCATION,
                 location.getName(),
                 location.getDescription(),
                 location.getAddress(),
                 location.getLatitude(),
                 location.getLongitude());
-        
+
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         location.setId(newId);
         return location;
@@ -61,8 +62,8 @@ public class LocationDaoDB implements LocationDao {
 
     @Override
     public void updateLocation(Location location) {
-         final String UPDATE_LOCATION = "UPDATE Location SET name = ?, description = ?, " +
-                "address = ?, latitude = ?, longitude = ? WHERE id = ?";
+        final String UPDATE_LOCATION = "UPDATE Location SET name = ?, description = ?, "
+                + "address = ?, latitude = ?, longitude = ? WHERE id = ?";
         jdbc.update(UPDATE_LOCATION,
                 location.getName(),
                 location.getDescription(),
@@ -75,14 +76,15 @@ public class LocationDaoDB implements LocationDao {
     @Override
     @Transactional
     public void deleteLocationById(int id) {
-        
+
         final String DELETE_SIGHTING = "DELETE FROM Sighting WHERE locationId = ?";
         jdbc.update(DELETE_SIGHTING, id);
-        
+
         final String DELETE_LOCATION = "DELETE FROM Location WHERE id = ?";
         jdbc.update(DELETE_LOCATION, id);
     }
-     public static final class LocationMapper implements RowMapper<Location> {
+
+    public static final class LocationMapper implements RowMapper<Location> {
 
         @Override
         public Location mapRow(ResultSet rs, int index) throws SQLException {
@@ -93,7 +95,7 @@ public class LocationDaoDB implements LocationDao {
             location.setAddress(rs.getString("address"));
             location.setLatitude(rs.getString("latitude"));
             location.setLongitude(rs.getString("longitude"));
-            
+
             return location;
         }
     }
