@@ -175,7 +175,7 @@ public class SuperheroDaoDB implements SuperheroDao {
     public List<Superhero> getSuperherosForLocation(int id) {
         final String SELECT_LOCATIONS_FOR_SUPERHERO = "SELECT sup.* FROM Superhero sup "
                 + "JOIN Sighting s ON s.superheroId = sup.id "
-                + "JOIN Location ON s.locationId = Location.id"
+                + "JOIN Location ON s.locationId = Location.id "
                 + "WHERE Location.id = ?";
                
         return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new SuperheroMapper(), id);

@@ -407,7 +407,7 @@ public class SuperheroDaoDBTest {
         
         superheroDao.deleteSuperheroById(superhero.getId());
         
-        fromDao = superheroDao.getSuperheroById(location.getId());
+        fromDao = superheroDao.getSuperheroById(superhero.getId());
         assertNull(fromDao);
     }
 
@@ -416,6 +416,53 @@ public class SuperheroDaoDBTest {
      */
     @Test
     public void testGetLocationsForSuperhero() {
+        LocalDate date = LocalDate.parse("2020-01-08"); 
+        LocalTime time = LocalTime.parse("12:32:22", 
+            DateTimeFormatter.ISO_TIME);
+
+        
+        Location location = new Location();
+        location.setName("Test Name");
+        location.setDescription("Test Description");
+        location.setAddress("Test Address");
+        location.setLatitude("TestLat");
+        location.setLongitude("TestLong");
+        location = locationDao.addLocation(location);
+        
+        Organization organization = new Organization();
+        organization.setName("Test Name");
+        organization.setDescription("Test Description");
+        organization.setAddress("Test Address");
+//        organization.setSuperheros(superheroDao.getAllSuperheros());
+        organization = organizationDao.addOrganization(organization);
+        List<Organization> orgs = organizationDao.getAllOrganizations();
+        
+        Superpower superpower = new Superpower();
+        superpower.setName("fast");
+        superpower = superpowerDao.addSuperpower(superpower);
+        List<Superpower> listSuperpowers = superpowerDao.getAllSuperpowers();
+        
+        Superhero superhero = new Superhero();
+        superhero.setName("Test");
+        superhero.setDescription("very fast");
+        superhero.setSuperpowers(listSuperpowers);
+        superhero.setOrganizations(orgs);
+        superhero = superheroDao.addSuperhero(superhero);
+        
+        
+        Sighting sighting = new Sighting();
+        sighting.setDate(date);
+        sighting.setTime(time);
+        sighting.setLocation(location);
+        sighting.setSuperhero(superhero);
+        sighting = sightingDao.addSighting(sighting);
+        int sightingId = sighting.getId();
+        List<Sighting> listSightings = new ArrayList();
+        listSightings.add(sighting);
+        superhero.setSightings(listSightings);
+        
+        List<Location> locationsForSuperhero = superheroDao.getLocationsForSuperhero(superhero.getId());
+        assertEquals(1, locationsForSuperhero.size());
     }
 
     /**
@@ -423,6 +470,54 @@ public class SuperheroDaoDBTest {
      */
     @Test
     public void testGetSuperherosForLocation() {
+        LocalDate date = LocalDate.parse("2020-01-08"); 
+        LocalTime time = LocalTime.parse("12:32:22", 
+            DateTimeFormatter.ISO_TIME);
+
+        
+        Location location = new Location();
+        location.setName("Test Name");
+        location.setDescription("Test Description");
+        location.setAddress("Test Address");
+        location.setLatitude("TestLat");
+        location.setLongitude("TestLong");
+        location = locationDao.addLocation(location);
+        
+        Organization organization = new Organization();
+        organization.setName("Test Name");
+        organization.setDescription("Test Description");
+        organization.setAddress("Test Address");
+//        organization.setSuperheros(superheroDao.getAllSuperheros());
+        organization = organizationDao.addOrganization(organization);
+        List<Organization> orgs = organizationDao.getAllOrganizations();
+        
+        Superpower superpower = new Superpower();
+        superpower.setName("fast");
+        superpower = superpowerDao.addSuperpower(superpower);
+        List<Superpower> listSuperpowers = superpowerDao.getAllSuperpowers();
+        
+        Superhero superhero = new Superhero();
+        superhero.setName("Test");
+        superhero.setDescription("very fast");
+        superhero.setSuperpowers(listSuperpowers);
+        superhero.setOrganizations(orgs);
+        superhero = superheroDao.addSuperhero(superhero);
+        
+        
+        Sighting sighting = new Sighting();
+        sighting.setDate(date);
+        sighting.setTime(time);
+        sighting.setLocation(location);
+        sighting.setSuperhero(superhero);
+        sighting = sightingDao.addSighting(sighting);
+        int sightingId = sighting.getId();
+        List<Sighting> listSightings = new ArrayList();
+        listSightings.add(sighting);
+        superhero.setSightings(listSightings);
+        
+        List<Superhero> getSuperherosForLocation = superheroDao.getSuperherosForLocation(location.getId());
+        assertEquals(1, getSuperherosForLocation.size());
+        
     }
     
 }
