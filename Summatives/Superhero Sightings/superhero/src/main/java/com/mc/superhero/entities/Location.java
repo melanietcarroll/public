@@ -5,6 +5,7 @@
  */
 package com.mc.superhero.entities;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,6 +21,15 @@ public class Location {
     private String address;
     private String latitude;
     private String longitude;
+    private List<Superhero> superheros;
+
+    public List<Superhero> getSuperheros() {
+        return superheros;
+    }
+
+    public void setSuperheros(List<Superhero> superheros) {
+        this.superheros = superheros;
+    }
 
     public int getId() {
         return id;

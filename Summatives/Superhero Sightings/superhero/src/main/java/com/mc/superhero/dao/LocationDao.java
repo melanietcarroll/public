@@ -6,6 +6,7 @@
 package com.mc.superhero.dao;
 
 import com.mc.superhero.entities.Location;
+import com.mc.superhero.entities.Superhero;
 import java.util.List;
 
 /**
@@ -18,4 +19,5 @@ public interface LocationDao {
     Location addLocation(Location location);
     void updateLocation(Location location);
     void deleteLocationById(int id);
+    List<Superhero>getSuperherosForLocation(int id);
 }

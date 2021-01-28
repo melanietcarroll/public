@@ -6,8 +6,10 @@
 package com.mc.superhero.dao;
 
 import com.mc.superhero.entities.Location;
+import com.mc.superhero.entities.Superhero;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -31,7 +33,9 @@ public class LocationDaoDB implements LocationDao {
     public Location getLocationById(int id) {
         try {
             final String GET_LOCATION_BY_ID = "SELECT * FROM Location WHERE id = ?";
-            return jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), id);
+            Location location = jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), id);
+            location.setSuperheros(getSuperherosForLocation(location.getId()));
+            return location;
         } catch (DataAccessException ex) {
             return null;
         }
@@ -40,8 +44,15 @@ public class LocationDaoDB implements LocationDao {
     @Override
     public List<Location> getAllLocations() {
         final String GET_ALL_LOCATIONS = "SELECT * FROM Location";
-        return jdbc.query(GET_ALL_LOCATIONS, new LocationMapper());
+        List<Location> locations= jdbc.query(GET_ALL_LOCATIONS, new LocationMapper());
+        associateSuperhero(locations);
+        return locations;
     }
+    public void associateSuperhero(List<Location> locations) {
+        for (Location location : locations) {
+            location.setSuperheros(getSuperherosForLocation(location.getId()));
+        }
+        }
 
     @Override
     @Transactional
@@ -82,6 +93,22 @@ public class LocationDaoDB implements LocationDao {
 
         final String DELETE_LOCATION = "DELETE FROM Location WHERE id = ?";
         jdbc.update(DELETE_LOCATION, id);
+    }
+    @Override
+    public List<Superhero> getSuperherosForLocation(int id) {
+        final String SELECT_LOCATIONS_FOR_SUPERHERO = "SELECT sup.* FROM Superhero sup "
+                + "JOIN Sighting s ON s.superheroId = sup.id "
+                + "JOIN Location ON s.locationId = Location.id "
+                + "WHERE Location.id = ?";
+
+        List<Superhero> supList= jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new SuperheroDaoDB.SuperheroMapper(), id);
+        List<Superhero> newSuperheroList = new ArrayList();
+        for (Superhero superhero : supList) { 
+            if (!newSuperheroList.contains(superhero)) { 
+                newSuperheroList.add(superhero); 
+            } 
+        }  
+        return newSuperheroList; 
     }
 
     public static final class LocationMapper implements RowMapper<Location> {

@@ -171,16 +171,6 @@ public class SuperheroDaoDB implements SuperheroDao {
         return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new LocationMapper(), id);
     }
 
-    @Override
-    public List<Superhero> getSuperherosForLocation(int id) {
-        final String SELECT_LOCATIONS_FOR_SUPERHERO = "SELECT sup.* FROM Superhero sup "
-                + "JOIN Sighting s ON s.superheroId = sup.id "
-                + "JOIN Location ON s.locationId = Location.id "
-                + "WHERE Location.id = ?";
-
-        return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new SuperheroMapper(), id);
-    }
-
     public static final class SuperheroMapper implements RowMapper<Superhero> {
 
         @Override

@@ -166,3 +166,9 @@ JOIN Superhero_Organization so ON so.organizationId = org.id WHERE so.superheroI
 
 INSERT INTO Superhero(name, description) 
                 VALUES("Captain America","patriotic");
+SELECT * FROM Superhero;
+
+SELECT sup.* FROM Superhero sup
+JOIN Sighting s ON s.superheroId = sup.id
+JOIN Location ON s.locationId = Location.id 
+WHERE Location.id = 1;
