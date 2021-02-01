@@ -34,7 +34,7 @@ public class LocationDaoDB implements LocationDao {
         try {
             final String GET_LOCATION_BY_ID = "SELECT * FROM Location WHERE id = ?";
             Location location = jdbc.queryForObject(GET_LOCATION_BY_ID, new LocationMapper(), id);
-            location.setSuperheros(getSuperherosForLocation(location.getId()));
+            location.setSuperheroes(getSuperherosForLocation(location.getId()));
             return location;
         } catch (DataAccessException ex) {
             return null;
@@ -50,7 +50,7 @@ public class LocationDaoDB implements LocationDao {
     }
     public void associateSuperhero(List<Location> locations) {
         for (Location location : locations) {
-            location.setSuperheros(getSuperherosForLocation(location.getId()));
+            location.setSuperheroes(getSuperherosForLocation(location.getId()));
         }
         }
 

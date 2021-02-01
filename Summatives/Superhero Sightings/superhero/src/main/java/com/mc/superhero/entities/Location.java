@@ -21,14 +21,14 @@ public class Location {
     private String address;
     private String latitude;
     private String longitude;
-    private List<Superhero> superheros;
+    private List<Superhero> superheroes;
 
-    public List<Superhero> getSuperheros() {
-        return superheros;
+    public List<Superhero> getSuperheroes() {
+        return superheroes;
     }
 
-    public void setSuperheros(List<Superhero> superheros) {
-        this.superheros = superheros;
+    public void setSuperheroes(List<Superhero> superheroes) {
+        this.superheroes = superheroes;
     }
 
     public int getId() {

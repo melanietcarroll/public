@@ -147,7 +147,7 @@ public class LocationDaoDBTest {
         testSuperheros.add(superhero2);
 
         Location fromDao = locationDao.getLocationById(location.getId());
-        fromDao.setSuperheros(testSuperheros);
+        fromDao.setSuperheroes(testSuperheros);
 
         assertEquals(location, fromDao);
     }
@@ -279,7 +279,7 @@ public class LocationDaoDBTest {
         testSuperheros.add(superhero2);
 
         Location fromDao = locationDao.getLocationById(location.getId());
-        fromDao.setSuperheros(testSuperheros);
+        fromDao.setSuperheroes(testSuperheros);
         assertEquals(location, fromDao);
 
         location.setName("New Test First");
@@ -288,7 +288,7 @@ public class LocationDaoDBTest {
         assertNotEquals(location, fromDao);
 
         fromDao = locationDao.getLocationById(location.getId());
-        fromDao.setSuperheros(testSuperheros);
+        fromDao.setSuperheroes(testSuperheros);
 
         assertEquals(location, fromDao);
     }
@@ -331,7 +331,7 @@ public class LocationDaoDBTest {
         sighting = sightingDao.addSighting(sighting);
 
         Location fromDao = locationDao.getLocationById(location.getId());
-        fromDao.setSuperheros(supList);
+        fromDao.setSuperheroes(supList);
         assertEquals(location, fromDao);
 
         locationDao.deleteLocationById(location.getId());
