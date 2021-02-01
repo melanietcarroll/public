@@ -117,11 +117,11 @@ public class OrganizationDaoDBTest {
         organization.setName("Test Name");
         organization.setDescription("Test Description");
         organization.setAddress("Test Address");
-        organization.setSuperheros(superheros);
+        organization.setSuperheroes(superheros);
         organization = organizationDao.addOrganization(organization);
 
         Organization fromDao = organizationDao.getOrganizationById(organization.getId());
-        fromDao.setSuperheros(superheros);
+        fromDao.setSuperheroes(superheros);
 
         assertEquals(organization, fromDao);
     }
@@ -155,14 +155,14 @@ public class OrganizationDaoDBTest {
         organization.setName("Test Name");
         organization.setDescription("Test Description");
         organization.setAddress("Test Address");
-        organization.setSuperheros(superheros);
+        organization.setSuperheroes(superheros);
         organization = organizationDao.addOrganization(organization);
 
         Organization organization2 = new Organization();
         organization2.setName("Test Name");
         organization2.setDescription("Test Description");
         organization2.setAddress("Test Address");
-        organization2.setSuperheros(superheros);
+        organization2.setSuperheroes(superheros);
         organization2 = organizationDao.addOrganization(organization2);
 
         List<Organization> testOrganizations = organizationDao.getAllOrganizations();
@@ -200,11 +200,11 @@ public class OrganizationDaoDBTest {
         organization.setName("Test Name");
         organization.setDescription("Test Description");
         organization.setAddress("Test Address");
-        organization.setSuperheros(superheros);
+        organization.setSuperheroes(superheros);
         organization = organizationDao.addOrganization(organization);
 
         Organization fromDao = organizationDao.getOrganizationById(organization.getId());
-        fromDao.setSuperheros(superheros);
+        fromDao.setSuperheroes(superheros);
         assertEquals(organization, fromDao);
 
         organization.setName("New Test First");
@@ -213,7 +213,7 @@ public class OrganizationDaoDBTest {
         assertNotEquals(location, fromDao);
 
         fromDao = organizationDao.getOrganizationById(organization.getId());
-        fromDao.setSuperheros(superheros);
+        fromDao.setSuperheroes(superheros);
 
         assertEquals(organization, fromDao);
     }
@@ -247,11 +247,11 @@ public class OrganizationDaoDBTest {
         organization.setName("Test Name");
         organization.setDescription("Test Description");
         organization.setAddress("Test Address");
-        organization.setSuperheros(superheros);
+        organization.setSuperheroes(superheros);
         organization = organizationDao.addOrganization(organization);
 
         Organization fromDao = organizationDao.getOrganizationById(organization.getId());
-        fromDao.setSuperheros(superheros);
+        fromDao.setSuperheroes(superheros);
         assertEquals(organization, fromDao);
 
         organizationDao.deleteOrganizationById(organization.getId());

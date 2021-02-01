@@ -104,7 +104,7 @@ VALUES(1, 1),
 (3,3);
 
 SELECT org.* FROM Organization org 
-JOIN Superhero_Organization so ON so.organizationId = org.id WHERE so.superheroId = 1;
+JOIN Superhero_Organization so ON so.organizationId = org.id WHERE so.superheroId = 4;
 
 SELECT sup.* FROM Superhero sup 
 JOIN Superhero_Organization so ON so.superheroId = sup.id WHERE so.organizationId = 1;
@@ -154,7 +154,7 @@ JOIN Sighting s ON s.superheroId = sup.id WHERE s.id = 1;
 
 -- get superpowers for superhero
 SELECT pow.* FROM Superpower pow 
-JOIN Superhero_Superpower ss ON ss.superpowerId = pow.id WHERE ss.superheroId = 1;
+JOIN Superhero_Superpower ss ON ss.superpowerId = pow.id WHERE ss.superheroId = 4;
 
 -- get sightings for super hero
 SELECT s.* FROM Sighting s 
@@ -162,7 +162,7 @@ JOIN Superhero sup ON s.superheroId = sup.id WHERE sup.id = 1;
 
 -- get organizations for superhero
 SELECT org.* FROM Organization org 
-JOIN Superhero_Organization so ON so.organizationId = org.id WHERE so.superheroId = 1;
+JOIN Superhero_Organization so ON so.organizationId = org.id WHERE so.superheroId = 4;
 
 INSERT INTO Superhero(name, description) 
                 VALUES("Captain America","patriotic");
@@ -172,3 +172,8 @@ SELECT sup.* FROM Superhero sup
 JOIN Sighting s ON s.superheroId = sup.id
 JOIN Location ON s.locationId = Location.id 
 WHERE Location.id = 1;
+
+UPDATE Superpower SET name = "super climb"
+WHERE id =2;
+
+SELECT * FROM Superpower;

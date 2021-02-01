@@ -17,7 +17,7 @@ public class Organization {
     private String name;
     private String description;
     private String address;
-    private List<Superhero> superheros;
+    private List<Superhero> superheroes;
 
     public int getId() {
         return id;
@@ -51,12 +51,12 @@ public class Organization {
         this.address = address;
     }
 
-    public List<Superhero> getSuperheros() {
-        return superheros;
+    public List<Superhero> getSuperheroes() {
+        return superheroes;
     }
 
-    public void setSuperheros(List<Superhero> superheros) {
-        this.superheros = superheros;
+    public void setSuperheroes(List<Superhero> superheroes) {
+        this.superheroes = superheroes;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Organization {
         hash = 47 * hash + Objects.hashCode(this.name);
         hash = 47 * hash + Objects.hashCode(this.description);
         hash = 47 * hash + Objects.hashCode(this.address);
-        hash = 47 * hash + Objects.hashCode(this.superheros);
+        hash = 47 * hash + Objects.hashCode(this.superheroes);
         return hash;
     }
 
@@ -94,7 +94,7 @@ public class Organization {
         if (!Objects.equals(this.address, other.address)) {
             return false;
         }
-        if (!Objects.equals(this.superheros, other.superheros)) {
+        if (!Objects.equals(this.superheroes, other.superheroes)) {
             return false;
         }
         return true;

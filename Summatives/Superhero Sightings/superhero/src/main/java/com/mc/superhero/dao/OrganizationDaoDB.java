@@ -34,7 +34,7 @@ public class OrganizationDaoDB implements OrganizationDao {
         try {
             final String SELECT_ORGANIZATION_BY_ID = "SELECT * FROM Organization WHERE id = ?";
             Organization organization = jdbc.queryForObject(SELECT_ORGANIZATION_BY_ID, new OrganizationMapper(), id);
-            organization.setSuperheros(getSuperherosForOrganization(id));
+            organization.setSuperheroes(getSuperherosForOrganization(id));
             return organization;
         } catch (DataAccessException ex) {
             return null;
@@ -51,7 +51,7 @@ public class OrganizationDaoDB implements OrganizationDao {
 
     private void associateSuperheros(List<Organization> organizations) {
         for (Organization organization : organizations) {
-            organization.setSuperheros(getSuperherosForOrganization(organization.getId()));
+            organization.setSuperheroes(getSuperherosForOrganization(organization.getId()));
         }
     }
 
@@ -66,9 +66,21 @@ public class OrganizationDaoDB implements OrganizationDao {
 
         int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         organization.setId(newId);
+        if (organization.getSuperheroes() != null && !organization.getSuperheroes().isEmpty()) {
+
+            insertSuperheroOrganization(organization);
+        }
         return organization;
     }
-
+public void insertSuperheroOrganization(Organization organization) {
+        final String INSERT_SUPERHERO_ORGANIZATION = "INSERT INTO "
+                + "Superhero_Organization(superheroId, organizationId) VALUES(?,?)";
+        for (Superhero superhero : organization.getSuperheroes()) {
+            jdbc.update(INSERT_SUPERHERO_ORGANIZATION,
+                    superhero.getId(),
+                    organization.getId());
+        }
+    }
     @Override
     @Transactional
     public void updateOrganization(Organization organization) {
@@ -82,6 +94,10 @@ public class OrganizationDaoDB implements OrganizationDao {
 
         final String DELETE_SUPERHERO_ORGANIZATION = "DELETE FROM Superhero_Organization WHERE organizationId = ?";
         jdbc.update(DELETE_SUPERHERO_ORGANIZATION, organization.getId());
+        if (organization.getSuperheroes() != null) {
+
+            insertSuperheroOrganization(organization);
+        }
     }
 
     @Override
