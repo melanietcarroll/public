@@ -69,6 +69,22 @@ public class TeacherController {
         return "redirect:/teachers";
     }
 
+//    @PostMapping("addTeacher")
+//    public String addTeacher(HttpServletRequest request) {
+//        String firstName = request.getParameter("firstName");
+//        String lastName = request.getParameter("lastName");
+//        String specialty = request.getParameter("specialty");
+//        
+//        Teacher teacher = new Teacher();
+//        teacher.setFirstName(firstName);
+//        teacher.setLastName(lastName);
+//        teacher.setSpecialty(specialty);
+//        
+//        teacherDao.addTeacher(teacher);
+//        
+//        return "redirect:/teachers";
+//    }
+    
     @GetMapping("deleteTeacher")
     public String deleteTeacher(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));

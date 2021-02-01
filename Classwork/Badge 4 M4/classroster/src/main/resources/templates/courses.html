@@ -114,9 +114,9 @@ and open the template in the editor.
                                 <td th:text='${course.name}'>Course Name</td>
                                 <td th:text="${course.teacher.firstName + ' ' 
                                     + course.teacher.lastName}">Teacher  Name</td>
-                                <a href="#" th:href="@{/courseDetail(id=${course.id})}">Details</a>
-                                <a href="#" th:href="@{/editCourse(id=${course.id})}">Edit</a>
-                                <a href="#" th:href="@{/deleteCourse(id=${course.id})}">Delete</a>
+                                <td> <a href="#" th:href="@{/courseDetail(id=${course.id})}">Details</a></td>
+                                <td> <a href="#" th:href="@{/editCourse(id=${course.id})}">Edit</a></td>
+                                <td> <a href="#" th:href="@{/deleteCourse(id=${course.id})}">Delete</a></td>
                             </tr>
                         </tbody>
                     </table>

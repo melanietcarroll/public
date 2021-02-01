@@ -5,6 +5,7 @@ $(document).ready(function () {
     deleteDvd();
     findADvd();
     hideEditDvdForm();
+    clearDvdTable();
 });
 
 function findADvd() {
@@ -46,11 +47,8 @@ function findADvd() {
     });
 }
 
-
-
-
 function loadDvds() {
-    clearDvdTable()
+    clearDvdTable();
     var contentRows = $('#contentRows');
 
     $.ajax({
@@ -87,6 +85,7 @@ function loadDvds() {
     });
 }
 function clearDvdTable() {
+//    $('#DVDTable').empty();
     $('#contentRows').empty();
 }
 
@@ -178,7 +177,7 @@ function showEditDvdForm(dvdId) {
                             .attr({class: 'list-group-item list-group-item-danger'})
                             .text('Error calling web service. Please try again later.'));
         }
-    })
+    });
 
 
     $('#dvdTableInfo').hide();
@@ -216,25 +215,22 @@ function updateDvd() {
             },
             'dataType': 'json',
             success: function () {
-                $('#errorMessages').empty();
-                $('#editDvdTitle').val('');
-                $('#editDVDId').val('');
-                $('#editReleaseYear').val('');
-                $('#editDirector').val('');
-                $('#editRating').val('G');
-                $('#editNotes').val('This really is a great tale!');
-                $('#editDvdTitleInput').empty();
-                hideEditDvdForm();
-                loadDvds();
+
             },
             error: function () {
-                $('#errorMessages')
-                        .append($('<li>')
-                                .attr({class: 'list-group-item list-group-item-danger'})
-                                .text('Error calling web service. Please try again later.'));
-            }
 
+            }
         });
+        $('#errorMessages').empty();
+        $('#editDvdTitle').val('');
+        $('#editDVDId').val('');
+        $('#editReleaseYear').val('');
+        $('#editDirector').val('');
+        $('#editRating').val('G');
+        $('#editNotes').val('This really is a great tale!');
+        $('#editDvdTitleInput').empty();
+        loadDvds();
+        hideEditDvdForm();
 
     });
 }
@@ -247,7 +243,6 @@ function deleteDvd(dvdId) {
             loadDvds();
         }
     });
-
 }
 
 function showDvdDetails(dvdId) {
@@ -283,9 +278,6 @@ function showDvdDetails(dvdId) {
             var notesEntry = '<p>' + data.notes + '</p>'
             var notesDetails = $('#notesDetails');
             notesDetails.append(notesEntry);
-
-
-
         },
         error: function () {
             $('#errorMessages')
@@ -293,9 +285,7 @@ function showDvdDetails(dvdId) {
                             .attr({class: 'list-group-item list-group-item-danger'})
                             .text('Error calling web service. Please try again later.'));
         }
-    })
-
-
+    });
     $('#dvdTableInfo').hide();
     $('#dvdDetails').show();
 }
@@ -334,60 +324,3 @@ function checkAndDisplayValidationErrors(input) {
         return false;
     }
 }
-// var changeStatement = [];
-//                $.each(statement, function (index, value) {
-//                    if (value !== null) {
-//                        changeStatement.push(value);
-//                    }
-//                });
-//
-//function makeChangeStatement() {
-//    var quarters = $('#changeQuarters').val();
-//    var dimes = $('#changeDimes').val();
-//    var nickels = $('#changeNickels').val();
-//    var pennies = $('#changePennies').val();
-//
-//    var statement = [];
-//
-//    if (quarters > 1) {
-//        var quarterStatement = quarters.toString() + " quarters";
-//        statement.push(quarterStatement);
-//    }
-//    if (quarters === 1) {
-//        quarterStatement = quarters.toString() + " quarter";
-//        statement.push(quarterStatement);
-//    }
-//    if (dimes > 1) {
-//        var dimeStatement = dimes.toString() + " dimes";
-//        statement.push(dimeStatement);
-//    }
-//    if (dimes === 1) {
-//        dimeStatement = dimes.toString() + " dime";
-//        statement.push(dimeStatement);
-//    }
-//    if (nickels > 1) {
-//        var nickelStatement = nickels.toString() + " nickels";
-//        statement.push(nickelStatement);
-//    }
-//    if (nickels === 1) {
-//        nickelStatement = nickels.toString() + " nickel";
-//        statement.push(nickelStatement);
-//    }
-//
-//    if (pennies > 1) {
-//        var pennyStatement = pennies.toString() + " pennies";
-//        statement.push(pennyStatement);
-//    }
-//    if (pennies === 1) {
-//        pennyStatement = pennies.toString() + " penny";
-//        statement.push(pennyStatement);
-//    }
-//    var changeStatementWithComma = statement.join(", ");
-//    $('#totalChange').val(changeStatementWithComma);
-//}
-//function clearChangeValueFields() {
-//    $('#changeQuarters').val('');
-//    $('#changeDimes').val('');
-//    $('#changeNickels').val('');
-//    $('#changePennies').val('');
-//}
