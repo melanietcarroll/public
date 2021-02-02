@@ -122,9 +122,9 @@ public class SightingDaoDB implements SightingDao {
             Sighting sighting = new Sighting();
             sighting.setId(rs.getInt("id"));
             sighting.setDate(rs.getTimestamp("date").toLocalDateTime().toLocalDate());
-
-            sighting.setTime(rs.getTimestamp("time").toLocalDateTime().toLocalTime());
-
+            if (rs.getTimestamp("time") != null) {
+                sighting.setTime(rs.getTimestamp("time").toLocalDateTime().toLocalTime());
+            }
             return sighting;
         }
     }

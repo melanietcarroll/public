@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * created 1/24/21
@@ -17,7 +18,9 @@ import java.util.Objects;
  */
 public class Sighting {
     private int id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
     private Location location;
     private Superhero superhero;
