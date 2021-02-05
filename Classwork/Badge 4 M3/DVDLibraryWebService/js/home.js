@@ -218,6 +218,7 @@ function updateDvd() {
 
             },
             error: function () {
+                window.location.reload();
 
             }
         });

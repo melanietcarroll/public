@@ -6,7 +6,8 @@ USE superheroSighting;
 CREATE TABLE Superhero(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
-    description VARCHAR(255)
+    description VARCHAR(255),
+    image VARCHAR(255)
 );
 
 CREATE TABLE Superpower(
@@ -26,8 +27,8 @@ CREATE TABLE Location(
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
     address VARCHAR(50),
-    latitude VARCHAR(15),
-    longitude VARCHAR(15)
+    latitude float8,
+    longitude float8
 );
 
 
@@ -60,9 +61,9 @@ VALUES(1, "Superman", "flies high"),
 (3, "Green Arrow", "shoots well");
 
 INSERT INTO Location(id, name, description, address, latitude, longitude)
-VALUES(1, "New York", "NY", "NY,NY", "40.7128° N", "74.0060° W"),
-(2, "Los Angeles", "LA", "LA,CA", "34.0522° N", "118.2437° W"),
-(3, "Seattle", "WA", "Seattle,WA", "47.6062° N", "122.3321° W");
+VALUES(1, "New York", "NY", "NY,NY", 40.730610, -73.935242),
+(2, "Los Angeles", "LA", "LA,CA", 34.052235, -118.243683),
+(3, "Seattle", "WA", "Seattle,WA", 47.608013,  -122.335167);
 
 INSERT INTO Sighting(id, date, time, superheroId, locationId)
 VALUES(1, '2018-12-14', '12:35:25', 1, 1),
@@ -143,7 +144,7 @@ WHERE Location.id = 1;
 
 -- select superheros for organization
 SELECT sup.* FROM Superhero sup 
-JOIN Superhero_Organization so ON so.superheroId = sup.id WHERE so.organizationId = 1;
+JOIN Superhero_Organization so ON so.superheroId = sup.id WHERE so.organizationId = 7;
 
 -- select location for sighting
 SELECT l.* FROM Location l 
@@ -176,4 +177,6 @@ WHERE Location.id = 1;
 UPDATE Superpower SET name = "super climb"
 WHERE id =2;
 
-SELECT * FROM Superpower;
+SELECT * FROM Sighting;
+SELECT * FROM Sighting 
+WHERE date = '2020-12-25';

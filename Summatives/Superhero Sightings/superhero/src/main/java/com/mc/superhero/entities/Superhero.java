@@ -7,6 +7,8 @@ package com.mc.superhero.entities;
 
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * created 1/24/21
@@ -19,6 +21,8 @@ public class Superhero {
     private List<Superpower> superpowers;
     private List<Sighting> sightings;
     private List<Organization> organizations;
+    @Size(max = 255, message="Max 255 characters.")
+    private String photos;
 
     public int getId() {
         return id;
@@ -68,6 +72,15 @@ public class Superhero {
         this.organizations = organizations;
     }
 
+    public String getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(String photos) {
+        this.photos = photos;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 7;

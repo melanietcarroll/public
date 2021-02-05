@@ -93,12 +93,14 @@ public class OrganizationDaoDBTest {
      */
     @Test
     public void testAddAndGetOrganization() {
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Superpower superpower = new Superpower();
@@ -131,12 +133,14 @@ public class OrganizationDaoDBTest {
      */
     @Test
     public void testGetAllOrganizations() {
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Superpower superpower = new Superpower();
@@ -176,12 +180,14 @@ public class OrganizationDaoDBTest {
      */
     @Test
     public void testUpdateOrganization() {
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Superpower superpower = new Superpower();
@@ -223,12 +229,14 @@ public class OrganizationDaoDBTest {
      */
     @Test
     public void testDeleteOrganizationById() {
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Superpower superpower = new Superpower();

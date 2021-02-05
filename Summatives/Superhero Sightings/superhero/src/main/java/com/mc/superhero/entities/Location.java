@@ -19,8 +19,8 @@ public class Location {
     private String name;
     private String description;
     private String address;
-    private String latitude;
-    private String longitude;
+    private float latitude;
+    private float longitude;
     private List<Superhero> superheroes;
 
     public List<Superhero> getSuperheroes() {
@@ -63,19 +63,19 @@ public class Location {
         this.address = address;
     }
 
-    public String getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 

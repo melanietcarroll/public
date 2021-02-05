@@ -51,6 +51,7 @@ public class SightingController {
         List<Sighting> sightings = sightingDao.getAllSightings();
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
         List<Location> locations = locationDao.getAllLocations();
+        associateLocationAndSuperhero(sightings);
         model.addAttribute("sightings", sightings);
         model.addAttribute("superheroes", superheroes);
         model.addAttribute("locations", locations);

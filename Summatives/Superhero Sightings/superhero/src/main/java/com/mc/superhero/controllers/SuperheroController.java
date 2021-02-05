@@ -13,14 +13,25 @@ import com.mc.superhero.dao.SuperpowerDao;
 import com.mc.superhero.entities.Organization;
 import com.mc.superhero.entities.Superhero;
 import com.mc.superhero.entities.Superpower;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * created 1/31/21
@@ -128,4 +139,78 @@ public class SuperheroController {
         superheroDao.updateSuperhero(superhero);
         return "redirect:/superheroes";
     }
+    @PostMapping("/superhero/image")
+    public RedirectView saveSuperheroImage(Superhero superhero,
+            @RequestParam("image") MultipartFile multipartFile) throws IOException {
+         
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        superhero.setPhotos(fileName);
+         
+        Superhero savedSuperhero = superheroDao.addSuperhero(superhero);
+ 
+        String uploadDir = "superhero-photos/" + savedSuperhero.getId();
+ 
+        FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
+         
+        return new RedirectView("/superheroes", true);
+    }
+//    // POST: Do Upload
+//   @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
+//   public String uploadImagePOST(HttpServletRequest request, //
+//         Model model, //
+//         @ModelAttribute("superhero") Superhero superhero) {
+// 
+//      return this.doUpload(request, model, superhero);
+// 
+//   }
+//    
+//    private String doUpload(HttpServletRequest request, Model model, //
+//         Superhero superhero) {
+// 
+//      String description = superhero.getDescription();
+//      System.out.println("Description: " + description);
+// 
+//      // Root Directory.
+//      String uploadRootPath = request.getServletContext().getRealPath("upload");
+//      System.out.println("uploadRootPath=" + uploadRootPath);
+// 
+//      File uploadRootDir = new File(uploadRootPath);
+//      // Create directory if it not exists.
+//      if (!uploadRootDir.exists()) {
+//         uploadRootDir.mkdirs();
+//      }
+//      MultipartFile[] files = superhero.getImage();
+//      //
+//      List<File> uploadedFiles = new ArrayList<File>();
+//      List<String> failedFiles = new ArrayList<String>();
+// 
+//      for (MultipartFile file : files) {
+// 
+//         // Client File Name
+//         String name = file.getOriginalFilename();
+//         System.out.println("Client File Name = " + name);
+// 
+//         if (name != null && name.length() > 0) {
+//            try {
+//               // Create the file at server
+//               File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + name);
+// 
+//               BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+//               stream.write(file.getBytes());
+//               stream.close();
+//               //
+//               uploadedFiles.add(serverFile);
+//               System.out.println("Write file: " + serverFile);
+//            } catch (Exception e) {
+//               System.out.println("Error Write file: " + name);
+//               failedFiles.add(name);
+//            }
+//         }
+//      }
+//      model.addAttribute("description", description);
+//      model.addAttribute("uploadedFiles", uploadedFiles);
+//      model.addAttribute("failedFiles", failedFiles);
+//      return "uploadResult";
+//   }
+    
 }

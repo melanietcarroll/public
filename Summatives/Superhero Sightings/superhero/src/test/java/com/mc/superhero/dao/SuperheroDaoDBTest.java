@@ -99,13 +99,15 @@ public class SuperheroDaoDBTest {
         LocalDate date = LocalDate.parse("2020-01-08");
         LocalTime time = LocalTime.parse("12:32:22",
                 DateTimeFormatter.ISO_TIME);
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
 
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Organization organization = new Organization();
@@ -155,13 +157,15 @@ public class SuperheroDaoDBTest {
         LocalDate date = LocalDate.parse("2020-01-08");
         LocalTime time = LocalTime.parse("12:32:22",
                 DateTimeFormatter.ISO_TIME);
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
 
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Organization organization = new Organization();
@@ -222,13 +226,15 @@ public class SuperheroDaoDBTest {
         LocalDate date = LocalDate.parse("2020-01-08");
         LocalTime time = LocalTime.parse("12:32:22",
                 DateTimeFormatter.ISO_TIME);
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
 
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Organization organization = new Organization();
@@ -289,13 +295,15 @@ public class SuperheroDaoDBTest {
         LocalDate date = LocalDate.parse("2020-01-08");
         LocalTime time = LocalTime.parse("12:32:22",
                 DateTimeFormatter.ISO_TIME);
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
 
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Organization organization = new Organization();
@@ -349,13 +357,15 @@ public class SuperheroDaoDBTest {
         LocalDate date = LocalDate.parse("2020-01-08");
         LocalTime time = LocalTime.parse("12:32:22",
                 DateTimeFormatter.ISO_TIME);
+        float lat = (float) 40.730610;
+        float longitude = (float) -73.935242;
 
         Location location = new Location();
         location.setName("Test Name");
         location.setDescription("Test Description");
         location.setAddress("Test Address");
-        location.setLatitude("TestLat");
-        location.setLongitude("TestLong");
+        location.setLatitude(lat);
+        location.setLongitude(longitude);
         location = locationDao.addLocation(location);
 
         Organization organization = new Organization();

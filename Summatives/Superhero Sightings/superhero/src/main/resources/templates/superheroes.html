@@ -50,7 +50,7 @@ and open the template in the editor.
                     
                 </div>
                 <div class="col-7 text-center m-3">
-                    <form action="addSuperhero" method="POST">
+                    <form action="addSuperhero" method="POST"  enctype="multipart/form-data"  th:object="${superhero}">
                         <div class="form-group row">
                             <label for="name" class="col-3 col-form-label">
                                 Name</label>
@@ -93,6 +93,9 @@ and open the template in the editor.
                                 </select>
                             </div>
                         </div>
+                       <label>Photos: </label>
+    <input type="file" name="image" accept="image/png, image/jpeg" />
+                        
                         <button type="submit" class="btn btn-primary">Add Superhero</button>
                     </form>
                 </div>
