@@ -49,9 +49,11 @@ public class IndexController {
         List<Sighting> sightings = sightingDao.getAllSightings();
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
         List<Location> locations = locationDao.getAllLocations();
-        model.addAttribute("sightings", sightings);
+        associateLocationAndSuperhero(sightings);
+        
         model.addAttribute("superheroes", superheroes);
         model.addAttribute("locations", locations);
+        
 
         sightings.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         List<Sighting> latestEntries = sightings.subList(Math.max(sightings.size() - 10, 0), sightings.size());
@@ -60,4 +62,10 @@ public class IndexController {
         return "index";
     }
 
+    private void associateLocationAndSuperhero(List<Sighting> sightings) {
+        for (Sighting sighting : sightings) {
+            sighting.setLocation(sightingDao.getLocationForSighting(sighting.getId()));
+            sighting.setSuperhero(sightingDao.getSuperheroForSighting(sighting.getId()));
+        }
+    }
 }
