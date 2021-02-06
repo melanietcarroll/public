@@ -57,7 +57,6 @@ public class IndexController {
 
         model.addAttribute("superheroes", superheroes);
         model.addAttribute("locations", locations);
-//        model.addAttribute("test","test");
 
         sightings.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         List<Sighting> latestEntries = sightings.subList(Math.max(sightings.size() - 10, 0), sightings.size());

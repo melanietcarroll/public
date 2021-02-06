@@ -99,46 +99,9 @@ body {
    
     var username = /*[[${latLong}]]*/ 'Sebastian';
     
- // for (let [key, value] of Object.entries(username)) {
- //   console.log(`${key}: ${value}`);
-//}
-    //console.log(username);
-   // var keys = Object.keys(username);
-//console.log(keys);
-
-    //for (i = 0; i < username.length; i++) {
-   //console.log(username[i][0], username[i][1]);
-  
-   
-   // }
-
-
-    //var displayEl = document.getElementById("duration");
-//displayEl.innerHTML = x;
-    //console.log(username);
   var map
 
 function initMap() {
-  //var NY = {  
-  //  lat:  40.730610,
-  //  long: -73.935242,
- // }
-
- // var LA = {
-  //  lat: 34.052235,
-  //  long: -118.243683,
- // }
-
-//  var Seattle = {
-//    lat: 47.608013,
-//    long: -122.335167,
- // }
-
-//  var locations = [
-  //  [NY.lat, NY.long, 0],
-   // [LA.lat, LA.long, 1],
-   // [Seattle.lat, Seattle.long, 2],
- // ]
 
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: 2,
@@ -148,11 +111,7 @@ function initMap() {
 
   var marker, i
 
- // for (i = 0; i < locations.length; i++) {
-  //  marker = new google.maps.Marker({
-  //    position: new google.maps.LatLng(locations[i][0], locations[i][1]),
-  //    map: map,
-  //  })
+ 
 for (let [key, value] of Object.entries(username)) {
     console.log(`${key}, ${value}`);
     var lat = `${key}`
