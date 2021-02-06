@@ -68,9 +68,12 @@ public class SuperheroController {
     }
 
     @PostMapping("addSuperhero")
-    public String addSuperhero(Superhero superhero, HttpServletRequest request) {
+    public String addSuperhero(Superhero superhero, HttpServletRequest request, @RequestParam("imageFile") MultipartFile multipartFile) throws IOException {
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        
         String[] superpowerIds = request.getParameterValues("superpowerId");
         String[] organizationIds = request.getParameterValues("organizationId");
+        
 
         if (superpowerIds != null && superpowerIds.length > 0) {
             List<Superpower> superpowers = new ArrayList<>();
@@ -86,8 +89,11 @@ public class SuperheroController {
             }
             superhero.setOrganizations(organizations);
         }
+        superhero.setPhoto(fileName);
         superheroDao.addSuperhero(superhero);
-
+        String uploadDir = "superhero-photos/" + superhero.getId();
+        FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
+       
         return "redirect:/superheroes";
     }
 
@@ -139,21 +145,21 @@ public class SuperheroController {
         superheroDao.updateSuperhero(superhero);
         return "redirect:/superheroes";
     }
-    @PostMapping("/superhero/image")
-    public RedirectView saveSuperheroImage(Superhero superhero,
-            @RequestParam("image") MultipartFile multipartFile) throws IOException {
-         
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        superhero.setPhotos(fileName);
-         
-        Superhero savedSuperhero = superheroDao.addSuperhero(superhero);
- 
-        String uploadDir = "superhero-photos/" + savedSuperhero.getId();
- 
-        FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
-         
-        return new RedirectView("/superheroes", true);
-    }
+//    @PostMapping("/superhero/image")
+//    public RedirectView saveSuperheroImage(Superhero superhero,
+//            @RequestParam("image") MultipartFile multipartFile) throws IOException {
+//         
+//        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//        superhero.setPhotos(fileName);
+//         
+//        Superhero savedSuperhero = superheroDao.addSuperhero(superhero);
+// 
+//        String uploadDir = "superhero-photos/" + savedSuperhero.getId();
+// 
+//        FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
+//         
+//        return new RedirectView("/superheroes", true);
+//    }
 //    // POST: Do Upload
 //   @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
 //   public String uploadImagePOST(HttpServletRequest request, //
@@ -212,5 +218,5 @@ public class SuperheroController {
 //      model.addAttribute("failedFiles", failedFiles);
 //      return "uploadResult";
 //   }
-    
+
 }

@@ -5,10 +5,11 @@
  */
 package com.mc.superhero.entities;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.Size;
-import org.springframework.web.multipart.MultipartFile;
+
 
 /**
  * created 1/24/21
@@ -18,12 +19,21 @@ public class Superhero {
     private int id;
     private String name;
     private String description;
+    @Size(max = 255, message="Max 255 characters.")
+    private String photo;
     private List<Superpower> superpowers;
     private List<Sighting> sightings;
     private List<Organization> organizations;
-    @Size(max = 255, message="Max 255 characters.")
-    private String photos;
+   
 
+    @Transient
+    public String getPhotosImagePath() {
+        if (photo.isEmpty()){
+            return null;
+        }
+         
+        return "superhero-photos/" + id + "/" + photo;
+    }
     public int getId() {
         return id;
     }
@@ -72,12 +82,12 @@ public class Superhero {
         this.organizations = organizations;
     }
 
-    public String getPhotos() {
-        return photos;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setPhotos(String photos) {
-        this.photos = photos;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     

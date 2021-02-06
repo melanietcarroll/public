@@ -7,7 +7,7 @@ CREATE TABLE Superhero(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
-    image VARCHAR(255)
+    photo VARCHAR(255)
 );
 
 CREATE TABLE Superpower(
@@ -27,8 +27,8 @@ CREATE TABLE Location(
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
     address VARCHAR(100),
-    latitude float8,
-    longitude float8
+    latitude float8 NOT NULL,
+    longitude float8 NOT NULL
 );
 
 
@@ -55,10 +55,10 @@ PRIMARY KEY(superheroId, organizationId),
 FOREIGN KEY (superheroId) REFERENCES Superhero(id),
 FOREIGN KEY (organizationId) REFERENCES Organization(id));
 
-INSERT INTO Superhero(id, name, description)
-VALUES(1, "Superman", "flies high"),
-(2, "Spiderman", "climbs high"),
-(3, "Green Arrow", "shoots well");
+INSERT INTO Superhero(id, name, description, photo)
+VALUES(1, "Superman", "flies high", "img"),
+(2, "Spiderman", "climbs high", "img"),
+(3, "Green Arrow", "shoots well", "img");
 
 INSERT INTO Location(id, name, description, address, latitude, longitude)
 VALUES(1, "New York", "NY", "NY,NY", 40.730610, -73.935242),
@@ -177,6 +177,6 @@ WHERE Location.id = 1;
 UPDATE Superpower SET name = "super climb"
 WHERE id =2;
 
-SELECT * FROM Sighting;
+SELECT * FROM Superhero;
 SELECT * FROM Sighting 
 WHERE date = '2020-12-25';
