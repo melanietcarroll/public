@@ -26,7 +26,7 @@ CREATE TABLE Location(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
-    address VARCHAR(50),
+    address VARCHAR(100),
     latitude float8,
     longitude float8
 );
@@ -46,7 +46,7 @@ CREATE TABLE Organization(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
-    address VARCHAR(50)
+    address VARCHAR(100)
 );
 CREATE TABLE Superhero_Organization(
     superheroId INT NOT NULL,

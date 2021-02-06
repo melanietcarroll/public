@@ -15,7 +15,11 @@ import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,15 +54,29 @@ public class IndexController {
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
         List<Location> locations = locationDao.getAllLocations();
         associateLocationAndSuperhero(sightings);
-        
+
         model.addAttribute("superheroes", superheroes);
         model.addAttribute("locations", locations);
-        
+//        model.addAttribute("test","test");
 
         sightings.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         List<Sighting> latestEntries = sightings.subList(Math.max(sightings.size() - 10, 0), sightings.size());
 
+        List<Location> latestLocations = new ArrayList();
+        for (Sighting sighting : latestEntries) {
+            latestLocations.add(sighting.getLocation());
+        }
+        Set<Location> locationSet = new LinkedHashSet<>(latestLocations);
+        latestLocations.clear();
+        latestLocations.addAll(locationSet);
+        Map<Float,Float> latLong = new HashMap();
+        for (Location location : latestLocations){
+            latLong.put(location.getLatitude(), location.getLongitude());
+        }
+
+        model.addAttribute("latLong", latLong);
         model.addAttribute("latestEntries", latestEntries);
+
         return "index";
     }
 
