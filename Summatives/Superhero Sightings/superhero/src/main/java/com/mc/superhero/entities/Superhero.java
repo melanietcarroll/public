@@ -24,16 +24,17 @@ public class Superhero {
     private List<Superpower> superpowers;
     private List<Sighting> sightings;
     private List<Organization> organizations;
-   
+//    String photosImagePath;
 
     @Transient
     public String getPhotosImagePath() {
         if (photo.isEmpty()){
             return null;
         }
-         
-        return "superhero-photos/" + id + "/" + photo;
+        return "/superhero-photos/" + id + "/" + photo;
     }
+
+    
     public int getId() {
         return id;
     }

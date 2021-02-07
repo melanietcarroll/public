@@ -91,7 +91,7 @@ public class SuperheroController {
         }
         superhero.setPhoto(fileName);
         superheroDao.addSuperhero(superhero);
-        String uploadDir = "superhero-photos/" + superhero.getId();
+        String uploadDir = "./superhero-photos/" + superhero.getId();
         FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
        
         return "redirect:/superheroes";
