@@ -31,7 +31,7 @@ public class Superhero {
         if (photo.isEmpty()){
             return null;
         }
-        return "/superhero-photos/" + id + "/" + photo;
+        return  id + "/" + photo;
     }
 
     

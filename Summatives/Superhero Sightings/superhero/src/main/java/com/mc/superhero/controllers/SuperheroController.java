@@ -19,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -91,7 +93,7 @@ public class SuperheroController {
         }
         superhero.setPhoto(fileName);
         superheroDao.addSuperhero(superhero);
-        String uploadDir = "./superhero-photos/" + superhero.getId();
+        String uploadDir = "photos/" + superhero.getId();
         FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
        
         return "redirect:/superheroes";
@@ -145,21 +147,7 @@ public class SuperheroController {
         superheroDao.updateSuperhero(superhero);
         return "redirect:/superheroes";
     }
-//    @PostMapping("/superhero/image")
-//    public RedirectView saveSuperheroImage(Superhero superhero,
-//            @RequestParam("image") MultipartFile multipartFile) throws IOException {
-//         
-//        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//        superhero.setPhotos(fileName);
-//         
-//        Superhero savedSuperhero = superheroDao.addSuperhero(superhero);
-// 
-//        String uploadDir = "superhero-photos/" + savedSuperhero.getId();
-// 
-//        FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
-//         
-//        return new RedirectView("/superheroes", true);
-//    }
+//   
 //    // POST: Do Upload
 //   @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
 //   public String uploadImagePOST(HttpServletRequest request, //

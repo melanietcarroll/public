@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * created 2/1/21
@@ -74,7 +76,9 @@ public class SightingController {
     @GetMapping("sightingDetail")
     public String sightingDetail(Integer id, Model model) {
         Sighting sighting = sightingDao.getSightingById(id);
+        Superhero superhero = sightingDao.getSuperheroForSighting(id);
         model.addAttribute("sighting", sighting);
+        model.addAttribute("superhero", superhero);
         return "sightingDetail";
     }
 
@@ -125,4 +129,6 @@ public class SightingController {
             sighting.setSuperhero(sightingDao.getSuperheroForSighting(sighting.getId()));
         }
     }
+    
+    
 }

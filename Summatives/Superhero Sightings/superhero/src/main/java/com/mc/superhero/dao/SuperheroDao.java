@@ -11,6 +11,7 @@ import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import com.mc.superhero.entities.Superpower;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * created 1/24/21
@@ -27,5 +28,5 @@ public interface SuperheroDao {
     List<Sighting> getSightingsForSuperhero(int id);
     List<Organization> getOrganizationsForSuperhero(int id);
     List<Location> getLocationsForSuperhero(int id);
-    
+    void saveImage (MultipartFile imageFile) throws Exception;
 }

@@ -17,12 +17,35 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class MVCConfiguration implements WebMvcConfigurer {
-    @Override
+     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Path uploadDirectory = Paths.get("./superhero-photos");
-        String uploadPath = uploadDirectory.toFile().getAbsolutePath();
-        registry.addResourceHandler("/superhero-photos/**").addResourceLocations("file:/"+ uploadPath + "/");
-      
+        exposeDirectory("photos", registry);
     }
+     
+    private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
+        Path uploadDir = Paths.get(dirName);
+        String uploadPath = uploadDir.toFile().getAbsolutePath();
+         
+        if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
+         
+        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
+        System.out.println("file:/"+uploadPath +"/");
+    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        
+////        registry.addResourceHandler(
+////                
+////                "/photos/**")
+////                
+////                .addResourceLocations(
+////                        
+////                        "classpath:/static/photos/");
+////          file:D:\\imagepath\              
+//        Path uploadDirectory = Paths.get("./photos");
+//        String uploadPath = uploadDirectory.toFile().getAbsolutePath();
+//        registry.addResourceHandler("/photos/**").addResourceLocations("file:D:/"+ uploadPath + "/");
+//      
+//    }
     
 }

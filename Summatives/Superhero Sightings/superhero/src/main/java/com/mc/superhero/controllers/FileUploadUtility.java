@@ -20,7 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUploadUtility {
      public static void saveImageFile(String uploadDir, String imageFileName,
             MultipartFile multipartFile) throws IOException {
+         
         Path uploadPath = Paths.get(uploadDir);
+//        Path currentPath = Paths.get(".");
+//        Path absolutePath = currentPath.toAbsolutePath();
+        
          
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

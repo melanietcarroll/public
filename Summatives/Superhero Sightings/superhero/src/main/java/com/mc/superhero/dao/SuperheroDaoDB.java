@@ -14,6 +14,9 @@ import com.mc.superhero.entities.Organization;
 import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import com.mc.superhero.entities.Superpower;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,6 +26,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * created 1/25/21
@@ -175,6 +179,14 @@ public class SuperheroDaoDB implements SuperheroDao {
                 + "JOIN Superhero ON s.superheroId = Superhero.id "
                 + "WHERE Superhero.id = ?";
         return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new LocationMapper(), id);
+    }
+
+    @Override
+    public void saveImage(MultipartFile imageFile) throws Exception {
+        String folder = "/photos/";
+        byte[] bytes = imageFile.getBytes();
+        Path path = Paths.get(folder + imageFile.getOriginalFilename());
+        Files.write(path, bytes);
     }
 
     public static final class SuperheroMapper implements RowMapper<Superhero> {
