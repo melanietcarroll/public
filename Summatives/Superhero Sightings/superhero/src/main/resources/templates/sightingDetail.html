@@ -69,8 +69,8 @@ and open the template in the editor.
                     <span th:text="${sighting.time}">display time</span>
                 </div>
             </div>
- <!--<img src="@{${'/photos/' + superhero.photosImagePath}}" alt="Superhero Photo" /> -->
- <img src="/photos/5/wonder_woman.jpg" alt="Superhero Photo"/> 
+ <img th:src="@{${superhero.photosImagePath}}" alt="Superhero Photo" /> 
+ <!--<img src="/photos/5/wonder_woman.jpg" alt="Superhero Photo"/> -->
      
       
     <!-- End main body -->
