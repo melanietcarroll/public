@@ -6,13 +6,20 @@
 package com.mc.superhero.entities;
 
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * created 1/24/21
+ *
  * @author Melanie Carroll
  */
 public class Superpower {
+
     private int id;
+
+    @NotBlank(message = "Name must not be empty.")
+    @Size(max = 30, message = "Name must be less than 30 characters.")
     private String name;
 
     public int getId() {
@@ -59,5 +66,5 @@ public class Superpower {
         }
         return true;
     }
-    
+
 }
