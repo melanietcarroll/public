@@ -106,7 +106,7 @@ public class OrganizationController {
 
         model.addAttribute("organization", organization);
         model.addAttribute("superheroes", superheroes);
-        model.addAttribute("errors", violations);
+    
         return "editOrganization";
     }
 
@@ -129,7 +129,7 @@ public class OrganizationController {
         if(result.hasErrors()) {
             model.addAttribute("superheroes", superheroDao.getAllSuperheros());
             model.addAttribute("organization", organization);
-            return "editCourse";
+            return "editOrganization";
         }
         organizationDao.updateOrganization(organization);
         return "redirect:/organizations";
