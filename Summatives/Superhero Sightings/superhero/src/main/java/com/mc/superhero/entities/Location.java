@@ -7,6 +7,9 @@ package com.mc.superhero.entities;
 
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * created 1/24/21
@@ -16,10 +19,23 @@ import java.util.Objects;
 public class Location {
 
     private int id;
+
+    @NotBlank(message = "Name must not be empty.")
+    @Size(max = 30, message = "Name must be less than 30 characters.")
     private String name;
+    
+    @Size(max = 255, message = "Description must be less than 255 characters.")
     private String description;
+    
+    @Size(max = 100, message = "First name must be less than 100 characters.")
     private String address;
+    
+   // @NotBlank(message = "Latitude must not be empty.")
+  //  @Pattern(regexp="^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$")
     private float latitude;
+    
+   // @NotBlank(message = "Longitude must not be empty.")
+ //   @Pattern(regexp="^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$")
     private float longitude;
     private List<Superhero> superheroes;
 
@@ -81,13 +97,13 @@ public class Location {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.id;
-        hash = 97 * hash + Objects.hashCode(this.name);
-        hash = 97 * hash + Objects.hashCode(this.description);
-        hash = 97 * hash + Objects.hashCode(this.address);
-        hash = 97 * hash + Objects.hashCode(this.latitude);
-        hash = 97 * hash + Objects.hashCode(this.longitude);
+        int hash = 7;
+        hash = 19 * hash + this.id;
+        hash = 19 * hash + Objects.hashCode(this.name);
+        hash = 19 * hash + Objects.hashCode(this.description);
+        hash = 19 * hash + Objects.hashCode(this.address);
+        hash = 19 * hash + Float.floatToIntBits(this.latitude);
+        hash = 19 * hash + Float.floatToIntBits(this.longitude);
         return hash;
     }
 
@@ -106,6 +122,12 @@ public class Location {
         if (this.id != other.id) {
             return false;
         }
+        if (Float.floatToIntBits(this.latitude) != Float.floatToIntBits(other.latitude)) {
+            return false;
+        }
+        if (Float.floatToIntBits(this.longitude) != Float.floatToIntBits(other.longitude)) {
+            return false;
+        }
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -115,16 +137,7 @@ public class Location {
         if (!Objects.equals(this.address, other.address)) {
             return false;
         }
-        if (!Objects.equals(this.latitude, other.latitude)) {
-            return false;
-        }
-        if (!Objects.equals(this.longitude, other.longitude)) {
-            return false;
-        }
         return true;
     }
 
-   
-    
-    
 }

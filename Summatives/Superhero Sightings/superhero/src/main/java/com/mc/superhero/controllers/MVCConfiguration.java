@@ -31,21 +31,4 @@ public class MVCConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
         System.out.println("file:/"+uploadPath +"/");
     }
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        
-////        registry.addResourceHandler(
-////                
-////                "/photos/**")
-////                
-////                .addResourceLocations(
-////                        
-////                        "classpath:/static/photos/");
-////          file:D:\\imagepath\              
-//        Path uploadDirectory = Paths.get("./photos");
-//        String uploadPath = uploadDirectory.toFile().getAbsolutePath();
-//        registry.addResourceHandler("/photos/**").addResourceLocations("file:D:/"+ uploadPath + "/");
-//      
-//    }
-    
 }

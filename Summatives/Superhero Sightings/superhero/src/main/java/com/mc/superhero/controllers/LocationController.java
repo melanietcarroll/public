@@ -13,20 +13,29 @@ import com.mc.superhero.dao.SuperpowerDao;
 import com.mc.superhero.entities.Location;
 import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * created 1/31/21
+ *
  * @author Melanie Carroll
  */
 @Controller
 public class LocationController {
+
     @Autowired
     LocationDao locationDao;
 
@@ -41,7 +50,9 @@ public class LocationController {
 
     @Autowired
     SuperpowerDao superpowerDao;
-    
+
+    Set<ConstraintViolation<Location>> violations = new HashSet<>();
+
     @GetMapping("locations")
     public String displayLocations(Model model) {
         List<Location> locations = locationDao.getAllLocations();
@@ -50,35 +61,47 @@ public class LocationController {
         model.addAttribute("locations", locations);
         model.addAttribute("superheroes", superheroes);
         model.addAttribute("sightings", sightings);
+        model.addAttribute("errors", violations);
         return "locations";
     }
+
     @PostMapping("addLocation")
     public String addLocation(Location location, HttpServletRequest request) {
-        locationDao.addLocation(location);
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(location);
+
+        if (violations.isEmpty()) {
+            locationDao.addLocation(location);
+        }
+//        locationDao.addLocation(location);
         return "redirect:/locations";
     }
-     @GetMapping("locationDetail")
+
+    @GetMapping("locationDetail")
     public String locationDetail(Integer id, Model model) {
         Location location = locationDao.getLocationById(id);
         model.addAttribute("location", location);
         return "locationDetail";
     }
+
     @GetMapping("deleteLocation")
     public String deleteLocation(Integer id) {
         locationDao.deleteLocationById(id);
         return "redirect:/locations";
     }
+
     @GetMapping("editLocation")
     public String editLocation(Integer id, Model model) {
         Location location = locationDao.getLocationById(id);
         model.addAttribute("location", location);
         return "editLocation";
     }
-     @PostMapping("editLocation")
+
+    @PostMapping("editLocation")
     public String performEditLocation(Location location, HttpServletRequest request) {
         locationDao.updateLocation(location);
-        
+
         return "redirect:/locations";
     }
-    
+
 }

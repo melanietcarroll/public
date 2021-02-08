@@ -181,14 +181,6 @@ public class SuperheroDaoDB implements SuperheroDao {
         return jdbc.query(SELECT_LOCATIONS_FOR_SUPERHERO, new LocationMapper(), id);
     }
 
-    @Override
-    public void saveImage(MultipartFile imageFile) throws Exception {
-        String folder = "/photos/";
-        byte[] bytes = imageFile.getBytes();
-        Path path = Paths.get(folder + imageFile.getOriginalFilename());
-        Files.write(path, bytes);
-    }
-
     public static final class SuperheroMapper implements RowMapper<Superhero> {
 
         @Override

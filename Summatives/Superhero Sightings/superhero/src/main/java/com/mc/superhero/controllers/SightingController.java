@@ -76,9 +76,7 @@ public class SightingController {
     @GetMapping("sightingDetail")
     public String sightingDetail(Integer id, Model model) {
         Sighting sighting = sightingDao.getSightingById(id);
-        Superhero superhero = sightingDao.getSuperheroForSighting(id);
-        model.addAttribute("sighting", sighting);
-        model.addAttribute("superhero", superhero);
+        model.addAttribute("sighting", sighting);   
         return "sightingDetail";
     }
 

@@ -22,9 +22,6 @@ public class FileUploadUtility {
             MultipartFile multipartFile) throws IOException {
          
         Path uploadPath = Paths.get(uploadDir);
-//        Path currentPath = Paths.get(".");
-//        Path absolutePath = currentPath.toAbsolutePath();
-        
          
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

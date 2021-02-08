@@ -6,7 +6,8 @@ USE superheroSightingTest;
 CREATE TABLE Superhero(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
-    description VARCHAR(255)
+    description VARCHAR(255),
+    photo VARCHAR(255)
 );
 
 CREATE TABLE Superpower(
@@ -25,9 +26,9 @@ CREATE TABLE Location(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
-    address VARCHAR(50),
-    latitude VARCHAR(15),
-    longitude VARCHAR(15)
+    address VARCHAR(100),
+    latitude float8 NOT NULL,
+    longitude float8 NOT NULL
 );
 
 
@@ -45,7 +46,7 @@ CREATE TABLE Organization(
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) NOT NULL,
     description VARCHAR(255),
-    address VARCHAR(50)
+    address VARCHAR(100)
 );
 CREATE TABLE Superhero_Organization(
     superheroId INT NOT NULL,
@@ -53,4 +54,3 @@ organizationId INT NOT NULL,
 PRIMARY KEY(superheroId, organizationId),
 FOREIGN KEY (superheroId) REFERENCES Superhero(id),
 FOREIGN KEY (organizationId) REFERENCES Organization(id));
-

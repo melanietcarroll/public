@@ -28,5 +28,5 @@ public interface SuperheroDao {
     List<Sighting> getSightingsForSuperhero(int id);
     List<Organization> getOrganizationsForSuperhero(int id);
     List<Location> getLocationsForSuperhero(int id);
-    void saveImage (MultipartFile imageFile) throws Exception;
+    
 }
