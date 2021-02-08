@@ -162,8 +162,10 @@ public class SuperheroController {
                 superhero.setOrganizations(organizations);
             }
             superheroDao.updateSuperhero(superhero);
+             return "redirect:/superheroes";
         }
-        return "redirect:/superheroes";
+        
+        return "editSuperhero";
     }
 
 }

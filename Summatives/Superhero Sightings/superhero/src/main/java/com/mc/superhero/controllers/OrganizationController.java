@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -110,21 +111,27 @@ public class OrganizationController {
     }
 
     @PostMapping("editOrganization")
-    public String performEditOrganization(Organization organization, HttpServletRequest request) {
-        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-        violations = validate.validate(organization);
-        String[] superheroIds = request.getParameterValues("superheroId");
+    public String performEditOrganization(@Valid Organization organization, BindingResult result, HttpServletRequest request, Model model) {
 
-        if (violations.isEmpty() && (superheroIds != null)) {
-        
+        String[] superheroIds = request.getParameterValues("superheroId");
         List<Superhero> superheroes = new ArrayList<>();
-        for (String superheroId : superheroIds) {
-            superheroes.add(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
+        if (superheroIds != null) {
+
+            for (String superheroId : superheroIds) {
+                superheroes.add(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
+            } 
+        }else {
+            FieldError error = new FieldError("organization", "superheroes", "Must include one superhero");
+            result.addError(error);
         }
         organization.setSuperheroes(superheroes);
-        organizationDao.updateOrganization(organization);
+        
+        if(result.hasErrors()) {
+            model.addAttribute("superheroes", superheroDao.getAllSuperheros());
+            model.addAttribute("organization", organization);
+            return "editCourse";
         }
-
+        organizationDao.updateOrganization(organization);
         return "redirect:/organizations";
     }
 }
