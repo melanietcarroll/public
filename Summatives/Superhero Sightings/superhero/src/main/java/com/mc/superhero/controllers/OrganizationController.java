@@ -55,34 +55,37 @@ public class OrganizationController {
     Set<ConstraintViolation<Organization>> violations = new HashSet<>();
 
     @GetMapping("organizations")
-    public String displayOrganizations(Model model) {
+    public String displayOrganizations(Model model, Organization organization, BindingResult result, HttpServletRequest request) {
         List<Organization> organizations = organizationDao.getAllOrganizations();
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
 
         model.addAttribute("organizations", organizations);
         model.addAttribute("superheroes", superheroes);
-        model.addAttribute("errors", violations);
+//        model.addAttribute("errors", violations);
         return "organizations";
     }
 
     @PostMapping("addOrganization")
-    public String addOrganization(Organization organization, HttpServletRequest request) {
+    public String addOrganization(@Valid Organization organization, BindingResult result, HttpServletRequest request, Model model) {
         String[] superheroIds = request.getParameterValues("superheroId");
-
         List<Superhero> superheroes = new ArrayList<>();
-        for (String superheroId : superheroIds) {
-            superheroes.add(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
+        if (superheroIds != null) {
+            for (String superheroId : superheroIds) {
+                superheroes.add(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
+            }
+        } else {
+            FieldError error = new FieldError("organization", "superheroes", "Must include one superhero");
+            result.addError(error);
         }
-        organization.setSuperheroes(superheroes);
-        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-        violations = validate.validate(organization);
+       
 
-        if (violations.isEmpty()) {
-            organizationDao.addOrganization(organization);
+        if (result.hasErrors()) {
+            model.addAttribute("superheroes", superheroDao.getAllSuperheros());
+            model.addAttribute("organization", organization);
+            return "organizations";
         }
-//        organization.setSuperheroes(superheroes);
-//        organizationDao.addOrganization(organization);
-
+         organization.setSuperheroes(superheroes);
+        organizationDao.addOrganization(organization);
         return "redirect:/organizations";
     }
 
@@ -100,13 +103,13 @@ public class OrganizationController {
     }
 
     @GetMapping("editOrganization")
-    public String editOrganization(Integer id, Model model) {
+    public String editOrganization(Model model, Integer id ) {
         Organization organization = organizationDao.getOrganizationById(id);
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
 
         model.addAttribute("organization", organization);
         model.addAttribute("superheroes", superheroes);
-    
+
         return "editOrganization";
     }
 
@@ -119,14 +122,14 @@ public class OrganizationController {
 
             for (String superheroId : superheroIds) {
                 superheroes.add(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
-            } 
-        }else {
+            }
+        } else {
             FieldError error = new FieldError("organization", "superheroes", "Must include one superhero");
             result.addError(error);
         }
         organization.setSuperheroes(superheroes);
-        
-        if(result.hasErrors()) {
+
+        if (result.hasErrors()) {
             model.addAttribute("superheroes", superheroDao.getAllSuperheros());
             model.addAttribute("organization", organization);
             return "editOrganization";
