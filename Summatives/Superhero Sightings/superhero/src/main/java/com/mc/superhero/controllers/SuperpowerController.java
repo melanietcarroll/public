@@ -65,7 +65,6 @@ public class SuperpowerController {
         if (violations.isEmpty()) {
             superpowerDao.addSuperpower(superpower);
         }
-//        superpowerDao.addSuperpower(superpower);
 
         return "redirect:/superpowers";
     }
@@ -86,19 +85,18 @@ public class SuperpowerController {
     }
 
     @PostMapping("editSuperpower")
-    public String performEditSuperpower(Superpower superpower, HttpServletRequest request) {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        Superpower superpower = superpowerDao.getSuperpowerById(id);
-//        superpower.setName(request.getParameter("name"));
+    public String performEditSuperpower(Superpower superpower, HttpServletRequest request, Model model) {
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(superpower);
 
         if (violations.isEmpty()) {
             superpowerDao.updateSuperpower(superpower);
+            return "redirect:/superpowers";
         }
-//        superpowerDao.updateSuperpower(superpower);
 
-        return "redirect:/superpowers";
+        model.addAttribute("superpower", superpower);
+        model.addAttribute("errors", violations);
+        return "editSuperpower";
     }
 
     @GetMapping("superpowerDetail")
