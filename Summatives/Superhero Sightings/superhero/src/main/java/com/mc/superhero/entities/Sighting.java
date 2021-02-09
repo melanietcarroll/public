@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -18,8 +19,11 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 public class Sighting {
     private int id;
+    
+    @NotBlank(message = "Date must not be empty.")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
+    
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
     private Location location;

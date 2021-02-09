@@ -25,12 +25,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,36 +81,39 @@ public class SuperheroController {
     }
 
     @PostMapping("addSuperhero")
-    public String addSuperhero(Superhero superhero, HttpServletRequest request, @RequestParam("imageFile") MultipartFile multipartFile) throws IOException {
+    public String addSuperhero(Superhero superhero, HttpServletRequest request, @RequestParam("imageFile") MultipartFile multipartFile, Model model) throws IOException {
+
+        String[] superpowerIds = request.getParameterValues("superpowerId");
+        String[] organizationIds = request.getParameterValues("organizationId");
+
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(superhero);
 
-        if (violations.isEmpty()) {
+        if (superpowerIds != null && superpowerIds.length > 0) {
+            List<Superpower> superpowers = new ArrayList<>();
+            for (String superpowerId : superpowerIds) {
+                superpowers.add(superpowerDao.getSuperpowerById(Integer.parseInt(superpowerId)));
+            }
+            superhero.setSuperpowers(superpowers);
+        }
 
+        if (organizationIds != null && organizationIds.length > 0) {
+            List<Organization> organizations = new ArrayList<>();
+            for (String organizationId : organizationIds) {
+                organizations.add(organizationDao.getOrganizationById(Integer.parseInt(organizationId)));
+            }
+            superhero.setOrganizations(organizations);
+        }
+        if (multipartFile != null) {
             String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-
-            String[] superpowerIds = request.getParameterValues("superpowerId");
-            String[] organizationIds = request.getParameterValues("organizationId");
-
-            if (superpowerIds != null && superpowerIds.length > 0) {
-                List<Superpower> superpowers = new ArrayList<>();
-                for (String superpowerId : superpowerIds) {
-                    superpowers.add(superpowerDao.getSuperpowerById(Integer.parseInt(superpowerId)));
-                }
-                superhero.setSuperpowers(superpowers);
-            }
-            if (organizationIds != null && organizationIds.length > 0) {
-                List<Organization> organizations = new ArrayList<>();
-                for (String organizationId : organizationIds) {
-                    organizations.add(organizationDao.getOrganizationById(Integer.parseInt(organizationId)));
-                }
-                superhero.setOrganizations(organizations);
-            }
             superhero.setPhoto(fileName);
-            superheroDao.addSuperhero(superhero);
             String uploadDir = "photos/" + superhero.getId();
             FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
         }
+        if (violations.isEmpty()) {
+            superheroDao.addSuperhero(superhero);
+        }
+
         return "redirect:/superheroes";
     }
 
@@ -132,40 +138,43 @@ public class SuperheroController {
         model.addAttribute("superhero", superhero);
         model.addAttribute("superpowers", superpowers);
         model.addAttribute("organizations", organizations);
-        model.addAttribute("errors", violations);
         return "editSuperhero";
     }
 
     @PostMapping("editSuperhero")
-    public String performEditSuperhero(Superhero superhero, HttpServletRequest request) {
-        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-        violations = validate.validate(superhero);
+    public String performEditSuperhero(@Valid Superhero superhero, BindingResult result, HttpServletRequest request, Model model) {
 
-        if (violations.isEmpty()) {
+        String[] superpowerIds = request.getParameterValues("superpowerId");
+        String[] organizationIds = request.getParameterValues("organizationId");
 
-            String[] superpowerIds = request.getParameterValues("superpowerId");
-            String[] organizationIds = request.getParameterValues("organizationId");
-
-            if (superpowerIds != null && superpowerIds.length > 0) {
-                List<Superpower> superpowers = new ArrayList<>();
-                for (String superpowerId : superpowerIds) {
-                    superpowers.add(superpowerDao.getSuperpowerById(Integer.parseInt(superpowerId)));
-                }
-                superhero.setSuperpowers(superpowers);
+        if (organizationIds != null && organizationIds.length > 0) {
+            List<Organization> organizations = new ArrayList<>();
+            for (String organizationId : organizationIds) {
+                organizations.add(organizationDao.getOrganizationById(Integer.parseInt(organizationId)));
             }
-
-            if (organizationIds != null && organizationIds.length > 0) {
-                List<Organization> organizations = new ArrayList<>();
-                for (String organizationId : organizationIds) {
-                    organizations.add(organizationDao.getOrganizationById(Integer.parseInt(organizationId)));
-                }
-                superhero.setOrganizations(organizations);
-            }
-            superheroDao.updateSuperhero(superhero);
-             return "redirect:/superheroes";
+            superhero.setOrganizations(organizations);
         }
-        
-        return "editSuperhero";
+        List<Superpower> superpowers = new ArrayList<>();
+        if (superpowerIds != null && superpowerIds.length > 0) {
+
+            for (String superpowerId : superpowerIds) {
+                superpowers.add(superpowerDao.getSuperpowerById(Integer.parseInt(superpowerId)));
+            }
+
+        } else {
+            FieldError error = new FieldError("superhero", "superpower", "Must include one superpower");
+            result.addError(error);
+        }
+        superhero.setSuperpowers(superpowers);
+        if (result.hasErrors()) {
+            model.addAttribute("superpowers", superpowerDao.getAllSuperpowers());
+            model.addAttribute("organizations", organizationDao.getAllOrganizations());
+            model.addAttribute("superhero", superhero);
+            return "editSuperhero";
+        }
+
+        superheroDao.updateSuperhero(superhero);
+        return "redirect:/superheroes";
     }
 
 }

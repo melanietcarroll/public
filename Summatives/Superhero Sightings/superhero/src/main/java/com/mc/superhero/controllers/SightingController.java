@@ -17,9 +17,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,7 +79,7 @@ public class SightingController {
     @GetMapping("sightingDetail")
     public String sightingDetail(Integer id, Model model) {
         Sighting sighting = sightingDao.getSightingById(id);
-        model.addAttribute("sighting", sighting);   
+        model.addAttribute("sighting", sighting);
         return "sightingDetail";
     }
 
@@ -87,23 +90,42 @@ public class SightingController {
     }
 
     @GetMapping("editSighting")
-    public String editSighting(Integer id, Model model) {
-        Sighting sighting = sightingDao.getSightingById(id);
+    public String editSighting(Integer id, Model model, Sighting sighting, BindingResult result) {
+        Sighting currentSighting = sightingDao.getSightingById(id);
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
         List<Location> locations = locationDao.getAllLocations();
-        model.addAttribute("sighting", sighting);
+        model.addAttribute("currentSighting", currentSighting);
         model.addAttribute("superheroes", superheroes);
         model.addAttribute("locations", locations);
         return "editSighting";
     }
 
     @PostMapping("editSighting")
-    public String performEditSighting(Sighting sighting, HttpServletRequest request) {
+    public String performEditSighting(@Valid Sighting sighting, BindingResult result, HttpServletRequest request, Model model) {
         String superheroId = request.getParameter("superheroId");
         String locationId = request.getParameter("locationId");
 
-        sighting.setSuperhero(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
-        sighting.setLocation(locationDao.getLocationById(Integer.parseInt(locationId)));
+        if (superheroId != null) {
+            sighting.setSuperhero(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
+
+        } else {
+            FieldError error = new FieldError("sighting", "superhero", "Must include one superhero");
+            result.addError(error);
+        }
+
+        if (locationId != null) {
+            sighting.setLocation(locationDao.getLocationById(Integer.parseInt(locationId)));
+        } else {
+            FieldError error = new FieldError("sighting", "location", "Must include one location");
+            result.addError(error);
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("superheroes", superheroDao.getAllSuperheros());
+            model.addAttribute("locations", locationDao.getAllLocations());
+            model.addAttribute("sighting", sighting);
+            return "editSighting";
+        }
+
         sightingDao.updateSighting(sighting);
 
         return "redirect:/sightings";
@@ -117,7 +139,7 @@ public class SightingController {
         associateLocationAndSuperhero(sightings);
 
         model.addAttribute("sightings", sightings);
-        
+
         return "sightingsByDate";
     }
 
@@ -127,6 +149,5 @@ public class SightingController {
             sighting.setSuperhero(sightingDao.getSuperheroForSighting(sighting.getId()));
         }
     }
-    
-    
+
 }

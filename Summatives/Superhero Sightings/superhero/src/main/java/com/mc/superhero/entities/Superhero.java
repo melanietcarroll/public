@@ -9,6 +9,7 @@ import java.beans.Transient;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -29,6 +30,8 @@ public class Superhero {
 
     @Size(max = 255, message = "Max 255 characters.")
     private String photo;
+    
+    @NotNull(message="Must choose at least one superpower")
     private List<Superpower> superpowers;
     private List<Sighting> sightings;
     private List<Organization> organizations;
