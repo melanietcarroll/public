@@ -90,18 +90,18 @@ public class SightingController {
     }
 
     @GetMapping("editSighting")
-    public String editSighting(Integer id, Model model, Sighting sighting, BindingResult result) {
-        Sighting currentSighting = sightingDao.getSightingById(id);
+    public String editSighting(Integer id, Model model) {
+        Sighting sighting = sightingDao.getSightingById(id);
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
         List<Location> locations = locationDao.getAllLocations();
-        model.addAttribute("currentSighting", currentSighting);
+        model.addAttribute("sighting", sighting);
         model.addAttribute("superheroes", superheroes);
         model.addAttribute("locations", locations);
         return "editSighting";
     }
 
     @PostMapping("editSighting")
-    public String performEditSighting(@Valid Sighting sighting, BindingResult result, HttpServletRequest request, Model model) {
+    public String performEditSighting(@Valid Sighting sighting, BindingResult bindingResult, HttpServletRequest request, Model model) {
         String superheroId = request.getParameter("superheroId");
         String locationId = request.getParameter("locationId");
 
@@ -110,16 +110,16 @@ public class SightingController {
 
         } else {
             FieldError error = new FieldError("sighting", "superhero", "Must include one superhero");
-            result.addError(error);
+            bindingResult.addError(error);
         }
 
         if (locationId != null) {
             sighting.setLocation(locationDao.getLocationById(Integer.parseInt(locationId)));
         } else {
             FieldError error = new FieldError("sighting", "location", "Must include one location");
-            result.addError(error);
+            bindingResult.addError(error);
         }
-        if (result.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("superheroes", superheroDao.getAllSuperheros());
             model.addAttribute("locations", locationDao.getAllLocations());
             model.addAttribute("sighting", sighting);

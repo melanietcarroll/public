@@ -135,7 +135,7 @@ public class SuperheroDaoDB implements SuperheroDao {
     @Override
     @Transactional
     public void updateSuperhero(Superhero superhero) {
-        final String UPDATE_SUPERHERO = "UPDATE Superhero SET name = ?, description = ? "
+        final String UPDATE_SUPERHERO = "UPDATE Superhero SET name = ?, description = ?"
                 + "WHERE id = ?";
         jdbc.update(UPDATE_SUPERHERO,
                 superhero.getName(),

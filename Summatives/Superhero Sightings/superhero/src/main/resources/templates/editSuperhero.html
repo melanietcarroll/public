@@ -44,25 +44,29 @@ and open the template in the editor.
      <div>
          <h2 class="text-center">Edit Superhero</h2>
      </div>
-     
+  <!--   <div class="col-12 m-1 text-center" 
+                th:if="${!errors.isEmpty()}">
+              <p class="alert alert-danger" th:each="error : ${errors}" 
+                  th:text="${error.message}">Error message</p>
+          </div> -->
     
      <div class="row m-4 border border-dark">
                 <div class="col-2 text-center m-3">
                     
                 </div>
                 <div class="col-7 text-center m-3">
-                    <form action="editSuperhero" method="POST">
+                    <form action="editSuperhero" method="POST" >
                         <div class="form-group row">
                             <label for="name" class="col-3 col-form-label">
                                 Name</label>
                             <div class="col-9">
                                 <input type="text" name="name" 
                                        id="name" class="form-control" th:value="${superhero.name}"/>
-                                <div th:if="${#fields.hasErrors('superhero.name')}">
+                               <div th:if="${#fields.hasErrors('superhero.name')}">
       <p th:each="error : ${#fields.errors('superhero.name')}" 
         class="alert alert-danger" th:text="${error}">
         Bad name </p>
-    </div>
+    </div> 
                             </div>
                         </div>
                         <div class="form-group row">
@@ -75,7 +79,7 @@ and open the template in the editor.
       <p th:each="error : ${#fields.errors('superhero.description')}" 
         class="alert alert-danger" th:text="${error}">
         Bad description </p>
-    </div>
+    </div> 
                             </div>
                         </div>
                        <div class="form-group row">
@@ -90,11 +94,11 @@ and open the template in the editor.
                                             th:selected="${superhero.superpowers.contains(superpower)}">
                                         Superpower Name</option>
                                 </select>
-                                <div th:if="${#fields.hasErrors('superhero.superpowers')}">
+                             <div th:if="${#fields.hasErrors('superhero.superpowers')}">
             <p th:each="error : ${#fields.errors('superhero.superpowers')}" 
                class="alert alert-danger" th:text="${error}"> 
                 Bad superpower </p>
-        </div>
+        </div> 
                             </div>
                         </div>
                         <div class="form-group row">
@@ -109,13 +113,15 @@ and open the template in the editor.
                                             th:selected="${superhero.organizations.contains(organization)}">
                                         Organization Name</option>
                                 </select>
-                                 <div th:if="${#fields.hasErrors('superhero.organizations')}">
+                              <!--   <div th:if="${#fields.hasErrors('superhero.organizations')}">
             <p th:each="error : ${#fields.errors('superhero.organizations')}" 
                class="alert alert-danger" th:text="${error}"> 
                 Bad organization </p>
-        </div>
+        </div> -->
                             </div>
                         </div>
+                        
+                        
                         <input type="hidden" name="id" th:value="${superhero.id}"/>
                         <button type="submit" class="btn btn-primary">Edit Superhero</button>
                     </form>

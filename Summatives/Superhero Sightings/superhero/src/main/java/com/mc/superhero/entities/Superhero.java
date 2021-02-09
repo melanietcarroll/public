@@ -31,9 +31,11 @@ public class Superhero {
     @Size(max = 255, message = "Max 255 characters.")
     private String photo;
     
-    @NotNull(message="Must choose at least one superpower")
+
     private List<Superpower> superpowers;
+    
     private List<Sighting> sightings;
+
     private List<Organization> organizations;
 
 

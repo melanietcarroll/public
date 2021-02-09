@@ -61,11 +61,11 @@ and open the template in the editor.
                                     <option th:each="superhero : ${superheroes}" 
                                             th:value="${superhero.id}" 
                                             th:text="${superhero.name}"
-                                            th:selected="${sighting.superhero.id==superhero.id}">
+                                            th:selected="${sighting.superhero}">
                                         Superhero</option>
                                 </select>
-                                 <div th:if="${#fields.hasErrors('sighting.superheroes')}">
-            <p th:each="error : ${#fields.errors('sighting.superheroes')}" 
+                                 <div th:if="${#fields.hasErrors('sighting.superhero')}">
+            <p th:each="error : ${#fields.errors('sighting.superhero')}" 
                class="alert alert-danger" th:text="${error}"> 
                 Bad superhero </p>
         </div>
@@ -80,11 +80,11 @@ and open the template in the editor.
                                     <option th:each="location : ${locations}" 
                                             th:value="${location.id}" 
                                             th:text="${location.name}"
-                                            th:selected="${sighting.location.id==location.id}">
+                                            th:selected="${sighting.location}">
                                         Location</option>
                                 </select>
-                                 <div th:if="${#fields.hasErrors('sighting.locations')}">
-            <p th:each="error : ${#fields.errors('sighting.locations')}" 
+                                 <div th:if="${#fields.hasErrors('sighting.location')}">
+            <p th:each="error : ${#fields.errors('sighting.location')}" 
                class="alert alert-danger" th:text="${error}"> 
                 Bad location </p>
         </div>
@@ -108,11 +108,11 @@ and open the template in the editor.
                             <div class="col-9">
                                 <input type="time" name="time" 
                                        id="time" class="form-control" th:value="${sighting.time}"/>
-                                <div th:if="${#fields.hasErrors('sighting.time')}">
+                            <!--    <div th:if="${#fields.hasErrors('sighting.time')}">
             <p th:each="error : ${#fields.errors('sighting.time')}" 
                class="alert alert-danger" th:text="${error}"> 
                 Bad time </p>
-        </div>
+        </div>-->
                             </div>
                         </div>
                         <input type="hidden" name="id" th:value="${sighting.id}"/>

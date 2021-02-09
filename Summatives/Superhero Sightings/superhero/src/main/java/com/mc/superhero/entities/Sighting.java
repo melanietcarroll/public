@@ -11,6 +11,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -21,6 +22,7 @@ public class Sighting {
     private int id;
     
     @NotBlank(message = "Date must not be empty.")
+    @PastOrPresent (message = "Date must not be in the future")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     
