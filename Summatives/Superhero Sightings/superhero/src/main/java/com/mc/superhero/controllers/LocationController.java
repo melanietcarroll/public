@@ -66,14 +66,19 @@ public class LocationController {
     }
 
     @PostMapping("addLocation")
-    public String addLocation(Location location, HttpServletRequest request, Model model) {
-
+    public String addLocation(HttpServletRequest request, Model model) {
+        Location location = new Location();
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String address = request.getParameter("address");
         String latitude = request.getParameter("latitude");
         String longitude = request.getParameter("longitude");
+        location.setName(name);
+        location.setAddress(address);
+        location.setDescription(description);
         if (!latitude.isEmpty() || !latitude.isBlank()) {
             location.setLatitude(Float.parseFloat(latitude));
         }
-
         if (!longitude.isEmpty() || !longitude.isBlank()) {
             location.setLongitude(Float.parseFloat(longitude));
         }
@@ -105,14 +110,37 @@ public class LocationController {
     public String editLocation(Integer id, Model model) {
         Location location = locationDao.getLocationById(id);
         model.addAttribute("location", location);
+        model.addAttribute("errors", violations);
         return "editLocation";
     }
 
     @PostMapping("editLocation")
-    public String performEditLocation(Location location, HttpServletRequest request) {
-        locationDao.updateLocation(location);
+    public String performEditLocation(HttpServletRequest request, Model model, Integer id) {
+        Location location = new Location();
+        
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String address = request.getParameter("address");
+        String latitude = request.getParameter("latitude");
+        String longitude = request.getParameter("longitude");
+        location.setName(name);
+        location.setAddress(address);
+        location.setDescription(description);
+        location.setId(id);
+        if (!latitude.isEmpty() || !latitude.isBlank()) {
+            location.setLatitude(Float.parseFloat(latitude));
+        }
+        if (!longitude.isEmpty() || !longitude.isBlank()) {
+            location.setLongitude(Float.parseFloat(longitude));
+        }
+        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validate.validate(location);
 
-        return "redirect:/locations";
+        if (violations.isEmpty()) {
+            locationDao.updateLocation(location);
+            return "locations";
+        }
+        return "editLocation";
     }
 
 }
