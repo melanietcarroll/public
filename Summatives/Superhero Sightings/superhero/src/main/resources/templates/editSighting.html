@@ -61,7 +61,7 @@ and open the template in the editor.
                                     <option th:each="superhero : ${superheroes}" 
                                             th:value="${superhero.id}" 
                                             th:text="${superhero.name}"
-                                            th:selected="${sighting.superhero}">
+                                            th:selected="${sighting.superhero.name == superhero.name}">
                                         Superhero</option>
                                 </select>
                                  <div th:if="${#fields.hasErrors('sighting.superhero')}">
@@ -80,7 +80,7 @@ and open the template in the editor.
                                     <option th:each="location : ${locations}" 
                                             th:value="${location.id}" 
                                             th:text="${location.name}"
-                                            th:selected="${sighting.location}">
+                                            th:selected="${sighting.location.name == location.name}">
                                         Location</option>
                                 </select>
                                  <div th:if="${#fields.hasErrors('sighting.location')}">
