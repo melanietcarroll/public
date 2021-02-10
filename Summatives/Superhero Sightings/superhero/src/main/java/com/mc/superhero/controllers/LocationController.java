@@ -87,10 +87,8 @@ public class LocationController {
 
         if (violations.isEmpty()) {
             locationDao.addLocation(location);
-            return "locations";
         }
         return "redirect:/locations";
-
     }
 
     @GetMapping("locationDetail")
@@ -138,8 +136,10 @@ public class LocationController {
 
         if (violations.isEmpty()) {
             locationDao.updateLocation(location);
-            return "locations";
+            return "redirect:/locations";
         }
+        model.addAttribute("location", location);
+        model.addAttribute("errors", violations);
         return "editLocation";
     }
 
