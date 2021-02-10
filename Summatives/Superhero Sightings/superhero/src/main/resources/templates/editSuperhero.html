@@ -110,14 +110,14 @@ and open the template in the editor.
                                     <option th:each="organization : ${organizations}" 
                                             th:value="${organization.id}" 
                                             th:text="${organization.name}"
-                                            th:selected="${superhero.organizations.contains(organization)}">
+                                            >
                                         Organization Name</option>
                                 </select>
-                              <!--   <div th:if="${#fields.hasErrors('superhero.organizations')}">
+                              <div th:if="${#fields.hasErrors('superhero.organizations')}">
             <p th:each="error : ${#fields.errors('superhero.organizations')}" 
                class="alert alert-danger" th:text="${error}"> 
                 Bad organization </p>
-        </div> -->
+        </div> 
                             </div>
                         </div>
                         

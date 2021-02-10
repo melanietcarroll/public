@@ -163,6 +163,7 @@ public class SuperheroController {
             }
             superhero.setOrganizations(organizations);
         }
+        
         List<Superpower> superpowers = new ArrayList<>();
         if (superpowerIds != null && superpowerIds.length > 0) {
 
