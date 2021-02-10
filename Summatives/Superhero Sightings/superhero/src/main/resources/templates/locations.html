@@ -47,11 +47,11 @@ and open the template in the editor.
             </div>
 
             <div class="col-12 m-1 text-center" 
-      th:if="${!errors.isEmpty()}">
-    <p class="alert alert-danger" th:each="error : ${errors}" 
-        th:text="${error.message}">Error message</p>
-</div>
-            
+                 th:if="${!errors.isEmpty()}">
+                <p class="alert alert-danger" th:each="error : ${errors}" 
+                   th:text="${error.message}">Error message</p>
+            </div> 
+
             <div class="row m-4 border border-dark">
                 <div class="col-2 text-center m-3">
 
@@ -64,10 +64,10 @@ and open the template in the editor.
                             <div class="col-9">
                                 <input type="text" name="name" 
                                        id="name" class="form-control"/>
-                            <!--    <div th:if="${#fields.hasErrors('location.name')}">
-                                    <p th:each="error : ${#fields.errors('location.name')}" 
-                                       class="alert alert-danger" th:text="${error}"> Incorrect name </p>
-                                </div> -->
+                                <!--   <div th:if="${#fields.hasErrors('location.name')}">
+                                              <p th:each="error : ${#fields.errors('location.name')}" 
+                                                 class="alert alert-danger" th:text="${error}"> Incorrect name </p>
+                                          </div> -->
                             </div>
                         </div>
                         <div class="form-group row">
@@ -76,6 +76,10 @@ and open the template in the editor.
                             <div class="col-9">
                                 <input type="text" name="description" 
                                        id="description" class="form-control"/>
+                                <!--   <div th:if="${#fields.hasErrors('location.description')}">
+                                       <p th:each="error : ${#fields.errors('location.description')}" 
+                                          class="alert alert-danger" th:text="${error}"> Incorrect description </p>
+                                   </div> -->
                             </div>
                         </div>
                         <div class="form-group row">
@@ -84,6 +88,10 @@ and open the template in the editor.
                             <div class="col-9">
                                 <input type="text" name="address" 
                                        id="address" class="form-control"/>
+                                <!--      <div th:if="${#fields.hasErrors('location.address')}">
+                                          <p th:each="error : ${#fields.errors('location.address')}" 
+                                             class="alert alert-danger" th:text="${error}"> Incorrect address </p>
+                                      </div> -->
                             </div>
                         </div>
                         <div class="form-group row">
@@ -92,10 +100,10 @@ and open the template in the editor.
                             <div class="col-9">
                                 <input type="text" name="latitude" 
                                        id="latitude" class="form-control"/>
-                                <!--<div th:if="${#fields.hasErrors('location.latitude')}">
-                                    <p th:each="error : ${#fields.errors('location.latitude')}" 
-                                       class="alert alert-danger" th:text="${error}"> Incorrect latitude </p>
-                                </div>-->
+                                <!--     <div th:if="${#fields.hasErrors('location.latitude')}">
+                                         <p th:each="error : ${#fields.errors('location.latitude')}" 
+                                            class="alert alert-danger" th:text="${error}"> Incorrect latitude </p>
+                                     </div> -->
                             </div>
                         </div>
                         <div class="form-group row">
@@ -104,10 +112,10 @@ and open the template in the editor.
                             <div class="col-9">
                                 <input type="text" name="longitude" 
                                        id="longitude" class="form-control"/>
-                             <!--   <div th:if="${#fields.hasErrors('location.longitude')}">
-                                    <p th:each="error : ${#fields.errors('location.longitude')}" 
-                                       class="alert alert-danger" th:text="${error}"> Bad first name </p>
-                                </div>-->
+                                <!--   <div th:if="${#fields.hasErrors('location.longitude')}">
+                                       <p th:each="error : ${#fields.errors('location.longitude')}" 
+                                          class="alert alert-danger" th:text="${error}"> Incorrect longitude</p>
+                                   </div> -->
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Location</button>

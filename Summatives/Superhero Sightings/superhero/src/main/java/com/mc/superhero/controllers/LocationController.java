@@ -66,15 +66,26 @@ public class LocationController {
     }
 
     @PostMapping("addLocation")
-    public String addLocation(Location location, HttpServletRequest request) {
+    public String addLocation(Location location, HttpServletRequest request, Model model) {
+
+        String latitude = request.getParameter("latitude");
+        String longitude = request.getParameter("longitude");
+        if (!latitude.isEmpty() || !latitude.isBlank()) {
+            location.setLatitude(Float.parseFloat(latitude));
+        }
+
+        if (!longitude.isEmpty() || !longitude.isBlank()) {
+            location.setLongitude(Float.parseFloat(longitude));
+        }
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(location);
 
         if (violations.isEmpty()) {
             locationDao.addLocation(location);
+            return "locations";
         }
-//        locationDao.addLocation(location);
         return "redirect:/locations";
+
     }
 
     @GetMapping("locationDetail")

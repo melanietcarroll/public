@@ -7,7 +7,9 @@ package com.mc.superhero.entities;
 
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -30,12 +32,14 @@ public class Location {
     @Size(max = 100, message = "First name must be less than 100 characters.")
     private String address;
     
-   // @NotBlank(message = "Latitude must not be empty.")
-  //  @Pattern(regexp="^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$")
+    @NotNull(message = "Latitude must not be empty.")
+    @Digits(integer = 2, fraction = 6)
+//    @Pattern(regexp="^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$")
     private float latitude;
     
-   // @NotBlank(message = "Longitude must not be empty.")
- //   @Pattern(regexp="^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$")
+    @NotNull(message = "Longitude must not be empty.")
+    @Digits(integer = 3, fraction = 6)
+//    @Pattern(regexp="^(\\+|-)?(?:180(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,6})?))$")
     private float longitude;
     private List<Superhero> superheroes;
 
