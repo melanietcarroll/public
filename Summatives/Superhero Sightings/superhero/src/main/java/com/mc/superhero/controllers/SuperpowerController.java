@@ -10,17 +10,20 @@ import com.mc.superhero.dao.OrganizationDao;
 import com.mc.superhero.dao.SightingDao;
 import com.mc.superhero.dao.SuperheroDao;
 import com.mc.superhero.dao.SuperpowerDao;
+import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superpower;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -58,7 +61,7 @@ public class SuperpowerController {
     }
 
     @PostMapping("addSuperpower")
-    public String addSuperpower(Superpower superpower) {
+    public String addSuperpower(Superpower superpower, HttpServletRequest request, Model model) {
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(superpower);
 
@@ -93,7 +96,7 @@ public class SuperpowerController {
             superpowerDao.updateSuperpower(superpower);
             return "redirect:/superpowers";
         }
-
+    
         model.addAttribute("superpower", superpower);
         model.addAttribute("errors", violations);
         return "editSuperpower";

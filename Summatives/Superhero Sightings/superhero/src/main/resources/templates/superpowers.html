@@ -46,11 +46,6 @@ and open the template in the editor.
          <h2 class="text-center">Add Superpower</h2>
      </div>
      
-     <div class="col-12 m-1 text-center" 
-      th:if="${!errors.isEmpty()}">
-    <p class="alert alert-danger" th:each="error : ${errors}" 
-        th:text="${error.message}">Error message</p>
-</div>
      
      <div class="row m-4 border border-dark">
                 <div class="col-2 text-center m-3">
@@ -64,6 +59,11 @@ and open the template in the editor.
                             <div class="col-9">
                                 <input type="text" name="name" 
                                        id="name" class="form-control"/>
+                                <div class="col-12 m-1 text-center" 
+      th:if="${!errors.isEmpty()}">
+    <p class="alert alert-danger" th:each="error : ${errors}" 
+        th:text="${error.message}">Error message</p>
+</div> 
                             </div>
                         </div>
                        

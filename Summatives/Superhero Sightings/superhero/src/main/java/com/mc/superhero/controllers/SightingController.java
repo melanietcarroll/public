@@ -52,7 +52,7 @@ public class SightingController {
     SuperpowerDao superpowerDao;
 
     @GetMapping("sightings")
-    public String displaySightings(Model model) {
+    public String displaySightings(Model model, Sighting sighting, BindingResult bindingResult,HttpServletRequest request) {
         List<Sighting> sightings = sightingDao.getAllSightings();
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
         List<Location> locations = locationDao.getAllLocations();
@@ -64,12 +64,29 @@ public class SightingController {
     }
 
     @PostMapping("addSighting")
-    public String addSighting(Sighting sighting, HttpServletRequest request) {
+    public String addSighting(@Valid Sighting sighting, BindingResult bindingResult, HttpServletRequest request, Model model) {
         String superheroId = request.getParameter("superheroId");
         String locationId = request.getParameter("locationId");
 
-        sighting.setSuperhero(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
-        sighting.setLocation(locationDao.getLocationById(Integer.parseInt(locationId)));
+        if (superheroId != null) {
+            sighting.setSuperhero(superheroDao.getSuperheroById(Integer.parseInt(superheroId)));
+
+        } else {
+            FieldError error = new FieldError("sighting", "superhero", "Must include one superhero");
+            bindingResult.addError(error);
+        }
+        if (locationId != null) {
+            sighting.setLocation(locationDao.getLocationById(Integer.parseInt(locationId)));
+        } else {
+            FieldError error = new FieldError("sighting", "location", "Must include one location");
+            bindingResult.addError(error);
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("superheroes", superheroDao.getAllSuperheros());
+            model.addAttribute("locations", locationDao.getAllLocations());
+            model.addAttribute("sighting", sighting);
+            return "sightings";
+        }
 
         sightingDao.addSighting(sighting);
 
