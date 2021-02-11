@@ -66,7 +66,8 @@ public class LocationController {
     }
 
     @PostMapping("addLocation")
-    public String addLocation(HttpServletRequest request, Model model) {
+    public String addLocation(HttpServletRequest request, Model model) {     
+        String message = null;
         Location location = new Location();
         String name = request.getParameter("name");
         String description = request.getParameter("description");
@@ -76,19 +77,29 @@ public class LocationController {
         location.setName(name);
         location.setAddress(address);
         location.setDescription(description);
-        if (!latitude.isEmpty() || !latitude.isBlank()) {
-            location.setLatitude(Float.parseFloat(latitude));
+        if (!latitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$") || !longitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$")){
+             message = "Latitude and Longitude must be numeric and in decimal format";
+            model.addAttribute("message", message);
+             model.addAttribute("errors", violations);
+            return "locations";
         }
-        if (!longitude.isEmpty() || !longitude.isBlank()) {
+        try {
             location.setLongitude(Float.parseFloat(longitude));
+            location.setLatitude(Float.parseFloat(latitude));
+        } catch (NumberFormatException e) {
+            message = "Latitude and Longitude must be numeric and in decimal format";
         }
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(location);
 
         if (violations.isEmpty()) {
             locationDao.addLocation(location);
+             return "redirect:/locations";
         }
-        return "redirect:/locations";
+        model.addAttribute("message", message);
+        model.addAttribute("location", location);
+        model.addAttribute("errors", violations);
+       return "locations";
     }
 
     @GetMapping("locationDetail")
@@ -114,8 +125,8 @@ public class LocationController {
 
     @PostMapping("editLocation")
     public String performEditLocation(HttpServletRequest request, Model model, Integer id) {
+        String message = null;
         Location location = new Location();
-        
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String address = request.getParameter("address");
@@ -125,11 +136,24 @@ public class LocationController {
         location.setAddress(address);
         location.setDescription(description);
         location.setId(id);
-        if (!latitude.isEmpty() || !latitude.isBlank()) {
-            location.setLatitude(Float.parseFloat(latitude));
+//        if (!latitude.isEmpty() || !latitude.isBlank()) {
+//            location.setLatitude(Float.parseFloat(latitude));
+//        }
+//        if (!longitude.isEmpty() || !longitude.isBlank()) {
+//            location.setLongitude(Float.parseFloat(longitude));
+//        }
+if (!latitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$") || !longitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$")){
+             message = "Latitude and Longitude must be numeric and in decimal format";
+            model.addAttribute("message", message);
+            model.addAttribute("location", location);
+             model.addAttribute("errors", violations);
+            return "editLocation";
         }
-        if (!longitude.isEmpty() || !longitude.isBlank()) {
+        try {
             location.setLongitude(Float.parseFloat(longitude));
+            location.setLatitude(Float.parseFloat(latitude));
+        } catch (NumberFormatException e) {
+            message = "Latitude and Longitude must be numeric and in decimal format";
         }
         Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validate.validate(location);
@@ -138,6 +162,7 @@ public class LocationController {
             locationDao.updateLocation(location);
             return "redirect:/locations";
         }
+        model.addAttribute("message", message);
         model.addAttribute("location", location);
         model.addAttribute("errors", violations);
         return "editLocation";

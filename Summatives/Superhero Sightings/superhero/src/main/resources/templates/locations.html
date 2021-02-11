@@ -51,6 +51,12 @@ and open the template in the editor.
                 <p class="alert alert-danger" th:each="error : ${errors}" 
                    th:text="${error.message}">Error message</p>
             </div> 
+             <div class="col-12 m-1 text-center" 
+               th:if= "${message != null}">
+                <p class="alert alert-danger"  
+                   th:text="${message}">Error message</p>
+            </div> 
+           
 
             <div class="row m-4 border border-dark">
                 <div class="col-2 text-center m-3">
