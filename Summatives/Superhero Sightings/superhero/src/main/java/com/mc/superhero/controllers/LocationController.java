@@ -140,13 +140,16 @@ public class LocationController {
         if (!latitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$") || !longitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$")) {
             message = "Latitude and Longitude must be numeric and in decimal format";
             model.addAttribute("message", message);
+            location = locationDao.getLocationById(id);
             model.addAttribute("location", location);
             model.addAttribute("errors", violations);
             return "editLocation";
         }
         try {
-            location.setLongitude(Float.parseFloat(longitude));
-            location.setLatitude(Float.parseFloat(latitude));
+            float parsedLongitude = Float.parseFloat(longitude);
+            location.setLongitude(parsedLongitude);
+            float parsedLatitude= Float.parseFloat(latitude);
+            location.setLatitude(parsedLatitude);
         } catch (NumberFormatException e) {
             message = "Latitude and Longitude must be numeric and in decimal format";
         }
