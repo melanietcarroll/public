@@ -69,7 +69,7 @@ public class SuperheroController {
     Set<ConstraintViolation<Superhero>> violations = new HashSet<>();
 
     @GetMapping("superheroes")
-    public String displaySuperheroes(Model model, Superhero superhero, BindingResult bindingResult,HttpServletRequest request) {
+    public String displaySuperheroes(Model model, Superhero superhero, BindingResult bindingResult, HttpServletRequest request) {
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
         List<Superpower> superpowers = superpowerDao.getAllSuperpowers();
         List<Organization> organizations = organizationDao.getAllOrganizations();
@@ -85,6 +85,8 @@ public class SuperheroController {
 
         String[] superpowerIds = request.getParameterValues("superpowerId");
         String[] organizationIds = request.getParameterValues("organizationId");
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        superhero.setPhoto(fileName);
 
         if (superpowerIds != null && superpowerIds.length > 0) {
             List<Superpower> superpowers = new ArrayList<>();
@@ -92,7 +94,7 @@ public class SuperheroController {
                 superpowers.add(superpowerDao.getSuperpowerById(Integer.parseInt(superpowerId)));
             }
             superhero.setSuperpowers(superpowers);
-        }  else {
+        } else {
             FieldError error = new FieldError("superhero", "superpowers", "Must include one superpower");
             bindingResult.addError(error);
         }
@@ -104,12 +106,12 @@ public class SuperheroController {
             }
             superhero.setOrganizations(organizations);
         }
-        if (!multipartFile.isEmpty()) {
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            superhero.setPhoto(fileName);
-            String uploadDir = "photos/" + superhero.getId();
-            FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
-        }
+//        if (!multipartFile.isEmpty()) {
+//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            superhero.setPhoto(fileName);
+//            String uploadDir = "photos/" + superhero.getId();
+//            FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
+//        }
 //        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
 //        violations = validate.validate(superhero);
 //        
@@ -123,6 +125,12 @@ public class SuperheroController {
             return "superheroes";
         }
         superheroDao.addSuperhero(superhero);
+        if (!multipartFile.isEmpty()) {
+//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+//            superhero.setPhoto(fileName);
+            String uploadDir = "photos/" + superhero.getId();
+            FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
+        }
         return "redirect:/superheroes";
     }
 
@@ -163,7 +171,7 @@ public class SuperheroController {
             }
             superhero.setOrganizations(organizations);
         }
-        
+
         List<Superpower> superpowers = new ArrayList<>();
         if (superpowerIds != null && superpowerIds.length > 0) {
 
@@ -171,7 +179,7 @@ public class SuperheroController {
                 superpowers.add(superpowerDao.getSuperpowerById(Integer.parseInt(superpowerId)));
             }
             superhero.setSuperpowers(superpowers);
-        }else {
+        } else {
             FieldError error = new FieldError("superhero", "superpowers", "Must include one superpower");
             bindingResult.addError(error);
         }

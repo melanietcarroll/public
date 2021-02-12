@@ -66,7 +66,7 @@ public class LocationController {
     }
 
     @PostMapping("addLocation")
-    public String addLocation(HttpServletRequest request, Model model) {     
+    public String addLocation(HttpServletRequest request, Model model) {
         String message = null;
         Location location = new Location();
         String name = request.getParameter("name");
@@ -77,10 +77,10 @@ public class LocationController {
         location.setName(name);
         location.setAddress(address);
         location.setDescription(description);
-        if (!latitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$") || !longitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$")){
-             message = "Latitude and Longitude must be numeric and in decimal format";
+        if (!latitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$") || !longitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$")) {
+            message = "Latitude and Longitude must be numeric and in decimal format";
             model.addAttribute("message", message);
-             model.addAttribute("errors", violations);
+            model.addAttribute("errors", violations);
             return "locations";
         }
         try {
@@ -94,12 +94,12 @@ public class LocationController {
 
         if (violations.isEmpty()) {
             locationDao.addLocation(location);
-             return "redirect:/locations";
+            return "redirect:/locations";
         }
         model.addAttribute("message", message);
         model.addAttribute("location", location);
         model.addAttribute("errors", violations);
-       return "locations";
+        return "locations";
     }
 
     @GetMapping("locationDetail")
@@ -136,17 +136,12 @@ public class LocationController {
         location.setAddress(address);
         location.setDescription(description);
         location.setId(id);
-//        if (!latitude.isEmpty() || !latitude.isBlank()) {
-//            location.setLatitude(Float.parseFloat(latitude));
-//        }
-//        if (!longitude.isEmpty() || !longitude.isBlank()) {
-//            location.setLongitude(Float.parseFloat(longitude));
-//        }
-if (!latitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$") || !longitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$")){
-             message = "Latitude and Longitude must be numeric and in decimal format";
+
+        if (!latitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$") || !longitude.matches("^(?:(?:\\-{1})?\\d+(?:\\.{1}\\d+)?)$")) {
+            message = "Latitude and Longitude must be numeric and in decimal format";
             model.addAttribute("message", message);
             model.addAttribute("location", location);
-             model.addAttribute("errors", violations);
+            model.addAttribute("errors", violations);
             return "editLocation";
         }
         try {
