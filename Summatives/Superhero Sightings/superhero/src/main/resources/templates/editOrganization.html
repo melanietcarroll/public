@@ -26,21 +26,32 @@ and open the template in the editor.
 
             </div>
             <div class="row m-4 border border-dark" style="background-color: #D8E5E9;">
-                <div class="col text-center m-3">
+                <div class="text-center m-3"></div>
+                
+                 <div class="text-center m-3">
+                    <a href="/" class="btn btn-outline-secondary btn-lg">Home</a>
+                </div>
+                
+                <div class="text-center m-3">
                     <a href="superheroes" class="btn btn-outline-secondary btn-lg">Superheroes</a>
                 </div>
-                <div class="col text-center m-3">
+               
+                <div class="text-center m-3">
                     <a href="superpowers" class="btn btn-outline-secondary btn-lg">Superpowers</a>
                 </div>
-                <div class="col text-center m-3">
+                
+                <div class="text-center m-3">
                     <a href="sightings" class="btn btn-outline-secondary btn-lg">Sightings</a>
                 </div>
-                <div class="col text-center m-3">
+                
+                <div class="text-center m-3">
                     <a href="organizations" class="btn btn-outline-secondary btn-lg">Organizations</a>
                 </div>
-                <div class="col text-center m-3">
+                
+                <div class="text-center m-3">
                     <a href="locations" class="btn btn-outline-secondary btn-lg">Locations</a>
                 </div>
+                <div class="text-center m-3"></div>
             </div>
 
 
@@ -100,7 +111,7 @@ and open the template in the editor.
                                     <option th:each="superhero : ${superheroes}" 
                                             th:value="${superhero.id}" 
                                             th:text="${superhero.name}"
-                                            th:selected="${organization.superheroes.contains(organization)}">
+                                            th:selected="${organization.superheroes.contains(superhero)}">
                                         Organization Name</option>
                                 </select>
                                 <div th:if="${#fields.hasErrors('organization.superheroes')}">
@@ -113,6 +124,7 @@ and open the template in the editor.
                         <input type="hidden" name="id" th:value="${organization.id}"/>
                         <button type="submit" class="btn btn-info">
                             Update Organization</button>
+                        <a href="organizations" class="btn btn-info">Cancel</a>
                     </form>
                 </div>
             </div>

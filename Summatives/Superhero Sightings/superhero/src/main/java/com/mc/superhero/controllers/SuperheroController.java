@@ -106,18 +106,7 @@ public class SuperheroController {
             }
             superhero.setOrganizations(organizations);
         }
-//        if (!multipartFile.isEmpty()) {
-//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//            superhero.setPhoto(fileName);
-//            String uploadDir = "photos/" + superhero.getId();
-//            FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
-//        }
-//        Validator validate = Validation.buildDefaultValidatorFactory().getValidator();
-//        violations = validate.validate(superhero);
-//        
-//        if (violations.isEmpty()) {
-//            superheroDao.addSuperhero(superhero);
-//        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("superpowers", superpowerDao.getAllSuperpowers());
             model.addAttribute("organizations", organizationDao.getAllOrganizations());
@@ -126,8 +115,6 @@ public class SuperheroController {
         }
         superheroDao.addSuperhero(superhero);
         if (!multipartFile.isEmpty()) {
-//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//            superhero.setPhoto(fileName);
             String uploadDir = "photos/" + superhero.getId();
             FileUploadUtility.saveImageFile(uploadDir, fileName, multipartFile);
         }

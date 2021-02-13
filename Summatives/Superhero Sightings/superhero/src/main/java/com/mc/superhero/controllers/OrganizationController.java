@@ -11,6 +11,7 @@ import com.mc.superhero.dao.SightingDao;
 import com.mc.superhero.dao.SuperheroDao;
 import com.mc.superhero.dao.SuperpowerDao;
 import com.mc.superhero.entities.Organization;
+import com.mc.superhero.entities.Sighting;
 import com.mc.superhero.entities.Superhero;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -106,7 +107,9 @@ public class OrganizationController {
     public String editOrganization(Model model, Integer id ) {
         Organization organization = organizationDao.getOrganizationById(id);
         List<Superhero> superheroes = superheroDao.getAllSuperheros();
-
+         
+//            organization.setSuperheroes(organizationDao.getSuperherosForOrganization(organization.getId()));
+     
         model.addAttribute("organization", organization);
         model.addAttribute("superheroes", superheroes);
 
@@ -137,4 +140,5 @@ public class OrganizationController {
         organizationDao.updateOrganization(organization);
         return "redirect:/organizations";
     }
+     
 }
