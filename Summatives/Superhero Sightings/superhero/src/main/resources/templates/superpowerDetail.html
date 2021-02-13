@@ -24,27 +24,28 @@ and open the template in the editor.
             </div>
 
         </div>
-        <div class="row m-4 border border-dark">
+        <div class="row m-4 border border-dark" style="background-color: #D8E5E9;">
             <div class="col text-center m-3">
-                <a href="superheroes" class="btn btn-outline-primary btn-lg">Superheroes</a>
+                <a href="superheroes" class="btn btn-outline-secondary btn-lg">Superheroes</a>
             </div>
             <div class="col text-center m-3">
-                <a href="superpowers" class="btn btn-outline-primary btn-lg">Superpowers</a>
+                <a href="superpowers" class="btn btn-outline-secondary btn-lg">Superpowers</a>
             </div>
             <div class="col text-center m-3">
-                <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
+                <a href="sightings" class="btn btn-outline-secondary btn-lg">Sightings</a>
             </div>
             <div class="col text-center m-3">
-                <a href="organizations" class="btn btn-outline-primary btn-lg">Organizations</a>
+                <a href="organizations" class="btn btn-outline-secondary btn-lg">Organizations</a>
             </div>
             <div class="col text-center m-3">
-                <a href="locations" class="btn btn-outline-primary btn-lg">Locations</a>
+                <a href="locations" class="btn btn-outline-secondary btn-lg">Locations</a>
             </div>
         </div>
      <div>
          <h2 class="text-center">Superpower Details</h2>
      </div>
-     <div class="row m-4 border border-dark">
+     
+     <div class="row m-4">
                 <div class="col-6 text-right"><strong>ID</strong></div>
                 <div class="col-6 text-left">
                     <span th:text="${superpower.id}">display id</span>
@@ -54,6 +55,7 @@ and open the template in the editor.
                 <div class="col-6 text-left">
                     <span th:text="${superpower.name}">display name</span>
                 </div>
+            
             </div>
         </div>
      
@@ -67,5 +69,5 @@ and open the template in the editor.
    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
   </body>
-</html>;
+</html>
 

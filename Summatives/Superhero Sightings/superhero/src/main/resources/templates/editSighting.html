@@ -25,32 +25,32 @@ and open the template in the editor.
             </div>
 
         </div>
-        <div class="row m-4 border border-dark">
+        <div class="row m-4 border border-dark" style="background-color: #D8E5E9;">
             <div class="col text-center m-3">
-                <a href="superheroes" class="btn btn-outline-primary btn-lg">Superheroes</a>
+                <a href="superheroes" class="btn btn-outline-secondary btn-lg">Superheroes</a>
             </div>
             <div class="col text-center m-3">
-                <a href="superpowers" class="btn btn-outline-primary btn-lg">Superpowers</a>
+                <a href="superpowers" class="btn btn-outline-secondary btn-lg">Superpowers</a>
             </div>
             <div class="col text-center m-3">
-                <a href="sightings" class="btn btn-outline-primary btn-lg">Sightings</a>
+                <a href="sightings" class="btn btn-outline-secondary btn-lg">Sightings</a>
             </div>
             <div class="col text-center m-3">
-                <a href="organizations" class="btn btn-outline-primary btn-lg">Organizations</a>
+                <a href="organizations" class="btn btn-outline-secondary btn-lg">Organizations</a>
             </div>
             <div class="col text-center m-3">
-                <a href="locations" class="btn btn-outline-primary btn-lg">Locations</a>
+                <a href="locations" class="btn btn-outline-secondary btn-lg">Locations</a>
             </div>
         </div>
-     <div>
-         <h2 class="text-center">Edit Sighting</h2>
-     </div>
+    
      
-     <div class="row m-4 border border-dark">
+     <div class="row m-4 border border-dark" style="background-color: #D8E5E9;">
                 <div class="col-2 text-center m-3">
                    
                 </div>
                 <div class="col-7 text-center m-3">
+                    <h2 class="text-center">Edit Sighting</h2>
+                    </br>
                     <form action="editSighting" method="POST">
                         <div class="form-group row">
                             <label for="superheroes" class="col-3 col-form-label">
@@ -116,7 +116,7 @@ and open the template in the editor.
                             </div>
                         </div>
                         <input type="hidden" name="id" th:value="${sighting.id}"/>
-                        <button type="submit" class="btn btn-primary">Edit Sighting</button>
+                        <button type="submit" class="btn btn-info">Update Sighting</button>
                     </form>
                 </div>
             </div>

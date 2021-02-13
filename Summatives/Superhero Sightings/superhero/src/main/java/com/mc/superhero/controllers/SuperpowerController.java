@@ -68,7 +68,8 @@ public class SuperpowerController {
         if (violations.isEmpty()) {
             superpowerDao.addSuperpower(superpower);
         }
-
+//        model.addAttribute("superpower", superpower);
+        model.addAttribute("errors", violations);
         return "redirect:/superpowers";
     }
 
@@ -96,7 +97,7 @@ public class SuperpowerController {
             superpowerDao.updateSuperpower(superpower);
             return "redirect:/superpowers";
         }
-    
+
         model.addAttribute("superpower", superpower);
         model.addAttribute("errors", violations);
         return "editSuperpower";
