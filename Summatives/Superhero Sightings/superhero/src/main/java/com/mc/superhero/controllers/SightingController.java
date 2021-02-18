@@ -149,7 +149,17 @@ public class SightingController {
     }
 
     @GetMapping("searchSighting")
-    public String searchSightingByDate(String date, Model model) {
+    public String searchSightingByDate(@Valid Sighting sighting, BindingResult bindingResult, String date, HttpServletRequest request, Model model) {
+        if (date.isBlank()|| date==""){
+             FieldError error = new FieldError("sighting", "date", "Must select a date");
+            bindingResult.addError(error);
+            return "sightings";
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("date", date);
+            return "sightings";
+        }
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
         List<Sighting> sightings = sightingDao.getSightingsForSuperheroAndLocationByDate(localDate);

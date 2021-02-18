@@ -127,8 +127,12 @@ and open the template in the editor.
                                        id="time" class="form-control"/>
                             </div>
                         </div>
+                      
                         <button type="submit" class="btn btn-info">Add Sighting</button>
+                         
                         <a href="sightings" class="btn btn-info">Cancel</a>
+                           
+                     
                     </form>
                 </div>
             </div>
@@ -148,7 +152,12 @@ and open the template in the editor.
                                 Date</label>
                             <div class="col-9">
                                 <input type="date" name="date" data-provide="datepicker"
-                                       id="date" class="form-control"/>
+                                       id="date" class="form-control" />
+                              <div th:if="${#fields.hasErrors('sighting.date')}">
+            <p th:each="error : ${#fields.errors('sighting.date')}" 
+               class="alert alert-danger" th:text="${error}"> 
+                Bad date </p>
+        </div>
                             </div>
                         </div>
      

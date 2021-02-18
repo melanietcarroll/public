@@ -115,8 +115,8 @@ and open the template in the editor.
                                         class="form-control" >
                                     <option th:each="organization : ${organizations}" 
                                             th:value="${organization.id}" 
-                                            th:text="${organization.name}"
-                                            th:selected="${superhero.organizations.contains(organization)}">
+                                            th:text="${organization.name}">
+                                          <!--  th:selected="${superhero.organizations.contains(organization)}"> -->
                                         Organization Name</option>
                                 </select>
                               <div th:if="${#fields.hasErrors('superhero.organizations')}">
