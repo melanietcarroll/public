@@ -1,4 +1,0 @@
-OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1::lula::TX::4.45::CARPET::800::2.25::2.10::1800.00::1680.00::139.20::3619.20
-2::WholeFoods::CA::25.00::TILE::1000::3.50::4.15::3500.00::4150.00::1912.50::9562.50
-3::Santa::KY::6.00::WOOD::1200::5.15::4.75::6180.00::5700.00::712.80::12592.80
