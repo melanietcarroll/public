@@ -1,6 +1,0 @@
-Cars::2011::G::Pixar::Pixar::3
-cars::2001::pg::pixar::pixar::5
-monsters inc::2000::pg::pixar::pixar::5
-Monsters Inc::2011::PG::unk::Pixar::5 stars
-Labyrinth::1982::PG::unk unk::unk::5 stars
-nemo::2000::pg::pixar::pixar::5
