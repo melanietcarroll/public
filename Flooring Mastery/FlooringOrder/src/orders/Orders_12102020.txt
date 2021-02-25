@@ -1,2 +1,0 @@
-OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1::JAVA::TX::4.45::WOOD::800::5.15::4.75::4120.00::3800.00::316.80::8236.80

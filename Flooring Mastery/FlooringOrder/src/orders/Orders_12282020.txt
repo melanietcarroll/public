@@ -1,2 +1,0 @@
-OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1::TurboTax::WA::9.25::LAMINATE::500::1.75::2.10::875.00::1050.00::173.25::2098.25

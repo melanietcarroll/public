@@ -1,3 +1,0 @@
-OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1::Acme::TX::4.45::Wood::800::5.15::4.75::4120::3800::352.44::8272.44
-2::TurboTax::CA::25::Wood::650::5.15::4.75::3347.5::3087.5::1608.75::8043.75
